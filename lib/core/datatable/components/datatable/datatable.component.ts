@@ -710,7 +710,8 @@ export class DataTableComponent implements AfterContentInit, OnChanges, DoCheck,
     selectRow(row: DataRow, value: boolean) {
         if (row) {
             row.isSelected = value;
-            const idx = this.selection.indexOf(row);
+            const idx = this.selection.findIndex(selection => selection.node.entry.id === row.node.entry.id);
+            // const idx = this.selection.indexOf(row);
             if (value) {
                 if (idx < 0) {
                     this.selection.push(row);

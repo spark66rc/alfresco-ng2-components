@@ -34,6 +34,14 @@
     </mat-tab>
     <mat-tab *ngIf="canPerformLocalUpload()"
              [disabled]="isNotAllowedToUpload()">
+        <div class="app-p-10">
+            Selected Nodes:
+            <ul>
+                <li *ngFor="let node of chosenNode">
+                    {{ node.name }}
+                </li>
+            </ul>
+        </div>
         <adf-toolbar>
             <adf-toolbar-title>
                 <adf-dropdown-breadcrumb
@@ -43,6 +51,7 @@
                     [readOnly]="true"
                     data-automation-id="content-node-selector-upload-breadcrumb"
                 ></adf-dropdown-breadcrumb>
+                {{(chosenNode?.length || 0) + ' files selected'}}
             </adf-toolbar-title>
         </adf-toolbar>
         <ng-template mat-tab-label>

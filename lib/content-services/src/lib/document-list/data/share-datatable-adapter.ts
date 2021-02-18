@@ -250,7 +250,7 @@ export class ShareDataTableAdapter implements DataTableAdapter {
         }
     }
 
-    public loadPage(nodePaging: NodePaging, merge: boolean = false, allowDropFiles?: boolean, preselectNodes: NodeEntry[] = []) {
+    public loadPage(nodePaging: NodePaging, merge: boolean = false, allowDropFiles?: boolean, preselectNodes: NodeEntry[] = [], selection?: NodeEntry[]) {
         let shareDataRows: ShareDataRow[] = [];
         if (allowDropFiles !== undefined) {
             this.allowDropFiles = allowDropFiles;
@@ -258,8 +258,15 @@ export class ShareDataTableAdapter implements DataTableAdapter {
         if (nodePaging?.list) {
             const nodeEntries: NodeEntry[] = nodePaging.list.entries;
             if (nodeEntries?.length) {
-                shareDataRows = nodeEntries.map((item) => new ShareDataRow(item, this.contentService, this.permissionsStyle,
-                    this.thumbnailService, this.allowDropFiles));
+                shareDataRows = nodeEntries.map((item) => {
+                    const shareDataRow = new ShareDataRow(item, this.contentService, this.permissionsStyle, this.thumbnailService, this.allowDropFiles);
+                    const isRowToBeMarkedSelected = !!selection.find(selectedNode => selectedNode.entry.id === item.entry.id);
+
+                    if (isRowToBeMarkedSelected) {
+                        shareDataRow.isSelected = true;
+                    }
+                    return shareDataRow;
+                });
 
                 if (this.filter) {
                     shareDataRows = shareDataRows.filter(this.filter);
@@ -302,22 +309,27 @@ export class ShareDataTableAdapter implements DataTableAdapter {
     }
 
     selectRowsBasedOnGivenNodes(preselectNodes: NodeEntry[]) {
+        this.preselectedRows = [];
         if (preselectNodes?.length) {
             this.rows = this.rows.map((row) => {
                 preselectNodes.map((preselectedNode) => {
                     if (row.obj.entry.id === preselectedNode.entry.id) {
                         row.isSelected = true;
+                        this.preselectedRows.push(row);
                     }
                 });
                 return row;
             });
         }
-
-        this.preselectedRows = [...this.rows.filter((res) => res.isSelected)];
     }
 
     hasPreselectedRows(): boolean {
         return this.preselectedRows?.length > 0;
+    }
+
+    getShareDataRowFromNodeId(nodeId: string): DataRow {
+        const indexInDatatableRows = this.rows.findIndex(row => row.node.entry.id === nodeId);
+        return this.rows[indexInDatatableRows];
     }
 
 }

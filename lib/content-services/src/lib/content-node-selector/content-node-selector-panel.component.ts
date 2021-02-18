@@ -361,7 +361,7 @@ export class ContentNodeSelectorPanelComponent implements OnInit, OnDestroy {
         )
         .subscribe((uploadedFiles: FileUploadCompleteEvent[]) => {
             this.preselectedNodes = this.getPreselectNodesBasedOnSelectionMode(uploadedFiles);
-            this.documentList.reload();
+            this.documentList.reloadWithoutResettingSelection();
         });
     }
 
@@ -370,7 +370,7 @@ export class ContentNodeSelectorPanelComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.onDestroy$))
             .subscribe((deletedFileEvent: FileUploadDeleteEvent) => {
                 this.removeFromChosenNodes(deletedFileEvent.file);
-                this.documentList.reload();
+                this.documentList.reloadWithoutResettingSelection();
             });
     }
 
