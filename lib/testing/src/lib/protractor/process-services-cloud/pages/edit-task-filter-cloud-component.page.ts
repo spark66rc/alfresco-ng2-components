@@ -23,6 +23,7 @@ import { DropdownPage } from '../../core/pages/material/dropdown.page';
 import { DataTableComponentPage } from '../../core/pages/data-table-component.page';
 import { PeopleCloudComponentPage } from './people-cloud-component.page';
 import { GroupCloudComponentPage } from './group-cloud-component.page';
+import { DatePickerPage } from '../../core/pages/material/date-picker.page';
 
 export type StatusType = 'All' | 'Created' | 'Assigned' | 'Cancelled' | 'Suspended' | 'Completed';
 
@@ -50,9 +51,15 @@ export class EditTaskFilterCloudComponentPage {
     private locatorSortDropdown = $(`mat-select[data-automation-id='adf-cloud-edit-task-property-sort']`);
     private locatorOrderDropdown = $(`mat-select[data-automation-id='adf-cloud-edit-task-property-order']`);
     private locatorCompletedDateDropdown = $(`mat-select[data-automation-id="adf-cloud-edit-process-property-completedDateRange"]`);
+    private locatorProcessDefinitionNameDropdown = $(`mat-select[data-automation-id='adf-cloud-edit-task-property-processDefinitionName']`);
     private locatorAssignmentDropdown = $(`.adf-task-assignment-filter`);
     private expansionPanelExtended = this.rootElement.$('mat-expansion-panel-header.mat-expanded');
     private content = this.rootElement.$('div.mat-expansion-panel-content[style*="visible"]');
+    private locatorCreatedDateRangeDropdown = $(`mat-select[data-automation-id='adf-cloud-edit-process-property-createdDateRange']`);
+    private locatorCreatedDateRangeWithin = $(`mat-datepicker-toggle[data-automation-id='adf-cloud-edit-process-property-date-range-createdDateRange']`);
+    private locatorDueDateRangeDropdown = $(`mat-select[data-automation-id='adf-cloud-edit-process-property-dueDateRange']`);
+    private locatorDueDateRangeWithin = $(`mat-datepicker-toggle[data-automation-id='adf-cloud-edit-picker-date-range-dueDateRange']`);
+
 
     appNameDropdown = new DropdownPage(this.locatorAppNameDropdown);
     statusDropdown = new DropdownPage(this.locatorStatusDropdown);
@@ -61,6 +68,11 @@ export class EditTaskFilterCloudComponentPage {
     orderDropdown = new DropdownPage(this.locatorOrderDropdown);
     completedDateDropdown = new DropdownPage(this.locatorCompletedDateDropdown);
     assignmentDropdown = new DropdownPage(this.locatorAssignmentDropdown);
+    processDefinitionNameDropdown = new DropdownPage(this.locatorProcessDefinitionNameDropdown);
+    createdDateRangeDropdown = new DropdownPage(this.locatorCreatedDateRangeDropdown);
+    createdDateRangeWithin = new DatePickerPage(this.locatorCreatedDateRangeWithin);
+    dueDateRangeDropdown = new DropdownPage(this.locatorDueDateRangeDropdown);
+    dueDateRangeWithin = new DatePickerPage(this.locatorDueDateRangeWithin);
 
     editTaskFilterDialogPage = new EditTaskFilterDialogPage();
     peopleCloudComponent = new PeopleCloudComponentPage();
@@ -98,6 +110,7 @@ export class EditTaskFilterCloudComponentPage {
     }
 
     async setStatusFilterDropDown(option: StatusType): Promise<void> {
+        await this.statusDropdown.checkDropdownIsVisible();
         await this.statusDropdown.selectDropdownOption(option);
         await this.dataTable.waitTillContentLoaded();
     }
@@ -186,6 +199,26 @@ export class EditTaskFilterCloudComponentPage {
         return BrowserActions.getText(this.lastModifiedTo);
     }
 
+    async setCreatedDateRangeDropDown(option: string): Promise<void> {
+        await this.createdDateRangeDropdown.checkDropdownIsVisible();
+        await this.createdDateRangeDropdown.selectDropdownOption(option);
+    }
+
+    async setCreatedDateRangeWithin(start: Date, end: Date): Promise<void> {
+        await this.setCreatedDateRangeDropDown('Date within');
+        await this.createdDateRangeWithin.setDateRange(start, end);
+    }
+
+    async setDueDateRangeDropDown(option: string): Promise<void> {
+        await this.dueDateRangeDropdown.checkDropdownIsVisible();
+        await this.dueDateRangeDropdown.selectDropdownOption(option);
+    }
+
+    async setDueDateRangeWithin(start: Date, end: Date): Promise<void> {
+        await this.setDueDateRangeDropDown('Date within');
+        await this.dueDateRangeWithin.setDateRange(start, end);
+    }
+
     async checkSaveButtonIsDisplayed(): Promise<void> {
         await BrowserVisibility.waitUntilElementIsVisible(this.saveButton);
     }
@@ -272,6 +305,12 @@ export class EditTaskFilterCloudComponentPage {
 
     async setProcessInstanceId(option: string): Promise<void> {
         await this.setProperty('processInstanceId', option);
+    }
+
+    async setProcessDefinitionNameDropDown(option: string): Promise<void> {
+        await browser.waitForAngular();
+        await this.processDefinitionNameDropdown.checkDropdownIsVisible();
+        await this.processDefinitionNameDropdown.selectDropdownOption(option);
     }
 
     async setProperty(property: string, option: string): Promise<void> {

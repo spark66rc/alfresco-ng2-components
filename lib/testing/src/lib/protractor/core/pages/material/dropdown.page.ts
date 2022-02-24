@@ -86,6 +86,7 @@ export class DropdownPage {
 
     async selectDropdownOption(option: string): Promise<void> {
         await this.clickDropdown();
+        await this.checkOptionsPanelIsDisplayed();
         await this.selectOption(option);
     }
 }

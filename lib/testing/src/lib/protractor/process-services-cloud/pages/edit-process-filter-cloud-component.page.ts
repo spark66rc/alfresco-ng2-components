@@ -52,7 +52,7 @@ export class EditProcessFilterCloudComponentPage {
     private locatorStartedDateRangeDropdown = $(`mat-select[data-automation-id='adf-cloud-edit-process-property-startedDateRange']`);
     private locatorCompletedDateRangeDropdown = $(`mat-select[data-automation-id='adf-cloud-edit-process-property-completedDateRange']`);
 
-    private locatorSuspendedDateRangeWithin = $(`mat-datepicker-toggle[data-automation-id='adf-cloud-edit-process-property-date-range-suspendedDateRange']`);
+    private locatorSuspendedDateRangeWithin = $(`mat-datepicker-toggle[data-automation-id='adf-cloud-edit-picker-date-range-suspendedDateRange']`);
     private content = TestElement.byCss('adf-cloud-edit-process-filter mat-expansion-panel [style*="visible"]');
 
     appNameDropdown = new DropdownPage(this.locatorAppNameDropdown);
@@ -135,6 +135,9 @@ export class EditProcessFilterCloudComponentPage {
     }
 
     async setProcessDefinitionNameDropDown(option: string) {
+        await this.processDefinitionNameDropdown.checkDropdownIsVisible();
+        await this.processDefinitionNameDropdown.checkDropdownIsClickable();
+        await this.processDefinitionNameDropdown.checkOptionIsDisplayed('ALL');
         await this.processDefinitionNameDropdown.selectDropdownOption(option);
     }
 
