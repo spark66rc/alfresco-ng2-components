@@ -71,13 +71,13 @@ update() {
     git checkout $BRANCH_TO_CREATE 2>/dev/null || git checkout -b $BRANCH_TO_CREATE origin/develop
 
     update_js_dependency "@alfresco/js-api" $JS_API_INSTALLED
-    update_dependency "@alfresco/adf-extensions"
-    update_dependency "@alfresco/adf-core"
-    update_dependency "@alfresco/adf-content-services"
-    update_dependency "@alfresco/adf-process-services"
-    update_dependency "@alfresco/adf-process-services-cloud"
-    update_dependency "@alfresco/adf-cli"
-    update_dependency "@alfresco/adf-testing"
+    # update_dependency "@alfresco/adf-extensions"
+    # update_dependency "@alfresco/adf-core"
+    # update_dependency "@alfresco/adf-content-services"
+    # update_dependency "@alfresco/adf-process-services"
+    # update_dependency "@alfresco/adf-process-services-cloud"
+    # update_dependency "@alfresco/adf-cli"
+    # update_dependency "@alfresco/adf-testing"
 
     git push origin $BRANCH_TO_CREATE
 
@@ -102,16 +102,16 @@ echo "Current installed JS-API $JS_API_INSTALLED"
 
 cd "$REPO_DIR"
 
-if [[ (-z "$TOKEN") || (-z "$VERSION") ]]
-  then
-    echo "Each of 'branch name' (-b)  token (-t) and pr number (-p) have to be set. See -help."
-    exit 1;
-fi
+# if [[ (-z "$TOKEN") || (-z "$VERSION") ]]
+#   then
+#     echo "Each of 'branch name' (-b)  token (-t) and pr number (-p) have to be set. See -help."
+#     exit 1;
+# fi
 
 rm -rf $TEMP_GENERATOR_DIR
 
-update "generator-alfresco-adf-app"
-update "alfresco-content-app"
+# update "generator-alfresco-adf-app"
+# update "alfresco-content-app"
 update "alfresco-apps"
 
 exit $?
