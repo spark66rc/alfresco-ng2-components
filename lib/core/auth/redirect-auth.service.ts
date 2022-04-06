@@ -1,18 +1,7 @@
 import { Injectable } from "@angular/core";
-import {
-    OAuthErrorEvent,
-    OAuthService,
-    OAuthStorage
-} from "angular-oauth2-oidc";
+import { OAuthErrorEvent, OAuthService, OAuthStorage } from "angular-oauth2-oidc";
 import { Observable } from "rxjs";
-import {
-    distinctUntilChanged,
-    filter,
-    first,
-    map,
-    shareReplay,
-    startWith
-} from "rxjs/operators";
+import { distinctUntilChanged, filter, first, map, shareReplay, startWith } from "rxjs/operators";
 import { authConfig } from "./auth.config";
 import { AuthService } from "./auth.service";
 
@@ -30,10 +19,7 @@ export class RedirectAuthService extends AuthService {
 
     /** Get whether the user has valid Id/Access tokens. */
     get authenticated(): boolean {
-        return (
-            this.oauthService.hasValidIdToken() &&
-            this.oauthService.hasValidAccessToken()
-        );
+        return this.oauthService.hasValidIdToken() && this.oauthService.hasValidAccessToken();
     }
 
     /** Get current Id token, if authenticated. */
@@ -46,10 +32,7 @@ export class RedirectAuthService extends AuthService {
         return this.oauthService.getAccessToken();
     }
 
-    constructor(
-        private oauthService: OAuthService,
-        protected _oauthStorage: OAuthStorage
-    ) {
+    constructor(private oauthService: OAuthService, protected _oauthStorage: OAuthStorage) {
         super();
 
         this.oauthService.clearHashAfterLogin = true;
@@ -62,10 +45,7 @@ export class RedirectAuthService extends AuthService {
         );
 
         this.idpUnreachable$ = this.oauthService.events.pipe(
-            filter(
-                (event): event is OAuthErrorEvent =>
-                    event.type === "discovery_document_load_error"
-            ),
+            filter((event): event is OAuthErrorEvent => event.type === "discovery_document_load_error"),
             map(event => event.reason as Error)
         );
 
@@ -93,9 +73,7 @@ export class RedirectAuthService extends AuthService {
             .catch(() => false)
             .then(loaded => {
                 if (!loaded) {
-                    return this.oauthService
-                        .loadDiscoveryDocument()
-                        .then(() => true);
+                    return this.oauthService.loadDiscoveryDocument().then(() => true);
                 }
                 return true;
             });
@@ -110,16 +88,11 @@ export class RedirectAuthService extends AuthService {
 
         if (currentUrl) {
             stateKey = `auth_state_${Math.random()}${Date.now()}`;
-            this._oauthStorage.setItem(
-                stateKey,
-                JSON.stringify(currentUrl || {})
-            );
+            this._oauthStorage.setItem(stateKey, JSON.stringify(currentUrl || {}));
         }
 
         // initLoginFlow will initialize the login flow in either code or implicit depending on the configuration
-        this.ensureDiscoveryDocument().then(
-            () => void this.oauthService.initLoginFlow(stateKey)
-        );
+        this.ensureDiscoveryDocument().then(() => void this.oauthService.initLoginFlow(stateKey));
     }
 
     /**
@@ -137,9 +110,7 @@ export class RedirectAuthService extends AuthService {
                 const stateKey = this.oauthService.state;
 
                 if (stateKey) {
-                    const stateStringified = this._oauthStorage.getItem(
-                        stateKey
-                    );
+                    const stateStringified = this._oauthStorage.getItem(stateKey);
                     if (stateStringified) {
                         // cleanup state from storage
                         this._oauthStorage.removeItem(stateKey);
@@ -153,11 +124,9 @@ export class RedirectAuthService extends AuthService {
         this.oauthService.configure(authConfig);
 
         if (authConfig.sessionChecksEnabled) {
-            this.oauthService.events
-                .pipe(filter(event => event.type === "session_terminated"))
-                .subscribe(() => {
-                    this.oauthService.logOut();
-                });
+            this.oauthService.events.pipe(filter(event => event.type === "session_terminated")).subscribe(() => {
+                this.oauthService.logOut();
+            });
         }
 
         this.authenticated$
@@ -166,9 +135,7 @@ export class RedirectAuthService extends AuthService {
                 first()
             )
             .subscribe(() => {
-                this.ensureDiscoveryDocument().then(
-                    () => void this.oauthService.setupAutomaticSilentRefresh()
-                );
+                this.ensureDiscoveryDocument().then(() => void this.oauthService.setupAutomaticSilentRefresh());
             });
     }
 }

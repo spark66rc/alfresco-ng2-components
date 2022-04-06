@@ -4,7 +4,7 @@ import { from, of } from "rxjs";
 import { catchError, first, map } from "rxjs/operators";
 import { AuthService } from "../../auth.service";
 
-const ROUTE_DEFAULT = "";
+const ROUTE_DEFAULT = "/";
 
 @Component({
     templateUrl: "./authentication-confirmation.view.html",

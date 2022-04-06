@@ -4,10 +4,7 @@ import { AuthenticationConfirmationView } from "./view/authentication-confirmati
 import { UnauthenticatedView } from "./view/unauthenticated/unauthenticated.view";
 
 const routes: Routes = [
-    {
-        path: "view/authentication-confirmation",
-        component: AuthenticationConfirmationView
-    },
+    { path: "view/authentication-confirmation", component: AuthenticationConfirmationView },
     { path: "view/unauthenticated", component: UnauthenticatedView }
 ];
 

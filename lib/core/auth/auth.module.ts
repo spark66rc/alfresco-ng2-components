@@ -1,4 +1,4 @@
-import { ModuleWithProviders, NgModule } from "@angular/core";
+import { APP_INITIALIZER, ModuleWithProviders, NgModule } from "@angular/core";
 import { MatButtonModule } from "@angular/material/button";
 import { MatIconModule } from "@angular/material/icon";
 import { OAuthModule } from "angular-oauth2-oidc";
@@ -7,6 +7,8 @@ import { AuthService } from "./auth.service";
 import { RedirectAuthService } from "./redirect-auth.service";
 import { AuthenticationConfirmationView } from "./view/authentication-confirmation/authentication-confirmation.view";
 import { UnauthenticatedView } from "./view/unauthenticated/unauthenticated.view";
+
+export const loginFactory = (service: RedirectAuthService) => () => service.login("/");
 
 @NgModule({
     declarations: [AuthenticationConfirmationView, UnauthenticatedView],
@@ -25,6 +27,12 @@ import { UnauthenticatedView } from "./view/unauthenticated/unauthenticated.view
         {
             provide: AuthService,
             useExisting: RedirectAuthService
+        },
+        {
+            provide: APP_INITIALIZER,
+            useFactory: loginFactory,
+            deps: [RedirectAuthService],
+            multi: true
         }
     ]
 })

@@ -15,106 +15,108 @@
  * limitations under the License.
  */
 
-import { BrowserModule } from '@angular/platform-browser';
-import { APP_INITIALIZER, NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { FlexLayoutModule } from '@angular/flex-layout';
-import { ChartsModule } from 'ng2-charts';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { TranslateModule } from '@ngx-translate/core';
+import { ContentModule } from "@alfresco/adf-content-services";
 import {
     AppConfigService,
-    TRANSLATION_PROVIDER,
-    DebugAppConfigService,
-    CoreModule,
+    AuthBearerInterceptor,
+    AuthModule,
     CoreAutomationService,
-    AuthBearerInterceptor
-} from '@alfresco/adf-core';
-import { ExtensionsModule } from '@alfresco/adf-extensions';
-import { AppComponent } from './app.component';
-import { MaterialModule } from './material.module';
-import { LogoutComponent } from './components/logout/logout.component';
-import { AppLayoutComponent } from './components/app-layout/app-layout.component';
-import { HomeComponent } from './components/home/home.component';
-import { SearchBarComponent } from './components/search/search-bar.component';
-import { SearchResultComponent } from './components/search/search-result.component';
-import { SearchExtendedComponent } from './components/search/search-extended.component';
-import { LogComponent } from './components/log/log.component';
-import { FormComponent } from './components/form/form.component';
-import { FormListComponent } from './components/form/form-list.component';
-import { FormLoadingComponent } from './components/form/form-loading.component';
-import { OverlayViewerComponent } from './components/overlay-viewer/overlay-viewer.component';
-
-import { ProcessServiceComponent } from './components/process-service/process-service.component';
-import { ShowDiagramComponent } from './components/process-service/show-diagram.component';
-import { FormViewerComponent } from './components/process-service/form-viewer.component';
-import { FormNodeViewerComponent } from './components/process-service/form-node-viewer.component';
-import { AppsViewComponent } from './components/process-service/apps-view.component';
-import { FilesComponent } from './components/files/files.component';
-import { VersionManagerDialogAdapterComponent } from './components/files/version-manager-dialog-adapter.component';
-import { MetadataDialogAdapterComponent } from './components/files/metadata-dialog-adapter.component';
-import { ThemePickerModule } from './components/theme-picker/theme-picker';
-import { appRoutes } from './app.routes';
-import { TaskAttachmentsComponent } from './components/process-service/task-attachments.component';
-import { ProcessAttachmentsComponent } from './components/process-service/process-attachments.component';
-import { SharedLinkViewComponent } from './components/shared-link-view/shared-link-view.component';
-import { DemoPermissionComponent } from './components/permissions/demo-permissions.component';
-import { MonacoEditorModule } from 'ngx-monaco-editor';
-import { ContentModule } from '@alfresco/adf-content-services';
-import { InsightsModule } from '@alfresco/adf-insights';
-import { ProcessModule } from '@alfresco/adf-process-services';
-import { TreeViewSampleComponent } from './components/tree-view/tree-view-sample.component';
-import { CloudLayoutComponent } from './components/cloud/cloud-layout.component';
-import { AppsCloudDemoComponent } from './components/cloud/apps-cloud-demo.component';
-import { TasksCloudDemoComponent } from './components/cloud/tasks-cloud-demo.component';
-import { ProcessesCloudDemoComponent } from './components/cloud/processes-cloud-demo.component';
-import { TaskDetailsCloudDemoComponent } from './components/cloud/task-details-cloud-demo.component';
-import { TaskHeaderCloudDemoComponent } from './components/cloud/task-header-cloud-demo.component';
-import { ServiceTaskListCloudDemoComponent } from './components/cloud/service-task-list-cloud-demo.component';
-import { CloudViewerComponent } from './components/cloud/cloud-viewer.component';
-import { ProcessDetailsCloudDemoComponent } from './components/cloud/process-details-cloud-demo.component';
-import { StartTaskCloudDemoComponent } from './components/cloud/start-task-cloud-demo.component';
-import { StartProcessCloudDemoComponent } from './components/cloud/start-process-cloud-demo.component';
-import { CloudBreadcrumbsComponent } from './components/cloud/cloud-breadcrumb-component';
-import { CloudFiltersDemoComponent } from './components/cloud/cloud-filters-demo.component';
-import { TemplateDemoComponent } from './components/template-list/template-demo.component';
-import { PeopleGroupCloudDemoComponent } from './components/cloud/people-groups-cloud-demo.component';
-import { ConfirmDialogExampleComponent } from './components/confirm-dialog/confirm-dialog-example.component';
-import { FormCloudDemoComponent } from './components/app-layout/cloud/form-demo/cloud-form-demo.component';
-import { environment } from '../environments/environment';
-import { AppCloudSharedModule } from './components/cloud/shared/cloud.shared.module';
-import { DemoErrorComponent } from './components/error/demo-error.component';
-import { ProcessServicesCloudModule } from '@alfresco/adf-process-services-cloud';
-import { FilteredSearchComponent } from './components/files/filtered-search.component';
-import { RouterModule } from '@angular/router';
-import { ProcessCloudLayoutComponent } from './components/cloud/process-cloud-layout.component';
+    CoreModule,
+    DebugAppConfigService,
+    TRANSLATION_PROVIDER
+} from "@alfresco/adf-core";
+import { ExtensionsModule } from "@alfresco/adf-extensions";
+import { InsightsModule } from "@alfresco/adf-insights";
+import { ProcessModule } from "@alfresco/adf-process-services";
+import { ProcessServicesCloudModule } from "@alfresco/adf-process-services-cloud";
+import { registerLocaleData } from "@angular/common";
+import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
+import localeAr from "@angular/common/locales/ar";
+import localeCs from "@angular/common/locales/cs";
+import localeDa from "@angular/common/locales/da";
+import localeDe from "@angular/common/locales/de";
+import localeEs from "@angular/common/locales/es";
+import localeFi from "@angular/common/locales/fi";
+import localeFr from "@angular/common/locales/fr";
+import localeIt from "@angular/common/locales/it";
+import localeJa from "@angular/common/locales/ja";
+import localeNb from "@angular/common/locales/nb";
+import localeNl from "@angular/common/locales/nl";
+import localePl from "@angular/common/locales/pl";
+import localePt from "@angular/common/locales/pt";
+import localeRu from "@angular/common/locales/ru";
+import localeSv from "@angular/common/locales/sv";
+import localeCh from "@angular/common/locales/zh";
+import { APP_INITIALIZER, NgModule } from "@angular/core";
+import { FlexLayoutModule } from "@angular/flex-layout";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { BrowserModule } from "@angular/platform-browser";
+import {
+    BrowserAnimationsModule,
+    NoopAnimationsModule
+} from "@angular/platform-browser/animations";
+import { RouterModule } from "@angular/router";
+import { TranslateModule } from "@ngx-translate/core";
+import { ChartsModule } from "ng2-charts";
+import { MonacoEditorModule } from "ngx-monaco-editor";
+import { environment } from "../environments/environment";
+import { AppComponent } from "./app.component";
+import { appRoutes } from "./app.routes";
+import { AppLayoutComponent } from "./components/app-layout/app-layout.component";
+import { FormCloudDemoComponent } from "./components/app-layout/cloud/form-demo/cloud-form-demo.component";
+import { AspectListSampleComponent } from "./components/aspect-list-sample/aspect-list-sample.component";
+import { AppsCloudDemoComponent } from "./components/cloud/apps-cloud-demo.component";
+import { CloudBreadcrumbsComponent } from "./components/cloud/cloud-breadcrumb-component";
+import { CloudFiltersDemoComponent } from "./components/cloud/cloud-filters-demo.component";
+import { CloudLayoutComponent } from "./components/cloud/cloud-layout.component";
+import { CloudViewerComponent } from "./components/cloud/cloud-viewer.component";
 import {
     CustomEditorComponent,
     CustomWidgetComponent
-} from './components/cloud/custom-form-components/custom-editor.component';
-import { AspectListSampleComponent } from './components/aspect-list-sample/aspect-list-sample.component';
-
-import { registerLocaleData } from '@angular/common';
-import localeFr from '@angular/common/locales/fr';
-import localeDe from '@angular/common/locales/de';
-import localeIt from '@angular/common/locales/it';
-import localeEs from '@angular/common/locales/es';
-import localeJa from '@angular/common/locales/ja';
-import localeNl from '@angular/common/locales/nl';
-import localePt from '@angular/common/locales/pt';
-import localeNb from '@angular/common/locales/nb';
-import localeRu from '@angular/common/locales/ru';
-import localeCh from '@angular/common/locales/zh';
-import localeAr from '@angular/common/locales/ar';
-import localeCs from '@angular/common/locales/cs';
-import localePl from '@angular/common/locales/pl';
-import localeFi from '@angular/common/locales/fi';
-import localeDa from '@angular/common/locales/da';
-import localeSv from '@angular/common/locales/sv';
-import { setupAppNotifications } from './services/app-notifications-factory';
-import { AppNotificationsService } from './services/app-notifications.service';
-import { SearchFilterChipsComponent } from './components/search/search-filter-chips.component';
+} from "./components/cloud/custom-form-components/custom-editor.component";
+import { PeopleGroupCloudDemoComponent } from "./components/cloud/people-groups-cloud-demo.component";
+import { ProcessCloudLayoutComponent } from "./components/cloud/process-cloud-layout.component";
+import { ProcessDetailsCloudDemoComponent } from "./components/cloud/process-details-cloud-demo.component";
+import { ProcessesCloudDemoComponent } from "./components/cloud/processes-cloud-demo.component";
+import { ServiceTaskListCloudDemoComponent } from "./components/cloud/service-task-list-cloud-demo.component";
+import { AppCloudSharedModule } from "./components/cloud/shared/cloud.shared.module";
+import { StartProcessCloudDemoComponent } from "./components/cloud/start-process-cloud-demo.component";
+import { StartTaskCloudDemoComponent } from "./components/cloud/start-task-cloud-demo.component";
+import { TaskDetailsCloudDemoComponent } from "./components/cloud/task-details-cloud-demo.component";
+import { TaskHeaderCloudDemoComponent } from "./components/cloud/task-header-cloud-demo.component";
+import { TasksCloudDemoComponent } from "./components/cloud/tasks-cloud-demo.component";
+import { ConfirmDialogExampleComponent } from "./components/confirm-dialog/confirm-dialog-example.component";
+import { DemoErrorComponent } from "./components/error/demo-error.component";
+import { FilesComponent } from "./components/files/files.component";
+import { FilteredSearchComponent } from "./components/files/filtered-search.component";
+import { MetadataDialogAdapterComponent } from "./components/files/metadata-dialog-adapter.component";
+import { VersionManagerDialogAdapterComponent } from "./components/files/version-manager-dialog-adapter.component";
+import { FormListComponent } from "./components/form/form-list.component";
+import { FormLoadingComponent } from "./components/form/form-loading.component";
+import { FormComponent } from "./components/form/form.component";
+import { HomeComponent } from "./components/home/home.component";
+import { LogComponent } from "./components/log/log.component";
+import { LogoutComponent } from "./components/logout/logout.component";
+import { OverlayViewerComponent } from "./components/overlay-viewer/overlay-viewer.component";
+import { DemoPermissionComponent } from "./components/permissions/demo-permissions.component";
+import { AppsViewComponent } from "./components/process-service/apps-view.component";
+import { FormNodeViewerComponent } from "./components/process-service/form-node-viewer.component";
+import { FormViewerComponent } from "./components/process-service/form-viewer.component";
+import { ProcessAttachmentsComponent } from "./components/process-service/process-attachments.component";
+import { ProcessServiceComponent } from "./components/process-service/process-service.component";
+import { ShowDiagramComponent } from "./components/process-service/show-diagram.component";
+import { TaskAttachmentsComponent } from "./components/process-service/task-attachments.component";
+import { SearchBarComponent } from "./components/search/search-bar.component";
+import { SearchExtendedComponent } from "./components/search/search-extended.component";
+import { SearchFilterChipsComponent } from "./components/search/search-filter-chips.component";
+import { SearchResultComponent } from "./components/search/search-result.component";
+import { SharedLinkViewComponent } from "./components/shared-link-view/shared-link-view.component";
+import { TemplateDemoComponent } from "./components/template-list/template-demo.component";
+import { ThemePickerModule } from "./components/theme-picker/theme-picker";
+import { TreeViewSampleComponent } from "./components/tree-view/tree-view-sample.component";
+import { MaterialModule } from "./material.module";
+import { setupAppNotifications } from "./services/app-notifications-factory";
+import { AppNotificationsService } from "./services/app-notifications.service";
 
 registerLocaleData(localeFr);
 registerLocaleData(localeDe);
@@ -138,7 +140,10 @@ registerLocaleData(localeSv);
         BrowserModule,
         environment.e2e ? NoopAnimationsModule : BrowserAnimationsModule,
         ReactiveFormsModule,
-        RouterModule.forRoot(appRoutes, { useHash: true, relativeLinkResolution: 'legacy' }),
+        RouterModule.forRoot(appRoutes, {
+            useHash: true,
+            relativeLinkResolution: "legacy"
+        }),
         FormsModule,
         HttpClientModule,
         MaterialModule,
@@ -153,7 +158,8 @@ registerLocaleData(localeSv);
         ThemePickerModule,
         ChartsModule,
         AppCloudSharedModule,
-        MonacoEditorModule.forRoot()
+        MonacoEditorModule.forRoot(),
+        AuthModule.forRoot()
     ],
     declarations: [
         AppComponent,
@@ -210,24 +216,25 @@ registerLocaleData(localeSv);
     ],
     providers: [
         {
-            provide: HTTP_INTERCEPTORS, useClass:
-            AuthBearerInterceptor, multi: true
+            provide: HTTP_INTERCEPTORS,
+            useClass: AuthBearerInterceptor,
+            multi: true
         },
         { provide: AppConfigService, useClass: DebugAppConfigService }, // not use this service in production
         {
             provide: TRANSLATION_PROVIDER,
             multi: true,
             useValue: {
-                name: 'app',
-                source: 'resources'
+                name: "app",
+                source: "resources"
             }
         },
         {
             provide: TRANSLATION_PROVIDER,
             multi: true,
             useValue: {
-                name: 'lazy-loading',
-                source: 'resources/lazy-loading'
+                name: "lazy-loading",
+                source: "resources/lazy-loading"
             }
         },
         AppNotificationsService,
