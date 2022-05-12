@@ -16,9 +16,9 @@
  */
 
 import { Injectable } from '@angular/core';
+import { Constructor } from '../interface';
 import { AlfrescoApiService } from '../services/alfresco-api.service';
 import { ApiClientFactory } from './api-client.factory';
-import { Constructor } from './types';
 
 @Injectable()
 export class LegacyClientFactory implements ApiClientFactory {
