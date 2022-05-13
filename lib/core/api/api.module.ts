@@ -22,6 +22,7 @@ import { LegacyClientFactory } from './legacy-api-client.factory';
 
 @NgModule({
     providers: [
+        ApiClientsService,
         { provide: API_CLIENT_FACTORY_TOKEN, useClass: LegacyClientFactory }
     ]
 })

@@ -19,9 +19,7 @@ import { Inject, Injectable } from '@angular/core';
 import { ApiClientFactory, API_CLIENT_FACTORY_TOKEN } from './api-client.factory';
 import { Constructor, Dictionary } from './types';
 
-@Injectable({
-    providedIn: 'root'
-})
+@Injectable()
 export class ApiClientsService {
 
     constructor(@Inject(API_CLIENT_FACTORY_TOKEN) private apiCreateFactory: ApiClientFactory) { }
