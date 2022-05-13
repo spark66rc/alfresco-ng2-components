@@ -15,14 +15,15 @@
  * limitations under the License.
  */
 
-import { RepositoryInfo, SystemPropertiesRepresentation } from '@alfresco/js-api';
 import { Injectable } from '@angular/core';
-import { from, Observable, Subject, throwError } from 'rxjs';
-import { catchError, filter, map, switchMap, take } from 'rxjs/operators';
-import { ApiClientsService } from '../api';
+import { from, Observable, throwError, Subject } from 'rxjs';
+import { catchError, map, switchMap, filter, take } from 'rxjs/operators';
+import { RepositoryInfo, SystemPropertiesRepresentation } from '@alfresco/js-api';
+
 import { BpmProductVersionModel } from '../models/product-version.model';
 import { AlfrescoApiService } from './alfresco-api.service';
 import { AuthenticationService } from './authentication.service';
+import { ApiClientsService } from '../api';
 
 
 @Injectable({

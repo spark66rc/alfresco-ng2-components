@@ -21,5 +21,3 @@ import { AlfrescoApiService } from './alfresco-api.service';
 export function startupServiceFactory(alfrescoApiService: AlfrescoApiService) {
     return () => alfrescoApiService.load();
 }
-
-
