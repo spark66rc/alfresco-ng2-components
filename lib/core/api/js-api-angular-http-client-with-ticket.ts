@@ -15,15 +15,20 @@
  * limitations under the License.
  */
 
-import { NgModule } from '@angular/core';
-import { API_CLIENT_FACTORY_TOKEN } from './api-client.factory';
-import { ApiClientsService } from './api-clients.service';
-import { LegacyClientFactory } from './legacy-api-client.factory';
+import {
+    HttpClientConfig, LegacyTicketApi
+} from '@alfresco/js-api';
+import { HttpClient } from '@angular/common/http';
+import { BaseJsApiAngularHttpClient } from './js-api-angular-http-client';
 
-@NgModule({
-    providers: [
-        ApiClientsService,
-        { provide: API_CLIENT_FACTORY_TOKEN, useClass: LegacyClientFactory }
-    ]
-})
-export class ApiModule { }
+export class JsApiAngularHttpClientLegacyTicketApi extends BaseJsApiAngularHttpClient implements LegacyTicketApi {
+
+    constructor(config: HttpClientConfig, httpClient: HttpClient) {
+        super(config, httpClient);
+    }
+
+    getAlfTicket(_ticket: string): string {
+        return '';
+    }
+}
+

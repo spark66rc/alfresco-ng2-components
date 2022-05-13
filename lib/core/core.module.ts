@@ -17,11 +17,17 @@
 
 import { ExtensionsModule } from '@alfresco/adf-extensions';
 import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
 import { APP_INITIALIZER, ModuleWithProviders, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TranslateLoader, TranslateModule, TranslateService, TranslateStore } from '@ngx-translate/core';
 import { AboutModule } from './about/about.module';
-import { AlfrescoJsClientsModule, ApiModule } from './api';
+import { AlfrescoJsClientsModule, ApiClientsService, API_CLIENT_FACTORY_TOKEN } from './api';
+import { AlfrescoApiV2 } from './api/alfresco-api-v2';
+import { AlfrescoApiV2LoaderService, createAlfrescoApiV2Service } from './api/alfresco-api-v2-loader.service';
+import { AngularClientFactory } from './api/angular-api-client.factory';
+import { LegacyAlfrescoApiServiceFacade } from './api/legacy-alfresco-api-service.facade';
+import { LegacyClientFactory } from './api/legacy-api-client.factory';
 import { AppConfigModule } from './app-config/app-config.module';
 import { BlankPageModule } from './blank-page/blank-page.module';
 import { ButtonsMenuModule } from './buttons-menu/buttons-menu.module';
@@ -60,6 +66,10 @@ import { UserInfoModule } from './userinfo/userinfo.module';
 import { ViewerModule } from './viewer/viewer.module';
 
 
+interface Config {
+    useLegacy: boolean;
+};
+
 @NgModule({
     imports: [
         TranslateModule,
@@ -95,7 +105,7 @@ import { ViewerModule } from './viewer/viewer.module';
         NotificationHistoryModule,
         SearchTextModule,
         BlankPageModule,
-        ApiModule,
+        HttpClientModule,
         AlfrescoJsClientsModule
     ],
     exports: [
@@ -135,7 +145,7 @@ import { ViewerModule } from './viewer/viewer.module';
     ]
 })
 export class CoreModule {
-    static forRoot(): ModuleWithProviders<CoreModule> {
+    static forRoot(config: Config = { useLegacy: true }): ModuleWithProviders<CoreModule> {
         return {
             ngModule: CoreModule,
             providers: [
@@ -153,14 +163,33 @@ export class CoreModule {
                 {
                     provide: APP_INITIALIZER,
                     useFactory: directionalityConfigFactory,
-                    deps: [ DirectionalityConfigService ],
+                    deps: [DirectionalityConfigService],
                     multi: true
                 },
                 {
                     provide: APP_INITIALIZER,
                     useFactory: versionCompatibilityFactory,
-                    deps: [ VersionCompatibilityService ],
+                    deps: [VersionCompatibilityService],
                     multi: true
+                },
+                ApiClientsService,
+                ...(config.useLegacy ?
+                    [] : [
+                        AlfrescoApiV2,
+                        LegacyAlfrescoApiServiceFacade,
+                        {
+                            provide: APP_INITIALIZER,
+                            useFactory: createAlfrescoApiV2Service,
+                            deps: [
+                                AlfrescoApiV2LoaderService
+                            ],
+                            multi: true
+                        }
+                    ]
+                ),
+                {
+                    provide: API_CLIENT_FACTORY_TOKEN,
+                    useClass: config.useLegacy ? LegacyClientFactory : AngularClientFactory
                 }
             ]
         };
