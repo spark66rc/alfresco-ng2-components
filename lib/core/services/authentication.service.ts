@@ -15,17 +15,18 @@
  * limitations under the License.
  */
 
+import { PeopleApi, UserRepresentation } from '@alfresco/js-api';
+import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, from, throwError, Observer, ReplaySubject, forkJoin } from 'rxjs';
+import { forkJoin, from, Observable, Observer, ReplaySubject, throwError } from 'rxjs';
+import { catchError, map, tap } from 'rxjs/operators';
+import { ApiClientsService } from '../api/api-clients.service';
+import { AppConfigService, AppConfigValues } from '../app-config/app-config.service';
+import { RedirectionModel } from '../models/redirection.model';
 import { AlfrescoApiService } from './alfresco-api.service';
 import { CookieService } from './cookie.service';
-import { LogService } from './log.service';
-import { RedirectionModel } from '../models/redirection.model';
-import { AppConfigService, AppConfigValues } from '../app-config/app-config.service';
-import { PeopleApi, UserProfileApi, UserRepresentation } from '@alfresco/js-api';
-import { map, catchError, tap } from 'rxjs/operators';
-import { HttpHeaders } from '@angular/common/http';
 import { JwtHelperService } from './jwt-helper.service';
+import { LogService } from './log.service';
 import { StorageService } from './storage.service';
 
 const REMEMBER_ME_COOKIE_KEY = 'ALFRESCO_REMEMBER_ME';
@@ -54,18 +55,16 @@ export class AuthenticationService {
         return this._peopleApi;
     }
 
-    _profileApi: UserProfileApi;
-    get profileApi(): UserProfileApi {
-        this._profileApi = this._profileApi ?? new UserProfileApi(this.alfrescoApi.getInstance());
-        return this._profileApi;
-    }
+    profileApi = this.apiClients.get('ActivitiClient.user-profile');
 
     constructor(
         private appConfig: AppConfigService,
         private storageService: StorageService,
         private alfrescoApi: AlfrescoApiService,
         private cookie: CookieService,
-        private logService: LogService) {
+        private logService: LogService,
+        private apiClients: ApiClientsService
+    ) {
         this.alfrescoApi.alfrescoApiInitialized.subscribe(() => {
             this.alfrescoApi.getInstance().reply('logged-in', () => {
                 this.onLogin.next();

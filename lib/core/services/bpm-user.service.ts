@@ -16,12 +16,11 @@
  */
 
 import { Injectable } from '@angular/core';
-import { Observable, from, throwError } from 'rxjs';
-import { AlfrescoApiService } from './alfresco-api.service';
-import { LogService } from './log.service';
+import { from, Observable, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
+import { ApiClientsService } from '../api/api-clients.service';
 import { BpmUserModel } from '../models/bpm-user.model';
-import { map, catchError } from 'rxjs/operators';
-import { UserProfileApi } from '@alfresco/js-api';
+import { LogService } from './log.service';
 
 /**
  *
@@ -33,15 +32,12 @@ import { UserProfileApi } from '@alfresco/js-api';
 })
 export class BpmUserService {
 
-    private _profileApi: UserProfileApi;
-    get profileApi(): UserProfileApi {
-        this._profileApi = this._profileApi ?? new UserProfileApi(this.apiService.getInstance());
-        return this._profileApi;
-    }
+    profileApi = this.apiClients.get('ActivitiClient.user-profile');
 
-    constructor(private apiService: AlfrescoApiService,
-                private logService: LogService) {
-    }
+    constructor(
+        private apiClients: ApiClientsService,
+        private logService: LogService
+    ) {}
 
     /**
      * Gets information about the current user.
