@@ -22,7 +22,8 @@ import {
     EcmModelService,
     LogService,
     FormService,
-    FormOutcomeEvent
+    FormOutcomeEvent,
+    ApiClientsService
 } from '@alfresco/adf-core';
 
 @Injectable()
@@ -32,9 +33,10 @@ export class FakeFormService extends FormService {
     constructor(
         ecmModelService: EcmModelService,
         apiService: AlfrescoApiService,
-        protected logService: LogService
+        protected logService: LogService,
+        apiClients: ApiClientsService
     ) {
-        super(ecmModelService, apiService, logService);
+        super(ecmModelService, apiService, logService, apiClients);
     }
 
     public getRestFieldValues(

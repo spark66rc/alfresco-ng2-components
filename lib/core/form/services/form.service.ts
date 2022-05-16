@@ -34,7 +34,6 @@ import {
     TaskFormsApi,
     ProcessInstancesApi,
     FormModelsApi,
-    ProcessDefinitionsApi,
     UsersApi,
     ActivitiGroupsApi
 } from '@alfresco/js-api';

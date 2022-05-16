@@ -25,11 +25,13 @@ import { AlfrescoApiService } from '../../../../../services';
 import { TestBed } from '@angular/core/testing';
 import { CoreTestingModule, setupTestBed } from '../../../../../testing';
 import { TranslateModule } from '@ngx-translate/core';
+import { ApiClientsService } from '../../../../../api';
 
 describe('RowEditorComponent', () => {
 
     let component: RowEditorComponent;
     let alfrescoApiService: AlfrescoApiService;
+    let apiClientsService: ApiClientsService;
 
     setupTestBed({
         imports: [
@@ -40,10 +42,11 @@ describe('RowEditorComponent', () => {
 
     beforeEach(() => {
         alfrescoApiService = TestBed.inject(AlfrescoApiService);
+        apiClientsService = TestBed.inject(ApiClientsService);
 
         component = new RowEditorComponent();
         const field = new FormFieldModel(new FormModel());
-        component.table = new DynamicTableModel(field, new FormService(null, alfrescoApiService, null));
+        component.table = new DynamicTableModel(field, new FormService(null, alfrescoApiService, null, apiClientsService));
         component.row = {} as DynamicTableRow;
         component.column = {} as DynamicTableColumn;
     });
