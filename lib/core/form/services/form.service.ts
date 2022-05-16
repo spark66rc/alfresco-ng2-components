@@ -50,6 +50,7 @@ import { ValidateFormFieldEvent } from '../events/validate-form-field.event';
 import { ValidateDynamicTableRowEvent } from '../events/validate-dynamic-table-row.event';
 import { FormValidationService } from './form-validation-service.interface';
 import { FormRulesEvent } from '../events/form-rules.event';
+import { ApiClientsService } from '../../api';
 
 @Injectable({
     providedIn: 'root'
@@ -83,11 +84,7 @@ export class FormService implements FormValidationService {
         return this._editorApi;
     }
 
-    _processDefinitionsApi: ProcessDefinitionsApi;
-    get processDefinitionsApi(): ProcessDefinitionsApi {
-        this._processDefinitionsApi = this._processDefinitionsApi ?? new ProcessDefinitionsApi(this.apiService.getInstance());
-        return this._processDefinitionsApi;
-    }
+    processDefinitionsApi = this.apiClients.get('ActivitiClient.process-definitions');
 
     _processInstanceVariablesApi: ProcessInstanceVariablesApi;
     get processInstanceVariablesApi(): ProcessInstanceVariablesApi {
@@ -133,10 +130,12 @@ export class FormService implements FormValidationService {
 
     formRulesEvent = new Subject<FormRulesEvent>();
 
-    constructor(private ecmModelService: EcmModelService,
-                private apiService: AlfrescoApiService,
-                protected logService: LogService) {
-    }
+    constructor(
+        private ecmModelService: EcmModelService,
+        private apiService: AlfrescoApiService,
+        protected logService: LogService,
+        private apiClients: ApiClientsService
+    ) {}
 
     /**
      * Parses JSON data to create a corresponding Form model.

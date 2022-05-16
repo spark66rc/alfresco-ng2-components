@@ -15,11 +15,10 @@
  * limitations under the License.
  */
 
-import { AlfrescoApiService, FormValues } from '@alfresco/adf-core';
+import { AlfrescoApiService, ApiClientsService, FormValues } from '@alfresco/adf-core';
 import { Injectable } from '@angular/core';
 import {
     TasksApi,
-    ProcessDefinitionsApi,
     ProcessInstancesApi,
     RestVariable,
     ProcessInstanceRepresentation,
@@ -48,11 +47,8 @@ export class ProcessService {
         return this._tasksApi;
     }
 
-    private _processDefinitionsApi: ProcessDefinitionsApi;
-    get processDefinitionsApi(): ProcessDefinitionsApi {
-        this._processDefinitionsApi = this._processDefinitionsApi ?? new ProcessDefinitionsApi(this.alfrescoApiService.getInstance());
-        return this._processDefinitionsApi;
-    }
+    processDefinitionsApi = this.apiClients.get('ActivitiClient.process-definitions');
+
 
     private _processInstancesApi: ProcessInstancesApi;
     get processInstancesApi(): ProcessInstancesApi {
@@ -66,8 +62,10 @@ export class ProcessService {
         return this._processInstanceVariablesApi;
     }
 
-    constructor(private alfrescoApiService: AlfrescoApiService) {
-    }
+    constructor(
+        private alfrescoApiService: AlfrescoApiService,
+        private apiClients: ApiClientsService
+    ) {}
 
     /**
      * Gets process instances for a filter and optionally a process definition.
