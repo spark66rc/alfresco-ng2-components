@@ -22,7 +22,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TranslateLoader, TranslateModule, TranslateService, TranslateStore } from '@ngx-translate/core';
 import { AboutModule } from './about/about.module';
 import { ApiModule } from './api/api.module';
-import { ActivitiClientRegistryService, startupActivitiClientRegistryService } from './api/clients/activiti/activiti-client.registry.service';
 import { AlfrescoJsClientsModule } from './api/clients/alfresco-js-clients.module';
 import { AppConfigModule } from './app-config/app-config.module';
 import { BlankPageModule } from './blank-page/blank-page.module';
@@ -144,12 +143,6 @@ export class CoreModule {
                 TranslateStore,
                 TranslateService,
                 { provide: TranslateLoader, useClass: TranslateLoaderService },
-                {
-                  provide: APP_INITIALIZER,
-                  useFactory: startupActivitiClientRegistryService,
-                  deps: [ ActivitiClientRegistryService ],
-                  multi: true
-                },
                 {
                     provide: APP_INITIALIZER,
                     useFactory: startupServiceFactory,
