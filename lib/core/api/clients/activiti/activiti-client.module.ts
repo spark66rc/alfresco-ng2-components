@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-import { AboutApi, ProcessDefinitionsApi, ProcessInstancesApi, ProcessInstanceVariablesApi, ScriptFilesApi, SystemPropertiesApi } from '@alfresco/js-api';
+import { AboutApi, ProcessDefinitionsApi, ProcessInstancesApi, ProcessInstanceVariablesApi, ScriptFilesApi, SystemPropertiesApi, UsersApi } from '@alfresco/js-api';
 import { NgModule } from '@angular/core';
 import { ApiClientsService } from '../../api-clients.service';
 
@@ -29,6 +29,8 @@ declare global {
             ['ActivitiClient.process-definitions']: ProcessDefinitionsApi;
             ['ActivitiClient.process-instance-variables']: ProcessInstanceVariablesApi;
             ['ActivitiClient.process-instances']: ProcessInstancesApi;
+            ['ActivitiClient.users']: UsersApi;
+
         }
     }
 }
@@ -42,5 +44,6 @@ export class ActivitiClientModule {
         this.apiClientsService.register('ActivitiClient.process-definitions', ProcessDefinitionsApi)
         this.apiClientsService.register('ActivitiClient.process-instance-variables', ProcessInstanceVariablesApi);
         this.apiClientsService.register('ActivitiClient.process-instances', ProcessInstancesApi);
+        this.apiClientsService.register('ActivitiClient.users', UsersApi);
     }
 }

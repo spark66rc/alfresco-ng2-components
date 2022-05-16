@@ -23,9 +23,9 @@ import { LogService } from './log.service';
 import { catchError, map } from 'rxjs/operators';
 import {
     TaskActionsApi,
-    UsersApi,
     ResultListDataRepresentationLightUserRepresentation
 } from '@alfresco/js-api';
+import { ApiClientsService } from '../api/api-clients.service';
 
 @Injectable({
     providedIn: 'root'
@@ -38,15 +38,13 @@ export class PeopleProcessService {
         return this._taskActionsApi;
     }
 
-    _userApi: UsersApi;
-    get userApi(): UsersApi {
-        this._userApi = this._userApi ?? new UsersApi(this.apiService.getInstance());
-        return this._userApi;
-    }
+    usersApi = this.apiClients.get('ActivitiClient.users');
 
-    constructor(private apiService: AlfrescoApiService,
-                private logService: LogService) {
-    }
+    constructor(
+        private apiService: AlfrescoApiService,
+        private logService: LogService,
+        private apiClients: ApiClientsService
+    ) {}
 
     /**
      * Gets information about users across all tasks.
@@ -105,7 +103,7 @@ export class PeopleProcessService {
     }
 
     private getWorkflowUserApi(options: any): Promise<ResultListDataRepresentationLightUserRepresentation> {
-        return this.userApi.getUsers(options);
+        return this.usersApi.getUsers(options);
     }
 
     private involveUserToTaskApi(taskId: string, node: any) {
@@ -117,7 +115,7 @@ export class PeopleProcessService {
     }
 
     private getUserProfileImageApi(userId: string): string {
-        return this.userApi.getUserProfilePictureUrl(userId);
+        return this.usersApi.getUserProfilePictureUrl(userId);
     }
 
     private handleError(error: any) {

@@ -32,7 +32,6 @@ import {
     TasksApi,
     TaskFormsApi,
     FormModelsApi,
-    UsersApi,
     ActivitiGroupsApi
 } from '@alfresco/js-api';
 import { FormOutcomeEvent } from '../components/widgets/core/form-outcome-event.model';
@@ -91,11 +90,7 @@ export class FormService implements FormValidationService {
         return this._groupsApi;
     }
 
-    _usersApi: UsersApi;
-    get usersApi(): UsersApi {
-        this._usersApi = this._usersApi ?? new UsersApi(this.apiService.getInstance());
-        return this._usersApi;
-    }
+    usersApi = this.apiClients.get('ActivitiClient.users');
 
     formLoaded = new Subject<FormEvent>();
     formDataRefreshed = new Subject<FormEvent>();
