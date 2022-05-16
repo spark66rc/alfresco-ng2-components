@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-import { DiscoveryApi } from '@alfresco/js-api';
+import { VersionsApi } from '@alfresco/js-api';
 import { NgModule } from '@angular/core';
 import { ApiClientsService } from '../../api-clients.service';
 
@@ -23,14 +23,14 @@ declare global {
     // eslint-disable-next-line @typescript-eslint/no-namespace
     namespace Api {
         interface ApiRegistry {
-            ['DiscoveryClient.discovery']: DiscoveryApi;
+            ['Content.versions']: VersionsApi;
         }
     }
 }
 
 @NgModule()
-export class DiscoveryClientModule {
+export class ContentClientModule {
     constructor(private apiClientsService: ApiClientsService) {
-        this.apiClientsService.register('DiscoveryClient.discovery', DiscoveryApi);
+        this.apiClientsService.register('Content.versions', VersionsApi);
     }
 }

@@ -27,7 +27,7 @@ import {
     RenditionEntry,
     NodeEntry,
     VersionEntry,
-    SharedlinksApi, VersionsApi, NodesApi, ContentApi
+    SharedlinksApi, NodesApi, ContentApi
 } from '@alfresco/js-api';
 import { BaseEvent } from '../../events';
 import { AlfrescoApiService } from '../../services/alfresco-api.service';
@@ -44,6 +44,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ContentService } from '../../services/content.service';
 import { UploadService } from '../../services/upload.service';
 import { FileModel } from '../../models';
+import { ApiClientsService } from '../../api/api-clients.service';
 
 @Component({
     selector: 'adf-viewer',
@@ -285,11 +286,7 @@ export class ViewerComponent implements OnChanges, OnInit, OnDestroy {
         return this._sharedLinksApi;
     }
 
-    _versionsApi: VersionsApi;
-    get versionsApi(): VersionsApi {
-        this._versionsApi = this._versionsApi ?? new VersionsApi(this.apiService.getInstance());
-        return this._versionsApi;
-    }
+    versionsApi = this.apiClients.get('Content.versions');
 
     _nodesApi: NodesApi;
     get nodesApi(): NodesApi {
@@ -303,15 +300,18 @@ export class ViewerComponent implements OnChanges, OnInit, OnDestroy {
         return this._contentApi;
     }
 
-    constructor(private apiService: AlfrescoApiService,
-                private viewUtilService: ViewUtilService,
-                private logService: LogService,
-                private extensionService: AppExtensionService,
-                private contentService: ContentService,
-                private uploadService: UploadService,
-                private el: ElementRef,
-                public dialog: MatDialog,
-                private cdr: ChangeDetectorRef) {
+    constructor(
+        private apiService: AlfrescoApiService,
+        private viewUtilService: ViewUtilService,
+        private logService: LogService,
+        private extensionService: AppExtensionService,
+        private contentService: ContentService,
+        private uploadService: UploadService,
+        private el: ElementRef,
+        public dialog: MatDialog,
+        private cdr: ChangeDetectorRef,
+        private apiClients: ApiClientsService,
+    ) {
         viewUtilService.maxRetries = this.maxRetries;
     }
 

@@ -15,10 +15,10 @@
  * limitations under the License.
  */
 
-import { AlfrescoApiService, AppConfigService, DiscoveryApiService, UploadService } from '@alfresco/adf-core';
+import { AlfrescoApiService, ApiClientsService, AppConfigService, DiscoveryApiService, UploadService } from '@alfresco/adf-core';
+import { ActivitiContentApi } from '@alfresco/js-api';
 import { Injectable } from '@angular/core';
 import { throwError } from 'rxjs';
-import { ActivitiContentApi } from '@alfresco/js-api';
 
 @Injectable({
     providedIn: 'root'
@@ -31,8 +31,8 @@ export class TaskUploadService extends UploadService {
         return this._contentApi;
     }
 
-    constructor(protected apiService: AlfrescoApiService, appConfigService: AppConfigService, discoveryApiService: DiscoveryApiService) {
-        super(apiService, appConfigService, discoveryApiService);
+    constructor(protected apiService: AlfrescoApiService, appConfigService: AppConfigService, discoveryApiService: DiscoveryApiService, apiClients: ApiClientsService) {
+        super(apiService, appConfigService, discoveryApiService, apiClients);
     }
 
     getUploadPromise(file: any): any {

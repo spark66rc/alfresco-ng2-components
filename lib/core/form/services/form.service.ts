@@ -28,11 +28,9 @@ import { map, catchError, switchMap, combineAll, defaultIfEmpty } from 'rxjs/ope
 import {
     CompleteFormRepresentation,
     ModelsApi,
-    ProcessInstanceVariablesApi,
     SaveFormRepresentation,
     TasksApi,
     TaskFormsApi,
-    ProcessInstancesApi,
     FormModelsApi,
     UsersApi,
     ActivitiGroupsApi
@@ -84,18 +82,8 @@ export class FormService implements FormValidationService {
     }
 
     processDefinitionsApi = this.apiClients.get('ActivitiClient.process-definitions');
-
-    _processInstanceVariablesApi: ProcessInstanceVariablesApi;
-    get processInstanceVariablesApi(): ProcessInstanceVariablesApi {
-        this._processInstanceVariablesApi = this._processInstanceVariablesApi ?? new ProcessInstanceVariablesApi(this.apiService.getInstance());
-        return this._processInstanceVariablesApi;
-    }
-
-    _processInstancesApi: ProcessInstancesApi;
-    get processInstancesApi(): ProcessInstancesApi {
-        this._processInstancesApi = this._processInstancesApi ?? new ProcessInstancesApi(this.apiService.getInstance());
-        return this._processInstancesApi;
-    }
+    processInstanceVariablesApi = this.apiClients.get('ActivitiClient.process-instance-variables');
+    processInstancesApi = this.apiClients.get('ActivitiClient.process-instances');
 
     _groupsApi: ActivitiGroupsApi;
     get groupsApi(): ActivitiGroupsApi {

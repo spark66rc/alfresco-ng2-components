@@ -16,23 +16,19 @@
  */
 
 import { AlfrescoApiService, ApiClientsService, FormValues } from '@alfresco/adf-core';
-import { Injectable } from '@angular/core';
 import {
-    TasksApi,
-    ProcessInstancesApi,
-    RestVariable,
-    ProcessInstanceRepresentation,
-    ProcessInstanceVariablesApi
+    ProcessInstanceRepresentation, RestVariable, TasksApi
 } from '@alfresco/js-api';
-import { Observable, from, throwError, of } from 'rxjs';
+import { DatePipe } from '@angular/common';
+import { Injectable } from '@angular/core';
+import { from, Observable, of, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import { TaskDetailsModel } from '../../task-list';
 import { ProcessFilterParamRepresentationModel } from '../models/filter-process.model';
 import { ProcessDefinitionRepresentation } from '../models/process-definition.model';
 import { ProcessInstanceVariable } from '../models/process-instance-variable.model';
 import { ProcessInstance } from '../models/process-instance.model';
 import { ProcessListModel } from '../models/process-list.model';
-import { map, catchError } from 'rxjs/operators';
-import { DatePipe } from '@angular/common';
 
 declare let moment: any;
 
@@ -48,19 +44,8 @@ export class ProcessService {
     }
 
     processDefinitionsApi = this.apiClients.get('ActivitiClient.process-definitions');
-
-
-    private _processInstancesApi: ProcessInstancesApi;
-    get processInstancesApi(): ProcessInstancesApi {
-        this._processInstancesApi = this._processInstancesApi ?? new ProcessInstancesApi(this.alfrescoApiService.getInstance());
-        return this._processInstancesApi;
-    }
-
-    private _processInstanceVariablesApi: ProcessInstanceVariablesApi;
-    get processInstanceVariablesApi(): ProcessInstanceVariablesApi {
-        this._processInstanceVariablesApi = this._processInstanceVariablesApi ?? new ProcessInstanceVariablesApi(this.alfrescoApiService.getInstance());
-        return this._processInstanceVariablesApi;
-    }
+    processInstanceVariablesApi = this.apiClients.get('ActivitiClient.process-instance-variables');
+    processInstancesApi = this.apiClients.get('ActivitiClient.process-instances');
 
     constructor(
         private alfrescoApiService: AlfrescoApiService,

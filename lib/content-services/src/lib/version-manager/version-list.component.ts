@@ -15,9 +15,9 @@
  * limitations under the License.
  */
 
-import { AlfrescoApiService, ContentService } from '@alfresco/adf-core';
-import { Component, Input, OnChanges, ViewEncapsulation, EventEmitter, Output } from '@angular/core';
-import { VersionsApi, Node, VersionEntry, VersionPaging, NodesApi, NodeEntry, ContentApi } from '@alfresco/js-api';
+import { AlfrescoApiService, ApiClientsService, ContentService } from '@alfresco/adf-core';
+import { ContentApi, Node, NodeEntry, NodesApi, VersionEntry, VersionPaging } from '@alfresco/js-api';
+import { Component, EventEmitter, Input, OnChanges, Output, ViewEncapsulation } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../dialogs/confirm.dialog';
 import { ContentVersionService } from './content-version.service';
@@ -37,11 +37,7 @@ export class VersionListComponent implements OnChanges {
         return this._contentApi;
     }
 
-    _versionsApi: VersionsApi;
-    get versionsApi(): VersionsApi {
-        this._versionsApi = this._versionsApi ?? new VersionsApi(this.alfrescoApi.getInstance());
-        return this._versionsApi;
-    }
+    versionsApi = this.apiClients.get('Content.versions');
 
     _nodesApi: NodesApi;
     get nodesApi(): NodesApi {
@@ -84,11 +80,13 @@ export class VersionListComponent implements OnChanges {
     @Output()
     viewVersion = new EventEmitter<string>();
 
-    constructor(private alfrescoApi: AlfrescoApiService,
-                private contentService: ContentService,
-                private contentVersionService: ContentVersionService,
-                private dialog: MatDialog) {
-    }
+    constructor(
+        private alfrescoApi: AlfrescoApiService,
+        private contentService: ContentService,
+        private contentVersionService: ContentVersionService,
+        private dialog: MatDialog,
+        private apiClients: ApiClientsService
+    ) {}
 
     ngOnChanges() {
         this.loadVersionHistory();

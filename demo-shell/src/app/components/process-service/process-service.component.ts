@@ -37,7 +37,7 @@ import {
 import {
     FORM_FIELD_VALIDATORS, FormRenderingService, FormService,
     DynamicTableRow, ValidateDynamicTableRowEvent, AppConfigService, PaginationComponent, UserPreferenceValues,
-    AlfrescoApiService, UserPreferencesService, LogService, DataCellEvent, NotificationService, ApiClientsService
+    UserPreferencesService, LogService, DataCellEvent, NotificationService, ApiClientsService
 } from '@alfresco/adf-core';
 
 import { AnalyticsReportListComponent } from '@alfresco/adf-insights';

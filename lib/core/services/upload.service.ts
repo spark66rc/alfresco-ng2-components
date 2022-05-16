@@ -15,9 +15,12 @@
  * limitations under the License.
  */
 
+import { NodesApi, UploadApi } from '@alfresco/js-api';
 import { EventEmitter, Injectable } from '@angular/core';
 import { Minimatch } from 'minimatch';
 import { Subject } from 'rxjs';
+import { filter } from 'rxjs/operators';
+import { ApiClientsService } from '../api/api-clients.service';
 import { AppConfigService } from '../app-config/app-config.service';
 import {
     FileUploadCompleteEvent,
@@ -28,8 +31,6 @@ import {
 import { FileModel, FileUploadProgress, FileUploadStatus } from '../models/file.model';
 import { AlfrescoApiService } from './alfresco-api.service';
 import { DiscoveryApiService } from './discovery-api.service';
-import { filter } from 'rxjs/operators';
-import { NodesApi, UploadApi, VersionsApi } from '@alfresco/js-api';
 
 const MIN_CANCELLABLE_FILE_SIZE = 1000000;
 const MAX_CANCELLABLE_FILE_PERCENTAGE = 50;
@@ -73,16 +74,14 @@ export class UploadService {
         return this._nodesApi;
     }
 
-    private _versionsApi: VersionsApi;
-    get versionsApi(): VersionsApi {
-        this._versionsApi = this._versionsApi ?? new VersionsApi(this.apiService.getInstance());
-        return this._versionsApi;
-    }
+    versionsApi = this.apiClients.get('Content.versions');
 
     constructor(
         protected apiService: AlfrescoApiService,
         private appConfigService: AppConfigService,
-        private discoveryApiService: DiscoveryApiService) {
+        private discoveryApiService: DiscoveryApiService,
+        private apiClients: ApiClientsService
+    ) {
 
         this.discoveryApiService.ecmProductInfo$.pipe(filter(info => !!info))
             .subscribe(({ status }) => {

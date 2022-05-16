@@ -15,13 +15,14 @@
  * limitations under the License.
  */
 
+import { ContentApi, RenditionEntry, RenditionPaging, RenditionsApi } from '@alfresco/js-api';
 import { Injectable } from '@angular/core';
-import { ContentApi, RenditionEntry, RenditionPaging, RenditionsApi, VersionsApi } from '@alfresco/js-api';
+import { Subject } from 'rxjs';
+import { ApiClientsService } from '../../api/api-clients.service';
 import { AlfrescoApiService } from '../../services/alfresco-api.service';
 import { LogService } from '../../services/log.service';
-import { Subject } from 'rxjs';
-import { Track } from '../models/viewer.model';
 import { TranslationService } from '../../services/translation.service';
+import { Track } from '../models/viewer.model';
 
 @Injectable({
     providedIn: 'root'
@@ -86,16 +87,14 @@ export class ViewUtilService {
         return this._contentApi;
     }
 
-    _versionsApi: VersionsApi;
-    get versionsApi(): VersionsApi {
-        this._versionsApi = this._versionsApi ?? new VersionsApi(this.apiService.getInstance());
-        return this._versionsApi;
-    }
+    versionsApi = this.apiClients.get('Content.versions');
 
-    constructor(private apiService: AlfrescoApiService,
-                private logService: LogService,
-                private translateService: TranslationService) {
-    }
+    constructor(
+        private apiService: AlfrescoApiService,
+        private logService: LogService,
+        private translateService: TranslationService,
+        private apiClients: ApiClientsService
+    ) {}
 
     /**
      * This method takes a url to trigger the print dialog against, and the type of artifact that it
