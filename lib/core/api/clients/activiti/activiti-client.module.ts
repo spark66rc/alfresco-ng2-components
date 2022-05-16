@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-import { AboutApi, ProcessDefinitionsApi, SystemPropertiesApi } from '@alfresco/js-api';
+import { AboutApi, ProcessDefinitionsApi, ScriptFilesApi, SystemPropertiesApi } from '@alfresco/js-api';
 import { NgModule } from '@angular/core';
 import { ApiClientsService } from '../../api-clients.service';
 
@@ -26,6 +26,7 @@ declare global {
             ['ActivitiClient.about']: AboutApi;
             ['ActivitiClient.system-properties']: SystemPropertiesApi;
             ['ActivitiClient.process-definitions']: ProcessDefinitionsApi;
+            ['ActivitiClient.script-files']: ScriptFilesApi;
         }
     }
 }
@@ -36,5 +37,6 @@ export class ActivitiClientModule {
         this.apiClientsService.register('ActivitiClient.about', AboutApi);
         this.apiClientsService.register('ActivitiClient.system-properties', SystemPropertiesApi);
         this.apiClientsService.register('ActivitiClient.process-definitions', ProcessDefinitionsApi)
+        this.apiClientsService.register('ActivitiClient.script-files', ScriptFilesApi);
     }
 }
