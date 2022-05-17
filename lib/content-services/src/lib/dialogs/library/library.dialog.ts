@@ -15,25 +15,19 @@
  * limitations under the License.
  */
 
-import { Observable, Subject } from 'rxjs';
+import { ApiClientsService, SitesService } from '@alfresco/adf-core';
+import { SiteBodyCreate, SiteEntry, SitePaging } from '@alfresco/js-api';
 import {
-    Component,
-    OnInit,
-    Output,
-    EventEmitter,
-    OnDestroy,
-    ViewEncapsulation
+    Component, EventEmitter,
+    OnDestroy, OnInit,
+    Output, ViewEncapsulation
 } from '@angular/core';
 import {
-    FormBuilder,
-    FormGroup,
-    Validators,
-    FormControl,
-    AbstractControl
+    AbstractControl, FormBuilder, FormControl, FormGroup,
+    Validators
 } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
-import { QueriesApi, SiteBodyCreate, SiteEntry, SitePaging } from '@alfresco/js-api';
-import { AlfrescoApiService, SitesService } from '@alfresco/adf-core';
+import { Observable, Subject } from 'rxjs';
 import { debounceTime, finalize, mergeMap, takeUntil } from 'rxjs/operators';
 
 @Component({
@@ -72,17 +66,13 @@ export class LibraryDialogComponent implements OnInit, OnDestroy {
     ];
     disableCreateButton = false;
 
-    _queriesApi: QueriesApi;
-    get queriesApi(): QueriesApi {
-        this._queriesApi = this._queriesApi ?? new QueriesApi(this.alfrescoApiService.getInstance());
-        return this._queriesApi;
-    }
+    queriesApi = this.apiClients.get('Content.queries');
 
     constructor(
-        private alfrescoApiService: AlfrescoApiService,
         private sitesService: SitesService,
         private formBuilder: FormBuilder,
-        private dialog: MatDialogRef<LibraryDialogComponent>
+        private dialog: MatDialogRef<LibraryDialogComponent>,
+        private apiClients: ApiClientsService
     ) {
     }
 

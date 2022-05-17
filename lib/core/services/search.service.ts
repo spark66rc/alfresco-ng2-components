@@ -15,9 +15,10 @@
  * limitations under the License.
  */
 
+import { NodePaging, QueryBody, ResultSetPaging, SearchApi } from '@alfresco/js-api';
 import { Injectable } from '@angular/core';
-import { NodePaging, QueriesApi, QueryBody, ResultSetPaging, SearchApi } from '@alfresco/js-api';
-import { Observable, Subject, from, throwError } from 'rxjs';
+import { from, Observable, Subject, throwError } from 'rxjs';
+import { ApiClientsService } from '../api';
 import { AlfrescoApiService } from './alfresco-api.service';
 import { SearchConfigurationService } from './search-configuration.service';
 
@@ -28,21 +29,19 @@ export class SearchService {
 
     dataLoaded: Subject<ResultSetPaging> = new Subject();
 
-    private _queriesApi: QueriesApi;
-    get queriesApi(): QueriesApi {
-        this._queriesApi = this._queriesApi ?? new QueriesApi(this.apiService.getInstance());
-        return this._queriesApi;
-    }
-
     private _searchApi: SearchApi;
     get searchApi(): SearchApi {
         this._searchApi = this._searchApi ?? new SearchApi(this.apiService.getInstance());
         return this._searchApi;
     }
 
-    constructor(private apiService: AlfrescoApiService,
-                private searchConfigurationService: SearchConfigurationService) {
-    }
+    queriesApi = this.apiClients.get('Content.queries');
+
+    constructor(
+        private apiService: AlfrescoApiService,
+        private searchConfigurationService: SearchConfigurationService,
+        private apiClients: ApiClientsService
+    ) {}
 
     /**
      * Gets a list of nodes that match the given search criteria.
