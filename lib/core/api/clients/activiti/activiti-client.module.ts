@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-import { AboutApi, ProcessDefinitionsApi, ProcessInstancesApi, ProcessInstanceVariablesApi, ScriptFilesApi, SystemPropertiesApi, UserProfileApi, UsersApi } from '@alfresco/js-api';
+import { AboutApi, ProcessDefinitionsApi, ProcessInstancesApi, ProcessInstanceVariablesApi, ScriptFilesApi, SystemPropertiesApi, UserFiltersApi, UserProfileApi, UsersApi } from '@alfresco/js-api';
 import { NgModule } from '@angular/core';
 import { ApiClientsService } from '../../api-clients.service';
 
@@ -31,6 +31,7 @@ declare global {
             ['ActivitiClient.process-instances']: ProcessInstancesApi;
             ['ActivitiClient.users']: UsersApi;
             ['ActivitiClient.user-profile']: UserProfileApi;
+            ['ActivitiClient.user-filters']: UserFiltersApi;
         }
     }
 }
@@ -41,10 +42,11 @@ export class ActivitiClientModule {
         this.apiClientsService.register('ActivitiClient.about', AboutApi);
         this.apiClientsService.register('ActivitiClient.system-properties', SystemPropertiesApi);
         this.apiClientsService.register('ActivitiClient.script-files', ScriptFilesApi);
-        this.apiClientsService.register('ActivitiClient.process-definitions', ProcessDefinitionsApi)
+        this.apiClientsService.register('ActivitiClient.process-definitions', ProcessDefinitionsApi);
         this.apiClientsService.register('ActivitiClient.process-instance-variables', ProcessInstanceVariablesApi);
         this.apiClientsService.register('ActivitiClient.process-instances', ProcessInstancesApi);
         this.apiClientsService.register('ActivitiClient.users', UsersApi);
         this.apiClientsService.register('ActivitiClient.user-profile', UserProfileApi);
+        this.apiClientsService.register('ActivitiClient.user-filters', UserFiltersApi);
     }
 }

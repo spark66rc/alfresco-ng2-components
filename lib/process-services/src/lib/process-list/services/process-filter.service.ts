@@ -15,29 +15,23 @@
  * limitations under the License.
  */
 
-import { AlfrescoApiService } from '@alfresco/adf-core';
-import { Injectable } from '@angular/core';
-import { Observable, from, forkJoin, throwError } from 'rxjs';
-import { FilterProcessRepresentationModel } from '../models/filter-process.model';
-import { map, catchError } from 'rxjs/operators';
+import { ApiClientsService } from '@alfresco/adf-core';
 import {
-    ResultListDataRepresentationUserProcessInstanceFilterRepresentation,
-    UserFiltersApi
+    ResultListDataRepresentationUserProcessInstanceFilterRepresentation
 } from '@alfresco/js-api';
+import { Injectable } from '@angular/core';
+import { forkJoin, from, Observable, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
+import { FilterProcessRepresentationModel } from '../models/filter-process.model';
 
 @Injectable({
     providedIn: 'root'
 })
 export class ProcessFilterService {
 
-    private _userFiltersApi: UserFiltersApi;
-    get userFiltersApi(): UserFiltersApi {
-        this._userFiltersApi = this._userFiltersApi ?? new UserFiltersApi(this.alfrescoApiService.getInstance());
-        return this._userFiltersApi;
-    }
+    userFiltersApi = this.apiClients.get('ActivitiClient.user-filters');
 
-    constructor(private alfrescoApiService: AlfrescoApiService) {
-    }
+    constructor(private apiClients: ApiClientsService) {}
 
     /**
      * Gets all filters defined for a Process App.
