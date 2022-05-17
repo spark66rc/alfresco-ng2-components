@@ -15,10 +15,8 @@
  * limitations under the License.
  */
 
+import { ApiClientsService, AppConfigService, EcmModelService, FormFieldOption, FormModel, FormOutcomeEvent, FormOutcomeModel, FormService, FormValues, LogService } from '@alfresco/adf-core';
 import { Injectable } from '@angular/core';
-import { AppConfigService, AlfrescoApiService, EcmModelService, LogService,
-         FormFieldOption, FormService, FormValues, FormModel,
-         FormOutcomeModel, FormOutcomeEvent, ApiClientsService } from '@alfresco/adf-core';
 import { Observable, Subject } from 'rxjs';
 
 interface ProcessServiceData {
@@ -45,11 +43,10 @@ export class InMemoryFormService extends FormService {
     constructor(
         appConfig: AppConfigService,
         ecmModelService: EcmModelService,
-        apiService: AlfrescoApiService,
         protected logService: LogService,
-        apiClient: ApiClientsService,
+        apiClient: ApiClientsService
     ) {
-        super(ecmModelService, apiService, logService, apiClient);
+        super(ecmModelService, logService, apiClient);
         this.data = appConfig.get<ProcessServiceData>('activiti');
     }
 

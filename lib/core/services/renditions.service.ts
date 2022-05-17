@@ -27,7 +27,7 @@ import { ApiClientsService } from '../api';
 export class RenditionsService {
 
     contentApi = this.apiClientsService.get('ContentCustom.content');
-    renditionsAp = this.apiClientsService.get('Content.renditions');
+    renditionsApi = this.apiClientsService.get('Content.renditions');
 
     constructor(private apiClientsService: ApiClientsService) { }
 
