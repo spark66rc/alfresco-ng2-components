@@ -29,9 +29,9 @@ import { FilterProcessRepresentationModel } from '../models/filter-process.model
 })
 export class ProcessFilterService {
 
-    userFiltersApi = this.apiClients.get('ActivitiClient.user-filters');
+    userFiltersApi = this.apiClientsService.get('ActivitiClient.user-filters');
 
-    constructor(private apiClients: ApiClientsService) {}
+    constructor(private apiClientsService: ApiClientsService) { }
 
     /**
      * Gets all filters defined for a Process App.
@@ -102,10 +102,10 @@ export class ProcessFilterService {
 
         return new Observable((observer) => {
             forkJoin([
-                    runningObservable,
-                    completedObservable,
-                    allObservable
-                ]
+                runningObservable,
+                completedObservable,
+                allObservable
+            ]
             ).subscribe(
                 (res) => {
                     const filters: FilterProcessRepresentationModel[] = [];

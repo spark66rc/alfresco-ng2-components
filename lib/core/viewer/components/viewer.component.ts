@@ -28,7 +28,9 @@ import {
     NodeEntry,
     VersionEntry,
     SharedlinksApi,
-    ContentApi
+    ContentApi,
+    NodesApi,
+    VersionsApi
 } from '@alfresco/js-api';
 import { BaseEvent } from '../../events';
 import { AlfrescoApiService } from '../../services/alfresco-api.service';
@@ -287,11 +289,9 @@ export class ViewerComponent implements OnChanges, OnInit, OnDestroy {
         return this._sharedLinksApi;
     }
 
-    versionsApi = this.apiClients.get('Content.versions');
-
-    nodesApi = this.apiClients.get('Content.nodes');
-
-    contentApi: ContentApi = this.apiClients.get('ContentCustom.content');
+    versionsApi: VersionsApi = this.apiClientsService.get('Content.versions');
+    nodesApi: NodesApi = this.apiClientsService.get('Content.nodes');
+    contentApi: ContentApi = this.apiClientsService.get('ContentCustom.content');
 
     constructor(
         private apiService: AlfrescoApiService,
@@ -303,7 +303,7 @@ export class ViewerComponent implements OnChanges, OnInit, OnDestroy {
         private el: ElementRef,
         public dialog: MatDialog,
         private cdr: ChangeDetectorRef,
-        private apiClients: ApiClientsService
+        private apiClientsService: ApiClientsService
     ) {
         viewUtilService.maxRetries = this.maxRetries;
     }

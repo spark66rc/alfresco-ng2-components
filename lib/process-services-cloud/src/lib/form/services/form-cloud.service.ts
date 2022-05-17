@@ -33,12 +33,12 @@ import { FormCloudServiceInterface } from './form-cloud.service.interface';
 })
 export class FormCloudService extends BaseCloudService implements FormCloudServiceInterface {
 
-    uploadApi = this.apiClients.get('ContentCustom.upload');
+    uploadApi = this.apiClientsService.get('ContentCustom.upload');
 
     constructor(
         apiService: AlfrescoApiService,
         appConfigService: AppConfigService,
-        private apiClients: ApiClientsService
+        private apiClientsService: ApiClientsService
     ) {
         super(apiService, appConfigService);
     }

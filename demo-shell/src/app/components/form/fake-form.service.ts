@@ -18,7 +18,6 @@
 import { Observable, of, Subject } from 'rxjs';
 import { Injectable } from '@angular/core';
 import {
-    AlfrescoApiService,
     EcmModelService,
     LogService,
     FormService,
@@ -31,12 +30,11 @@ export class FakeFormService extends FormService {
     executeOutcome = new Subject<FormOutcomeEvent>();
 
     constructor(
-        ecmModelService: EcmModelService,
-        apiService: AlfrescoApiService,
         protected logService: LogService,
-        apiClients: ApiClientsService
+        ecmModelService: EcmModelService,
+        apiClientsService: ApiClientsService
     ) {
-        super(ecmModelService, apiService, logService, apiClients);
+        super(ecmModelService, logService, apiClientsService);
     }
 
     public getRestFieldValues(

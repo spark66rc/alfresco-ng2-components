@@ -15,7 +15,6 @@
  * limitations under the License.
  */
 
-import { AlfrescoApiService } from '../../services/alfresco-api.service';
 import { LogService } from '../../services/log.service';
 import { UserProcessModel } from '../../models';
 import { Injectable } from '@angular/core';
@@ -35,7 +34,6 @@ import {
     ProcessDefinitionsApi,
     ProcessInstanceVariablesApi,
     ProcessInstancesApi,
-    GroupsApi,
     ActivitiGroupsApi,
     UsersApi
 } from '@alfresco/js-api';
@@ -61,15 +59,15 @@ export class FormService implements FormValidationService {
     static UNKNOWN_ERROR_MESSAGE: string = 'Unknown error';
     static GENERIC_ERROR_MESSAGE: string = 'Server error';
 
-    taskFormsApi: TaskFormsApi = this.apiClients.get('ActivitiClient.task-forms');
-    taskApi: TasksApi = this.apiClients.get('ActivitiClient.tasks');
-    modelsApi: ModelsApi = this.apiClients.get('ActivitiClient.models');
-    editorApi: FormModelsApi = this.apiClients.get('ActivitiClient.form-models');
-    processDefinitionsApi: ProcessDefinitionsApi = this.apiClients.get('ActivitiClient.process-definitions');
-    processInstanceVariablesApi: ProcessInstanceVariablesApi = this.apiClients.get('ActivitiClient.process-instance-variables');
-    processInstancesApi: ProcessInstancesApi = this.apiClients.get('ActivitiClient.process-instances');
-    groupsApi: ActivitiGroupsApi = this.apiClients.get('ActivitiClient.activiti-groups');
-    usersApi: UsersApi = this.apiClients.get('ActivitiClient.users');
+    taskFormsApi: TaskFormsApi = this.apiClientsService.get('ActivitiClient.task-forms');
+    taskApi: TasksApi = this.apiClientsService.get('ActivitiClient.tasks');
+    modelsApi: ModelsApi = this.apiClientsService.get('ActivitiClient.models');
+    editorApi: FormModelsApi = this.apiClientsService.get('ActivitiClient.form-models');
+    processDefinitionsApi: ProcessDefinitionsApi = this.apiClientsService.get('ActivitiClient.process-definitions');
+    processInstanceVariablesApi: ProcessInstanceVariablesApi = this.apiClientsService.get('ActivitiClient.process-instance-variables');
+    processInstancesApi: ProcessInstancesApi = this.apiClientsService.get('ActivitiClient.process-instances');
+    groupsApi: ActivitiGroupsApi = this.apiClientsService.get('ActivitiClient.activiti-groups');
+    usersApi: UsersApi = this.apiClientsService.get('ActivitiClient.users');
 
     formLoaded = new Subject<FormEvent>();
     formDataRefreshed = new Subject<FormEvent>();
@@ -93,9 +91,8 @@ export class FormService implements FormValidationService {
 
     constructor(
         private ecmModelService: EcmModelService,
-        private apiService: AlfrescoApiService,
         protected logService: LogService,
-        private apiClients: ApiClientsService
+        private apiClientsService: ApiClientsService
     ) { }
 
     /**

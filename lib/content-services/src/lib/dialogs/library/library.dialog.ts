@@ -66,13 +66,13 @@ export class LibraryDialogComponent implements OnInit, OnDestroy {
     ];
     disableCreateButton = false;
 
-    queriesApi = this.apiClients.get('Content.queries');
+    queriesApi = this.apiClientsService.get('Content.queries');
 
     constructor(
         private sitesService: SitesService,
         private formBuilder: FormBuilder,
         private dialog: MatDialogRef<LibraryDialogComponent>,
-        private apiClients: ApiClientsService
+        private apiClientsService: ApiClientsService
     ) {
     }
 
@@ -220,9 +220,9 @@ export class LibraryDialogComponent implements OnInit, OnDestroy {
 
     private findLibraryByTitle(libraryTitle: string): Promise<SitePaging> {
         return this.queriesApi.findSites(libraryTitle, {
-                maxItems: 1,
-                fields: ['title']
-            });
+            maxItems: 1,
+            fields: ['title']
+        });
     }
 
     private forbidSpecialCharacters({ value }: FormControl) {

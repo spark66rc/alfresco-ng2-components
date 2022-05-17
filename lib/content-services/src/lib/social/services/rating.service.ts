@@ -28,9 +28,9 @@ import { RatingServiceInterface } from './rating.service.interface';
 export class RatingService implements RatingServiceInterface {
 
 
-    ratingsApi = this.apiClients.get('Content.ratings');
+    ratingsApi = this.apiClientsService.get('Content.ratings');
 
-    constructor(private logService: LogService, private apiClients: ApiClientsService) {}
+    constructor(private logService: LogService, private apiClientsService: ApiClientsService) { }
 
     /**
      * Gets the current user's rating for a node.

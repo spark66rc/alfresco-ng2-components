@@ -31,9 +31,9 @@ import { ContentVersionService } from './content-version.service';
 })
 export class VersionListComponent implements OnChanges {
 
-    contentApi = this.apiClients.get('ContentCustom.content');
-    versionsApi = this.apiClients.get('Content.versions');
-    nodesApi = this.apiClients.get('Content.nodes');
+    contentApi = this.apiClientsService.get('ContentCustom.content');
+    versionsApi = this.apiClientsService.get('Content.versions');
+    nodesApi = this.apiClientsService.get('Content.nodes');
 
     versions: VersionEntry[] = [];
     isLoading = true;
@@ -74,7 +74,7 @@ export class VersionListComponent implements OnChanges {
         private contentService: ContentService,
         private contentVersionService: ContentVersionService,
         private dialog: MatDialog,
-        private apiClients: ApiClientsService
+        private apiClientsService: ApiClientsService
     ) { }
 
     ngOnChanges() {

@@ -31,14 +31,14 @@ import { catchError, map } from 'rxjs/operators';
 })
 export class ProcessCloudContentService {
 
-    private authenticationApi: AuthenticationApi = this.apiClients.get('Auth.authentication');
-    uploadApi = this.apiClients.get('ContentCustom.upload');
+    private authenticationApi: AuthenticationApi = this.apiClientsService.get('Auth.authentication');
+    uploadApi = this.apiClientsService.get('ContentCustom.upload');
 
     constructor(
         private logService: LogService,
         public contentService: ContentService,
         private downloadService: DownloadService,
-        private apiClients: ApiClientsService
+        private apiClientsService: ApiClientsService
     ) { }
 
     createTemporaryRawRelatedContent(

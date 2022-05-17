@@ -38,12 +38,12 @@ declare let moment: any;
 })
 export class ProcessService {
 
-    private tasksApi: TasksApi = this.apiClients.get('ActivitiClient.tasks');
-    processDefinitionsApi: ProcessDefinitionsApi = this.apiClients.get('ActivitiClient.process-definitions');
-    processInstanceVariablesApi: ProcessInstanceVariablesApi = this.apiClients.get('ActivitiClient.process-instance-variables');
-    processInstancesApi: ProcessInstancesApi = this.apiClients.get('ActivitiClient.process-instances');
+    private tasksApi: TasksApi = this.apiClientsService.get('ActivitiClient.tasks');
+    processDefinitionsApi: ProcessDefinitionsApi = this.apiClientsService.get('ActivitiClient.process-definitions');
+    processInstanceVariablesApi: ProcessInstanceVariablesApi = this.apiClientsService.get('ActivitiClient.process-instance-variables');
+    processInstancesApi: ProcessInstancesApi = this.apiClientsService.get('ActivitiClient.process-instances');
 
-    constructor(private apiClients: ApiClientsService) { }
+    constructor(private apiClientsService: ApiClientsService) { }
 
     /**
      * Gets process instances for a filter and optionally a process definition.

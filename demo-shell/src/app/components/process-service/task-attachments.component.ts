@@ -27,8 +27,8 @@ import { PreviewService } from '../../services/preview.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-export function taskUploadServiceFactory(api: AlfrescoApiService, config: AppConfigService, discoveryApiService: DiscoveryApiService, apiClients: ApiClientsService) {
-    return new TaskUploadService(api, config, discoveryApiService, apiClients);
+export function taskUploadServiceFactory(api: AlfrescoApiService, config: AppConfigService, discoveryApiService: DiscoveryApiService, apiClientsService: ApiClientsService) {
+    return new TaskUploadService(api, config, discoveryApiService, apiClientsService);
 }
 
 @Component({
@@ -64,8 +64,8 @@ export class TaskAttachmentsComponent implements OnInit, OnChanges, OnDestroy {
 
     ngOnInit() {
         this.uploadService.fileUploadComplete
-        .pipe(takeUntil(this.onDestroy$))
-        .subscribe(event => this.onFileUploadComplete(event.data));
+            .pipe(takeUntil(this.onDestroy$))
+            .subscribe(event => this.onFileUploadComplete(event.data));
     }
 
     ngOnChanges() {

@@ -32,13 +32,13 @@ import { ReportParametersModel } from '../../diagram/models/report/report-parame
 @Injectable({ providedIn: 'root' })
 export class AnalyticsService {
 
-    reportApi = this.apiClients.get('ActivitiClient.report');
-    processDefinitionsApi = this.apiClients.get('ActivitiClient.process-definitions');
+    reportApi = this.apiClientsService.get('ActivitiClient.report');
+    processDefinitionsApi = this.apiClientsService.get('ActivitiClient.process-definitions');
 
     constructor(
         private logService: LogService,
-        private apiClients: ApiClientsService
-    ) {}
+        private apiClientsService: ApiClientsService
+    ) { }
 
     /**
      * Retrieve all the Deployed app

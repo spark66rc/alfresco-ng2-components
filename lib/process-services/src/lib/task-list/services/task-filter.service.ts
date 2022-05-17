@@ -26,9 +26,9 @@ import { FilterRepresentationModel } from '../models/filter.model';
 })
 export class TaskFilterService {
 
-    userFiltersApi = this.apiClients.get('ActivitiClient.user-filters');
+    userFiltersApi = this.apiClientsService.get('ActivitiClient.user-filters');
 
-    constructor(private apiClients: ApiClientsService, private logService: LogService) {}
+    constructor(private apiClientsService: ApiClientsService, private logService: LogService) { }
 
     /**
      * Creates and returns the default filters for a process app.
@@ -51,11 +51,11 @@ export class TaskFilterService {
 
         return new Observable((observer) => {
             forkJoin([
-                    myTaskObservable,
-                    involvedObservable,
-                    queuedObservable,
-                    completeObservable
-                ]
+                myTaskObservable,
+                involvedObservable,
+                queuedObservable,
+                completeObservable
+            ]
             ).subscribe(
                 (res) => {
                     const filters: FilterRepresentationModel[] = [];

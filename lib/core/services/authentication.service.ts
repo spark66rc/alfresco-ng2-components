@@ -49,8 +49,8 @@ export class AuthenticationService {
      */
     onLogout: ReplaySubject<any> = new ReplaySubject<any>(1);
 
-    peopleApi = this.apiClients.get('Content.people');
-    profileApi = this.apiClients.get('ActivitiClient.user-profile');
+    peopleApi = this.apiClientsService.get('Content.people');
+    profileApi = this.apiClientsService.get('ActivitiClient.user-profile');
 
     constructor(
         private appConfig: AppConfigService,
@@ -58,7 +58,7 @@ export class AuthenticationService {
         private alfrescoApi: AlfrescoApiService,
         private cookie: CookieService,
         private logService: LogService,
-        private apiClients: ApiClientsService
+        private apiClientsService: ApiClientsService
     ) {
         this.alfrescoApi.alfrescoApiInitialized.subscribe(() => {
             this.alfrescoApi.getInstance().reply('logged-in', () => {

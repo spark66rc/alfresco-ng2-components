@@ -44,7 +44,7 @@ import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core
 })
 export class WebscriptComponent implements OnChanges {
 
-    webscriptApi = this.apiClients.get('ContentCustom.webscript');
+    webscriptApi = this.apiClientsService.get('ContentCustom.webscript');
 
     /** (required) Path to the webscript (as defined by webscript). */
     @Input()
@@ -84,8 +84,8 @@ export class WebscriptComponent implements OnChanges {
 
     constructor(
         private logService: LogService,
-        private apiClients: ApiClientsService
-    ) {}
+        private apiClientsService: ApiClientsService
+    ) { }
 
     ngOnChanges() {
         if (this.showData) {

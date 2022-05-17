@@ -32,12 +32,12 @@ import { LogService } from './log.service';
 })
 export class BpmUserService {
 
-    profileApi = this.apiClients.get('ActivitiClient.user-profile');
+    profileApi = this.apiClientsService.get('ActivitiClient.user-profile');
 
     constructor(
-        private apiClients: ApiClientsService,
+        private apiClientsService: ApiClientsService,
         private logService: LogService
-    ) {}
+    ) { }
 
     /**
      * Gets information about the current user.

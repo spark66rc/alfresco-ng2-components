@@ -18,7 +18,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, from, throwError } from 'rxjs';
 import { UserProcessModel } from '../models/user-process.model';
-import { AlfrescoApiService } from './alfresco-api.service';
 import { LogService } from './log.service';
 import { catchError, map } from 'rxjs/operators';
 import {
@@ -33,12 +32,12 @@ import { ApiClientsService } from '../api/api-clients.service';
 })
 export class PeopleProcessService {
 
-    taskActionsApi: TaskActionsApi = this.apiClients.get('ActivitiClient.task-actions');
-    usersApi: UsersApi = this.apiClients.get('ActivitiClient.users');
+    taskActionsApi: TaskActionsApi = this.apiClientsService.get('ActivitiClient.task-actions');
+    usersApi: UsersApi = this.apiClientsService.get('ActivitiClient.users');
 
     constructor(
         private logService: LogService,
-        private apiClients: ApiClientsService
+        private apiClientsService: ApiClientsService
     ) { }
 
     /**

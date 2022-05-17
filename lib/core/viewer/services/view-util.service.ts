@@ -74,14 +74,14 @@ export class ViewUtilService {
     viewerTypeChange: Subject<string> = new Subject<string>();
     urlFileContentChange: Subject<string> = new Subject<string>();
 
-    contentApi: ContentApi = this.apiClients.get('ContentCustom.content');
-    versionsApi = this.apiClients.get('Content.versions');
-    renditionsApi: RenditionsApi = this.apiClients.get('Content.renditions');
+    contentApi: ContentApi = this.apiClientsService.get('ContentCustom.content');
+    versionsApi = this.apiClientsService.get('Content.versions');
+    renditionsApi: RenditionsApi = this.apiClientsService.get('Content.renditions');
 
     constructor(
         private logService: LogService,
         private translateService: TranslationService,
-        private apiClients: ApiClientsService
+        private apiClientsService: ApiClientsService
     ) { }
 
     /**
