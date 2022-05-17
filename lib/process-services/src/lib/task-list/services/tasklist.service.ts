@@ -41,12 +41,7 @@ export class TaskListService {
         return this._tasksApi;
     }
 
-    private _taskActionsApi: TaskActionsApi;
-    get taskActionsApi(): TaskActionsApi {
-        this._taskActionsApi = this._taskActionsApi ?? new TaskActionsApi(this.apiService.getInstance());
-        return this._taskActionsApi;
-    }
-
+    taskActionsApi: TaskActionsApi = this.apiClientsService.get('ActivitiClient.task-actions');
     private checklistsApi: ChecklistsApi = this.apiClientsService.get('ActivitiClient.checklist');
 
     constructor(private apiService: AlfrescoApiService,

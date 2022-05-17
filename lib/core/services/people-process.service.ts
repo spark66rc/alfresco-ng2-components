@@ -23,7 +23,8 @@ import { LogService } from './log.service';
 import { catchError, map } from 'rxjs/operators';
 import {
     TaskActionsApi,
-    ResultListDataRepresentationLightUserRepresentation
+    ResultListDataRepresentationLightUserRepresentation,
+    UsersApi
 } from '@alfresco/js-api';
 import { ApiClientsService } from '../api/api-clients.service';
 
@@ -32,19 +33,13 @@ import { ApiClientsService } from '../api/api-clients.service';
 })
 export class PeopleProcessService {
 
-    _taskActionsApi: TaskActionsApi;
-    get taskActionsApi(): TaskActionsApi {
-        this._taskActionsApi = this._taskActionsApi ?? new TaskActionsApi(this.apiService.getInstance());
-        return this._taskActionsApi;
-    }
-
-    usersApi = this.apiClients.get('ActivitiClient.users');
+    taskActionsApi: TaskActionsApi = this.apiClients.get('ActivitiClient.task-actions');
+    usersApi: UsersApi = this.apiClients.get('ActivitiClient.users');
 
     constructor(
-        private apiService: AlfrescoApiService,
         private logService: LogService,
         private apiClients: ApiClientsService
-    ) {}
+    ) { }
 
     /**
      * Gets information about users across all tasks.

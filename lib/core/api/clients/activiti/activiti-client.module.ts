@@ -31,6 +31,7 @@ import {
     ReportApi,
     ScriptFilesApi,
     SystemPropertiesApi,
+    TaskActionsApi,
     UserFiltersApi,
     UserProfileApi,
     UsersApi
@@ -60,6 +61,7 @@ declare global {
             ['ActivitiClient.model-json-bpmn']: ModelJsonBpmnApi;
             ['ActivitiClient.models']: ModelsApi;
             ['ActivitiClient.report']: ReportApi;
+            ['ActivitiClient.task-actions']: TaskActionsApi;
         }
     }
 }
@@ -85,5 +87,6 @@ export class ActivitiClientModule {
         this.apiClientsService.register('ActivitiClient.model-json-bpmn', ModelJsonBpmnApi);
         this.apiClientsService.register('ActivitiClient.models', ModelsApi);
         this.apiClientsService.register('ActivitiClient.report', ReportApi);
+        this.apiClientsService.register('ActivitiClient.task-actions', TaskActionsApi);
     }
 }
