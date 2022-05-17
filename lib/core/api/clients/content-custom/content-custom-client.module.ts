@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-import { WebscriptApi } from '@alfresco/js-api';
+import { UploadApi, WebscriptApi } from '@alfresco/js-api';
 import { NgModule } from '@angular/core';
 import { ApiClientsService } from '../../api-clients.service';
 
@@ -24,6 +24,7 @@ declare global {
     namespace Api {
         interface ApiRegistry {
             ['ContentCustom.webscript']: WebscriptApi;
+            ['ContentCustom.upload']: UploadApi;
         }
     }
 }
@@ -32,5 +33,6 @@ declare global {
 export class ContentCustomClientModule {
     constructor(private apiClientsService: ApiClientsService) {
         this.apiClientsService.register('ContentCustom.webscript', WebscriptApi);
+        this.apiClientsService.register('ContentCustom.upload', UploadApi);
     }
 }

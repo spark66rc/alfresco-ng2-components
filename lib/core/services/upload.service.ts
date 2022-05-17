@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-import { NodesApi, UploadApi } from '@alfresco/js-api';
+import { NodesApi } from '@alfresco/js-api';
 import { EventEmitter, Injectable } from '@angular/core';
 import { Minimatch } from 'minimatch';
 import { Subject } from 'rxjs';
@@ -62,11 +62,7 @@ export class UploadService {
     private abortedFile: string;
     private isThumbnailGenerationEnabled: boolean;
 
-    private _uploadApi: UploadApi;
-    get uploadApi(): UploadApi {
-        this._uploadApi = this._uploadApi ?? new UploadApi(this.apiService.getInstance());
-        return this._uploadApi;
-    }
+    uploadApi = this.apiClients.get('ContentCustom.upload');
 
     private _nodesApi: NodesApi;
     get nodesApi(): NodesApi {

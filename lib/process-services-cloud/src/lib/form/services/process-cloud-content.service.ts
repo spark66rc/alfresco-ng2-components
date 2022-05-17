@@ -15,27 +15,19 @@
  * limitations under the License.
  */
 
-import { Injectable } from '@angular/core';
-import { throwError, Observable, from } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
 import {
-    AlfrescoApiService,
-    LogService,
-    ContentService,
-    DownloadService
+    AlfrescoApiService, ApiClientsService, ContentService,
+    DownloadService, LogService
 } from '@alfresco/adf-core';
-import { AuthenticationApi, Node, UploadApi } from '@alfresco/js-api';
+import { AuthenticationApi, Node } from '@alfresco/js-api';
+import { Injectable } from '@angular/core';
+import { from, Observable, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'
 })
 export class ProcessCloudContentService {
-
-    private _uploadApi;
-    get uploadApi(): UploadApi {
-        this._uploadApi = this._uploadApi ?? new UploadApi(this.apiService.getInstance());
-        return this._uploadApi;
-    }
 
     private _authenticationApi;
     get authenticationApi(): AuthenticationApi {
@@ -43,13 +35,15 @@ export class ProcessCloudContentService {
         return this._authenticationApi;
     }
 
+    uploadApi = this.apiClients.get('ContentCustom.upload');
+
     constructor(
         private apiService: AlfrescoApiService,
         private logService: LogService,
         public contentService: ContentService,
-        private downloadService: DownloadService
-    ) {
-    }
+        private downloadService: DownloadService,
+        private apiClients: ApiClientsService
+    ) {}
 
     createTemporaryRawRelatedContent(
         file: File,

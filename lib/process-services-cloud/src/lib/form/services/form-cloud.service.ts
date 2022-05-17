@@ -15,22 +15,17 @@
  * limitations under the License.
  */
 
-import { Injectable } from '@angular/core';
 import {
-    AlfrescoApiService,
-    FormValues,
-    AppConfigService,
-    FormOutcomeModel,
-    FormModel,
-    FormFieldOption
+    AlfrescoApiService, ApiClientsService, AppConfigService, FormFieldOption, FormModel, FormOutcomeModel, FormValues
 } from '@alfresco/adf-core';
-import { Observable, from, EMPTY } from 'rxjs';
+import { CompleteFormRepresentation } from '@alfresco/js-api';
+import { Injectable } from '@angular/core';
+import { EMPTY, from, Observable } from 'rxjs';
 import { expand, map, reduce, switchMap } from 'rxjs/operators';
-import { TaskDetailsCloudModel } from '../../task/start-task/models/task-details-cloud.model';
-import { CompleteFormRepresentation, UploadApi } from '@alfresco/js-api';
-import { TaskVariableCloud } from '../models/task-variable-cloud.model';
 import { BaseCloudService } from '../../services/base-cloud.service';
 import { FormContent } from '../../services/form-fields.interfaces';
+import { TaskDetailsCloudModel } from '../../task/start-task/models/task-details-cloud.model';
+import { TaskVariableCloud } from '../models/task-variable-cloud.model';
 import { FormCloudServiceInterface } from './form-cloud.service.interface';
 
 @Injectable({
@@ -38,15 +33,12 @@ import { FormCloudServiceInterface } from './form-cloud.service.interface';
 })
 export class FormCloudService extends BaseCloudService implements FormCloudServiceInterface {
 
-    private _uploadApi;
-    get uploadApi(): UploadApi {
-        this._uploadApi = this._uploadApi ?? new UploadApi(this.apiService.getInstance());
-        return this._uploadApi;
-    }
+    uploadApi = this.apiClients.get('ContentCustom.upload');
 
     constructor(
         apiService: AlfrescoApiService,
-        appConfigService: AppConfigService
+        appConfigService: AppConfigService,
+        private apiClients: ApiClientsService
     ) {
         super(apiService, appConfigService);
     }
