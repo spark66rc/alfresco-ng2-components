@@ -25,14 +25,13 @@ import { throwError } from 'rxjs';
 })
 export class TaskUploadService extends UploadService {
 
-    private _contentApi;
+    _contentApi: ActivitiContentApi = this.apiClientsService.get('ActivitiClient.activiti-content');
     get contentApi(): ActivitiContentApi {
-        this._contentApi = this._contentApi ?? new ActivitiContentApi(this.apiService.getInstance());
         return this._contentApi;
     }
 
-    constructor(protected apiService: AlfrescoApiService, appConfigService: AppConfigService, discoveryApiService: DiscoveryApiService, apiClients: ApiClientsService) {
-        super(apiService, appConfigService, discoveryApiService, apiClients);
+    constructor(protected apiService: AlfrescoApiService, appConfigService: AppConfigService, discoveryApiService: DiscoveryApiService, private apiClientsService: ApiClientsService) {
+        super(apiService, appConfigService, discoveryApiService, apiClientsService);
     }
 
     getUploadPromise(file: any): any {

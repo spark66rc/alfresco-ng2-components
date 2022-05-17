@@ -29,6 +29,7 @@ import { Observable, from, throwError } from 'rxjs';
 import { ExternalContent } from '../components/widgets/core/external-content';
 import { ExternalContentLink } from '../components/widgets/core/external-content-link';
 import { map, catchError } from 'rxjs/operators';
+import { ApiClientsService } from '../../api';
 
 @Injectable({
     providedIn: 'root'
@@ -44,15 +45,15 @@ export class ActivitiContentService {
         return this._integrationAlfrescoOnPremiseApi;
     }
 
-    _contentApi: ActivitiContentApi;
+    _contentApi: ActivitiContentApi = this.apiClientsService.get('ActivitiClient.activiti-content');
     get contentApi(): ActivitiContentApi {
-        this._contentApi = this._contentApi ?? new ActivitiContentApi(this.apiService.getInstance());
         return this._contentApi;
     }
 
     constructor(private apiService: AlfrescoApiService,
-                private logService: LogService,
-                private sitesService: SitesService) {
+        private logService: LogService,
+        private sitesService: SitesService,
+        private apiClientsService: ApiClientsService) {
     }
 
     /**
