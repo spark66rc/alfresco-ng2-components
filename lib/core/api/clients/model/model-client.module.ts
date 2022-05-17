@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-import { AspectsApi } from '@alfresco/js-api';
+import { AspectsApi, TypesApi } from '@alfresco/js-api';
 import { NgModule } from '@angular/core';
 import { ApiClientsService } from '../../api-clients.service';
 
@@ -24,6 +24,7 @@ declare global {
     namespace Api {
         interface ApiRegistry {
             ['ModelClient.aspects']: AspectsApi;
+            ['ModelClient.types']: TypesApi;
         }
     }
 }
@@ -32,5 +33,6 @@ declare global {
 export class ModelClientModule {
     constructor(private apiClientsService: ApiClientsService) {
         this.apiClientsService.register('ModelClient.aspects', AspectsApi);
+        this.apiClientsService.register('ModelClient.types', TypesApi);
     }
 }
