@@ -41,12 +41,7 @@ export class CustomResourcesService {
 
     private peopleApi: PeopleApi = this.apiClientsService.get('Content.people');
     private sitesApi: SitesApi = this.apiClientsService.get('Content.sites');
-
-    private _trashcanApi: TrashcanApi;
-    get trashcanApi(): TrashcanApi {
-        this._trashcanApi = this._trashcanApi ?? new TrashcanApi(this.apiService.getInstance());
-        return this._trashcanApi;
-    }
+    private trashcanApi: TrashcanApi = this.apiClientsService.get('Content.trashcan');
 
     private _searchApi: SearchApi;
     get searchApi(): SearchApi {

@@ -28,6 +28,7 @@ import {
     RenditionsApi,
     SitesApi,
     TagsApi,
+    TrashcanApi,
     VersionsApi
 } from '@alfresco/js-api';
 import { NgModule } from '@angular/core';
@@ -50,6 +51,7 @@ declare global {
             ['Content.renditions']: RenditionsApi;
             ['Content.sites']: SitesApi;
             ['Content.tags']: TagsApi;
+            ['Content.trashcan']: TrashcanApi;
         }
     }
 }
@@ -70,5 +72,6 @@ export class ContentClientModule {
         this.apiClientsService.register('Content.renditions', RenditionsApi);
         this.apiClientsService.register('Content.sites', SitesApi);
         this.apiClientsService.register('Content.tags', TagsApi);
+        this.apiClientsService.register('Content.trashcan', TrashcanApi);
     }
 }
