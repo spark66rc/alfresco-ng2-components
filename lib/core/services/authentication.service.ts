@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-import { UserRepresentation } from '@alfresco/js-api';
+import { PeopleApi, UserProfileApi, UserRepresentation } from '@alfresco/js-api';
 import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { forkJoin, from, Observable, Observer, ReplaySubject, throwError } from 'rxjs';
@@ -49,8 +49,13 @@ export class AuthenticationService {
      */
     onLogout: ReplaySubject<any> = new ReplaySubject<any>(1);
 
-    peopleApi = this.apiClientsService.get('Content.people');
-    profileApi = this.apiClientsService.get('ActivitiClient.user-profile');
+    get peopleApi(): PeopleApi {
+        return this.apiClientsService.get('Content.people');
+    }
+
+    get profileApi(): UserProfileApi {
+        return this.apiClientsService.get('ActivitiClient.user-profile');
+    }
 
     constructor(
         private appConfig: AppConfigService,
