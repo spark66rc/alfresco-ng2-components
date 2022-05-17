@@ -15,9 +15,10 @@
  * limitations under the License.
  */
 
-import { AlfrescoApiService, ApiClientsService, FormValues } from '@alfresco/adf-core';
+import { ApiClientsService, FormValues } from '@alfresco/adf-core';
 import {
-    ProcessInstanceRepresentation, RestVariable, TasksApi
+    ProcessDefinitionsApi,
+    ProcessInstanceRepresentation, ProcessInstancesApi, ProcessInstanceVariablesApi, RestVariable, TasksApi
 } from '@alfresco/js-api';
 import { DatePipe } from '@angular/common';
 import { Injectable } from '@angular/core';
@@ -37,20 +38,12 @@ declare let moment: any;
 })
 export class ProcessService {
 
-    private _tasksApi: TasksApi;
-    get tasksApi(): TasksApi {
-        this._tasksApi = this._tasksApi ?? new TasksApi(this.alfrescoApiService.getInstance());
-        return this._tasksApi;
-    }
+    private tasksApi: TasksApi = this.apiClients.get('ActivitiClient.tasks');
+    processDefinitionsApi: ProcessDefinitionsApi = this.apiClients.get('ActivitiClient.process-definitions');
+    processInstanceVariablesApi: ProcessInstanceVariablesApi = this.apiClients.get('ActivitiClient.process-instance-variables');
+    processInstancesApi: ProcessInstancesApi = this.apiClients.get('ActivitiClient.process-instances');
 
-    processDefinitionsApi = this.apiClients.get('ActivitiClient.process-definitions');
-    processInstanceVariablesApi = this.apiClients.get('ActivitiClient.process-instance-variables');
-    processInstancesApi = this.apiClients.get('ActivitiClient.process-instances');
-
-    constructor(
-        private alfrescoApiService: AlfrescoApiService,
-        private apiClients: ApiClientsService
-    ) {}
+    constructor(private apiClients: ApiClientsService) { }
 
     /**
      * Gets process instances for a filter and optionally a process definition.
@@ -86,12 +79,12 @@ export class ProcessService {
         return this.getProcessInstances(requestNode, processDefinitionKey)
             .pipe(
                 map(response => ({
-                        ...response,
-                        data: (response.data || []).map(instance => {
-                            instance.name = this.getProcessNameOrDescription(instance, 'medium');
-                            return instance;
-                        })
-                    })),
+                    ...response,
+                    data: (response.data || []).map(instance => {
+                        instance.name = this.getProcessNameOrDescription(instance, 'medium');
+                        return instance;
+                    })
+                })),
                 catchError(() => of(new ProcessListModel({})))
             );
     }

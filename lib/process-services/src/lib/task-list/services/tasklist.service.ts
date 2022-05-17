@@ -33,21 +33,13 @@ import {
     providedIn: 'root'
 })
 export class TaskListService {
+
     private modelsApi = this.apiClientsService.get('ActivitiClient.models');
-
-    private _tasksApi: TasksApi;
-    get tasksApi(): TasksApi {
-        this._tasksApi = this._tasksApi ?? new TasksApi(this.apiService.getInstance());
-        return this._tasksApi;
-    }
-
-    taskActionsApi: TaskActionsApi = this.apiClientsService.get('ActivitiClient.task-actions');
+    private tasksApi: TasksApi = this.apiClientsService.get('ActivitiClient.tasks');
     private checklistsApi: ChecklistsApi = this.apiClientsService.get('ActivitiClient.checklist');
+    taskActionsApi: TaskActionsApi = this.apiClientsService.get('ActivitiClient.task-actions');
 
-    constructor(private apiService: AlfrescoApiService,
-        private logService: LogService,
-        private apiClientsService: ApiClientsService) {
-    }
+    constructor(private logService: LogService, private apiClientsService: ApiClientsService) { }
 
     /**
      * Gets all the filters in the list that belong to a task.

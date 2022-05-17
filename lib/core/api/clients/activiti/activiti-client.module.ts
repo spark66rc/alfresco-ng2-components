@@ -33,6 +33,7 @@ import {
     SystemPropertiesApi,
     TaskActionsApi,
     TaskFormsApi,
+    TasksApi,
     UserFiltersApi,
     UserProfileApi,
     UsersApi
@@ -64,6 +65,7 @@ declare global {
             ['ActivitiClient.report']: ReportApi;
             ['ActivitiClient.task-actions']: TaskActionsApi;
             ['ActivitiClient.task-forms']: TaskFormsApi;
+            ['ActivitiClient.tasks']: TasksApi;
         }
     }
 }
@@ -91,5 +93,6 @@ export class ActivitiClientModule {
         this.apiClientsService.register('ActivitiClient.report', ReportApi);
         this.apiClientsService.register('ActivitiClient.task-actions', TaskActionsApi);
         this.apiClientsService.register('ActivitiClient.task-forms', TaskFormsApi);
+        this.apiClientsService.register('ActivitiClient.tasks', TasksApi);
     }
 }

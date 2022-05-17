@@ -20,6 +20,7 @@ import { Logger } from '../../core/utils/logger';
 import { StringUtil } from '../../../shared/utils/string.util';
 import { ApiService } from '../../../shared/api/api.service';
 import { TasksApi, ProcessInstancesApi, TaskRepresentation, ProcessDefinitionsApi } from '@alfresco/js-api';
+import { ApiClientsService } from '../../../../../../core';
 
 export class ProcessUtil {
 
@@ -27,14 +28,13 @@ export class ProcessUtil {
     processInstancesApi: ProcessInstancesApi;
     processDefinitionsApi: ProcessDefinitionsApi;
     applicationsUtil: ApplicationsUtil;
-    tasksApi: TasksApi;
+    tasksApi: TasksApi = this.apiClientsService.get('ActivitiClient.tasks');
 
-    constructor(apiService: ApiService) {
+    constructor(apiService: ApiService, private apiClientsService: ApiClientsService) {
         this.api = apiService;
         this.processInstancesApi = new ProcessInstancesApi(apiService.getInstance());
         this.processDefinitionsApi = new ProcessDefinitionsApi(apiService.getInstance());
         this.applicationsUtil = new ApplicationsUtil(apiService);
-        this.tasksApi = new TasksApi(apiService.getInstance());
     }
 
     async startProcessByDefinitionName(appName: string, processDefinitionName: string, processName?: string): Promise<any> {
@@ -91,7 +91,7 @@ export class ProcessUtil {
     async getProcessDefinitionByName(deploymentId: string, processName: string): Promise<any> {
         try {
             const processDefinitionList = await this.processDefinitionsApi.getProcessDefinitions({ deploymentId });
-            const chosenProcess = processDefinitionList.data.find( (processDefinition) => processDefinition.name === processName);
+            const chosenProcess = processDefinitionList.data.find((processDefinition) => processDefinition.name === processName);
             return chosenProcess;
         } catch (error) {
             Logger.error('Get ProcessDefinitions - Service error, Response: ', JSON.parse(JSON.stringify(error)));
@@ -100,7 +100,7 @@ export class ProcessUtil {
 
     async getProcessInstanceByName(processInstanceName: string, processInstanceStatus?: string, maxNumberOfResults?: number): Promise<any> {
         try {
-            return await this.processInstancesApi.filterProcessInstances({filter: {name: processInstanceName, state: processInstanceStatus}, size: maxNumberOfResults});
+            return await this.processInstancesApi.filterProcessInstances({ filter: { name: processInstanceName, state: processInstanceStatus }, size: maxNumberOfResults });
         } catch (error) {
             Logger.error('List process instances using a filter - Service error, Response: ', JSON.parse(JSON.stringify(error)));
         }

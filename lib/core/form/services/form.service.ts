@@ -29,7 +29,15 @@ import {
     CompleteFormRepresentation,
     SaveFormRepresentation,
     TasksApi,
-    TaskFormsApi
+    TaskFormsApi,
+    ModelsApi,
+    FormModelsApi,
+    ProcessDefinitionsApi,
+    ProcessInstanceVariablesApi,
+    ProcessInstancesApi,
+    GroupsApi,
+    ActivitiGroupsApi,
+    UsersApi
 } from '@alfresco/js-api';
 import { FormOutcomeEvent } from '../components/widgets/core/form-outcome-event.model';
 import { FormValues } from '../components/widgets/core/form-values';
@@ -54,20 +62,14 @@ export class FormService implements FormValidationService {
     static GENERIC_ERROR_MESSAGE: string = 'Server error';
 
     taskFormsApi: TaskFormsApi = this.apiClients.get('ActivitiClient.task-forms');
-
-    _taskApi: TasksApi;
-    get taskApi(): TasksApi {
-        this._taskApi = this._taskApi ?? new TasksApi(this.apiService.getInstance());
-        return this._taskApi;
-    }
-
-    modelsApi = this.apiClients.get('ActivitiClient.models');
-    editorApi = this.apiClients.get('ActivitiClient.form-models');
-    processDefinitionsApi = this.apiClients.get('ActivitiClient.process-definitions');
-    processInstanceVariablesApi = this.apiClients.get('ActivitiClient.process-instance-variables');
-    processInstancesApi = this.apiClients.get('ActivitiClient.process-instances');
-    groupsApi = this.apiClients.get('ActivitiClient.activiti-groups');
-    usersApi = this.apiClients.get('ActivitiClient.users');
+    taskApi: TasksApi = this.apiClients.get('ActivitiClient.tasks');
+    modelsApi: ModelsApi = this.apiClients.get('ActivitiClient.models');
+    editorApi: FormModelsApi = this.apiClients.get('ActivitiClient.form-models');
+    processDefinitionsApi: ProcessDefinitionsApi = this.apiClients.get('ActivitiClient.process-definitions');
+    processInstanceVariablesApi: ProcessInstanceVariablesApi = this.apiClients.get('ActivitiClient.process-instance-variables');
+    processInstancesApi: ProcessInstancesApi = this.apiClients.get('ActivitiClient.process-instances');
+    groupsApi: ActivitiGroupsApi = this.apiClients.get('ActivitiClient.activiti-groups');
+    usersApi: UsersApi = this.apiClients.get('ActivitiClient.users');
 
     formLoaded = new Subject<FormEvent>();
     formDataRefreshed = new Subject<FormEvent>();

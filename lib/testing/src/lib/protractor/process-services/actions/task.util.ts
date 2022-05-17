@@ -24,12 +24,11 @@ import { ApiClientsService } from '../../../../../../core';
 export class TaskUtil {
 
     api: ApiService;
-    tasksApi: TasksApi;
+    tasksApi: TasksApi = this.apiClientsService.get('ActivitiClient.tasks');
     taskFormsApi: TaskFormsApi = this.apiClientsService.get('ActivitiClient.task-forms');
 
     constructor(apiService: ApiService, private apiClientsService: ApiClientsService) {
         this.api = apiService;
-        this.tasksApi = new TasksApi(apiService.getInstance());
     }
 
     async createStandaloneTask(taskName: string = StringUtil.generateRandomString()): Promise<any> {
