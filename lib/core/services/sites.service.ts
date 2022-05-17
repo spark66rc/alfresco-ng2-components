@@ -34,19 +34,16 @@ import {
 } from '@alfresco/js-api';
 import { catchError } from 'rxjs/operators';
 import { LogService } from './log.service';
+import { ApiClientsService } from '../api';
 
 @Injectable({
     providedIn: 'root'
 })
 export class SitesService {
 
-    private _sitesApi: SitesApi;
-    get sitesApi(): SitesApi {
-        this._sitesApi = this._sitesApi ?? new SitesApi(this.apiService.getInstance());
-        return this._sitesApi;
-    }
+    private sitesApi: SitesApi = this.apiClientsService.get('Content.sites');
 
-    constructor(private apiService: AlfrescoApiService, private logService: LogService) {
+    constructor(private apiService: AlfrescoApiService, private logService: LogService, private apiClientsService: ApiClientsService) {
     }
 
     /**

@@ -24,10 +24,11 @@ import {
     FavoritePaging,
     SiteMemberPaging,
     SiteRolePaging,
-    SitesApi,
     SearchApi,
     SharedlinksApi,
-    TrashcanApi
+    TrashcanApi,
+    PeopleApi,
+    SitesApi
 } from '@alfresco/js-api';
 import { Injectable } from '@angular/core';
 import { Observable, from, of, throwError } from 'rxjs';
@@ -38,13 +39,8 @@ const CREATE_PERMISSION: string = 'create';
 @Injectable({ providedIn: 'root' })
 export class CustomResourcesService {
 
-    private peopleApi = this.apiClientsService.get('Content.people');
-
-    private _sitesApi: SitesApi;
-    get sitesApi(): SitesApi {
-        this._sitesApi = this._sitesApi ?? new SitesApi(this.apiService.getInstance());
-        return this._sitesApi;
-    }
+    private peopleApi: PeopleApi = this.apiClientsService.get('Content.people');
+    private sitesApi: SitesApi = this.apiClientsService.get('Content.sites');
 
     private _trashcanApi: TrashcanApi;
     get trashcanApi(): TrashcanApi {
