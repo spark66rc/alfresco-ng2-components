@@ -15,11 +15,10 @@
  * limitations under the License.
  */
 
+import { ContentApi, RenditionEntry, RenditionPaging, RenditionsApi } from '@alfresco/js-api';
 import { Injectable } from '@angular/core';
-import { RenditionEntry, RenditionPaging, RenditionsApi, ContentApi } from '@alfresco/js-api';
-import { Observable, from, interval, empty } from 'rxjs';
-import { AlfrescoApiService } from './alfresco-api.service';
-import { concatMap, switchMap, takeWhile, map } from 'rxjs/operators';
+import { empty, from, interval, Observable } from 'rxjs';
+import { concatMap, map, switchMap, takeWhile } from 'rxjs/operators';
 import { ApiClientsService } from '../api';
 
 @Injectable({
@@ -27,16 +26,10 @@ import { ApiClientsService } from '../api';
 })
 export class RenditionsService {
 
-    private _renditionsApi: RenditionsApi;
-    get renditionsApi(): RenditionsApi {
-        this._renditionsApi = this._renditionsApi ?? new RenditionsApi(this.apiService.getInstance());
-        return this._renditionsApi;
-    }
-
     contentApi: ContentApi = this.apiClientsService.get('ContentCustom.content');
+    renditionsApi: RenditionsApi = this.apiClientsService.get('Content.renditions');
 
-    constructor(private apiService: AlfrescoApiService, private apiClientsService: ApiClientsService) {
-    }
+    constructor(private apiClientsService: ApiClientsService) {}
 
     /**
      * Gets the first available rendition found for a node.

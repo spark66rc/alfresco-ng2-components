@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-import { AuditApi, CommentsApi, DownloadsApi, FavoritesApi, GroupsApi, NodesApi, PeopleApi, QueriesApi, RatingsApi, VersionsApi } from '@alfresco/js-api';
+import { AuditApi, CommentsApi, DownloadsApi, FavoritesApi, GroupsApi, NodesApi, PeopleApi, QueriesApi, RatingsApi, RenditionsApi, VersionsApi } from '@alfresco/js-api';
 import { NgModule } from '@angular/core';
 import { ApiClientsService } from '../../api-clients.service';
 
@@ -33,6 +33,7 @@ declare global {
             ['Content.people']: PeopleApi;
             ['Content.queries']: QueriesApi;
             ['Content.ratings']: RatingsApi;
+            ['Content.renditions']: RenditionsApi;
         }
     }
 }
@@ -50,5 +51,6 @@ export class ContentClientModule {
         this.apiClientsService.register('Content.people', PeopleApi);
         this.apiClientsService.register('Content.queries', QueriesApi);
         this.apiClientsService.register('Content.ratings', RatingsApi);
+        this.apiClientsService.register('Content.renditions', RenditionsApi);
     }
 }

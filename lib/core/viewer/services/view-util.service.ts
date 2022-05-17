@@ -19,7 +19,6 @@ import { ContentApi, RenditionEntry, RenditionPaging, RenditionsApi } from '@alf
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { ApiClientsService } from '../../api/api-clients.service';
-import { AlfrescoApiService } from '../../services/alfresco-api.service';
 import { LogService } from '../../services/log.service';
 import { TranslationService } from '../../services/translation.service';
 import { Track } from '../models/viewer.model';
@@ -75,18 +74,11 @@ export class ViewUtilService {
     viewerTypeChange: Subject<string> = new Subject<string>();
     urlFileContentChange: Subject<string> = new Subject<string>();
 
-    _renditionsApi: RenditionsApi;
-    get renditionsApi(): RenditionsApi {
-        this._renditionsApi = this._renditionsApi ?? new RenditionsApi(this.apiService.getInstance());
-        return this._renditionsApi;
-    }
-
     contentApi: ContentApi = this.apiClients.get('ContentCustom.content');
-
     versionsApi = this.apiClients.get('Content.versions');
+    renditionsApi: RenditionsApi = this.apiClients.get('Content.renditions');
 
     constructor(
-        private apiService: AlfrescoApiService,
         private logService: LogService,
         private translateService: TranslationService,
         private apiClients: ApiClientsService
