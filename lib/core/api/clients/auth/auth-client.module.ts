@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-import { ClassesApi, ContentApi, CustomModelApi, UploadApi, WebscriptApi } from '@alfresco/js-api';
+import { AuthenticationApi } from '@alfresco/js-api';
 import { NgModule } from '@angular/core';
 import { ApiClientsService } from '../../api-clients.service';
 
@@ -23,22 +23,14 @@ declare global {
     // eslint-disable-next-line @typescript-eslint/no-namespace
     namespace Api {
         interface ApiRegistry {
-            ['ContentCustom.webscript']: WebscriptApi;
-            ['ContentCustom.upload']: UploadApi;
-            ['ContentCustom.classes']: ClassesApi;
-            ['ContentCustom.content']: ContentApi;
-            ['ContentCustom.custom-model']: CustomModelApi;
+            ['Auth.authentication']: AuthenticationApi;
         }
     }
 }
 
 @NgModule()
-export class ContentCustomClientModule {
+export class AuthClientModule {
     constructor(private apiClientsService: ApiClientsService) {
-        this.apiClientsService.register('ContentCustom.webscript', WebscriptApi);
-        this.apiClientsService.register('ContentCustom.upload', UploadApi);
-        this.apiClientsService.register('ContentCustom.classes', ClassesApi);
-        this.apiClientsService.register('ContentCustom.content', ContentApi);
-        this.apiClientsService.register('ContentCustom.custom-model', CustomModelApi);
+        this.apiClientsService.register('Auth.authentication', AuthenticationApi);
     }
 }

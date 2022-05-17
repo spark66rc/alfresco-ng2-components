@@ -30,10 +30,7 @@ export class ProcessContentService {
     static UNKNOWN_ERROR_MESSAGE: string = 'Unknown error';
     static GENERIC_ERROR_MESSAGE: string = 'Server error';
 
-    _contentApi: ActivitiContentApi = this.apiClientsService.get('ActivitiClient.activiti-content');
-    get contentApi(): ActivitiContentApi {
-        return this._contentApi;
-    }
+    contentApi: ActivitiContentApi = this.apiClientsService.get('ActivitiClient.activiti-content');
 
     constructor(private apiClientsService: ApiClientsService,
         private logService: LogService) {

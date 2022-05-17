@@ -26,11 +26,11 @@ import {
     FormValues,
     ContentLinkModel,
     AppConfigService,
-    AlfrescoApiService,
     UploadWidgetContentLinkModel,
-    DestinationFolderPath
+    DestinationFolderPath,
+    ApiClientsService
 } from '@alfresco/adf-core';
-import { Node, NodesApi, RelatedContentRepresentation } from '@alfresco/js-api';
+import { Node, RelatedContentRepresentation } from '@alfresco/js-api';
 import { ContentCloudNodeSelectorService } from '../../../services/content-cloud-node-selector.service';
 import { ProcessCloudContentService } from '../../../services/process-cloud-content.service';
 import { UploadCloudWidgetComponent } from './upload-cloud.widget';
@@ -41,7 +41,7 @@ export const RETRIEVE_METADATA_OPTION = 'retrieveMetadata';
 export const ALIAS_ROOT_FOLDER = '-root-';
 export const ALIAS_USER_FOLDER = '-my-';
 export const APP_NAME = '-appname-';
-export const VALID_ALIAS = [ ALIAS_ROOT_FOLDER, ALIAS_USER_FOLDER, '-shared-' ];
+export const VALID_ALIAS = [ALIAS_ROOT_FOLDER, ALIAS_USER_FOLDER, '-shared-'];
 
 @Component({
     selector: 'adf-cloud-attach-file-cloud-widget',
@@ -65,11 +65,8 @@ export class AttachFileCloudWidgetComponent extends UploadCloudWidgetComponent i
     rootNodeId = ALIAS_USER_FOLDER;
     selectedNode: Node;
 
-    _nodesApi: NodesApi;
-    get nodesApi(): NodesApi {
-        this._nodesApi = this._nodesApi ?? new NodesApi(this.apiService.getInstance());
-        return this._nodesApi;
-    }
+    nodesApi = this.apiClientsService.get('Content.nodes');
+
     displayedColumns = ['icon', 'fileName', 'action'];
 
     constructor(
@@ -80,8 +77,8 @@ export class AttachFileCloudWidgetComponent extends UploadCloudWidgetComponent i
         notificationService: NotificationService,
         private contentNodeSelectorService: ContentCloudNodeSelectorService,
         private appConfigService: AppConfigService,
-        private apiService: AlfrescoApiService,
-        private contentNodeSelectorPanelService: ContentNodeSelectorPanelService
+        private contentNodeSelectorPanelService: ContentNodeSelectorPanelService,
+        private apiClientsService: ApiClientsService
     ) {
         super(formService, thumbnails, processCloudContentService, notificationService, logger);
     }
@@ -163,9 +160,9 @@ export class AttachFileCloudWidgetComponent extends UploadCloudWidgetComponent i
         return rootNodeId;
     }
 
-   async getNodeIdFromPath(destinationFolderPath: DestinationFolderPath): Promise<string> {
+    async getNodeIdFromPath(destinationFolderPath: DestinationFolderPath): Promise<string> {
         let nodeId: string;
-        const destinationPath =  this.getAliasAndRelativePathFromDestinationFolderPath(destinationFolderPath.value);
+        const destinationPath = this.getAliasAndRelativePathFromDestinationFolderPath(destinationFolderPath.value);
         destinationPath.path = this.replaceAppNameAliasWithValue(destinationPath.path);
         try {
             nodeId = await this.contentNodeSelectorService.getNodeIdFromPath(destinationPath);

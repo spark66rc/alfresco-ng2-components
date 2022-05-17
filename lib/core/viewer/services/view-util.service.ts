@@ -34,7 +34,7 @@ export class ViewUtilService {
      * Content groups based on categorization of files that can be viewed in the web browser. This
      * implementation or grouping is tied to the definition the ng component: ViewerComponent
      */
-        // tslint:disable-next-line:variable-name
+    // tslint:disable-next-line:variable-name
     static ContentGroup = {
         IMAGE: 'image',
         MEDIA: 'media',
@@ -81,11 +81,7 @@ export class ViewUtilService {
         return this._renditionsApi;
     }
 
-    _contentApi: ContentApi;
-    get contentApi(): ContentApi {
-        this._contentApi = this._contentApi ?? new ContentApi(this.apiService.getInstance());
-        return this._contentApi;
-    }
+    contentApi: ContentApi = this.apiClients.get('ContentCustom.content');
 
     versionsApi = this.apiClients.get('Content.versions');
 
@@ -94,7 +90,7 @@ export class ViewUtilService {
         private logService: LogService,
         private translateService: TranslationService,
         private apiClients: ApiClientsService
-    ) {}
+    ) { }
 
     /**
      * This method takes a url to trigger the print dialog against, and the type of artifact that it

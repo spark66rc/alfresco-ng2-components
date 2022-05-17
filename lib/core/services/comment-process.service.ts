@@ -29,10 +29,7 @@ import { ApiClientsService } from '../api';
 })
 export class CommentProcessService {
 
-    _commentsApi: ActivitiCommentsApi = this.apiClientsService.get('ActivitiClient.comments-api');
-    get commentsApi(): ActivitiCommentsApi {
-        return this._commentsApi;
-    }
+    commentsApi: ActivitiCommentsApi = this.apiClientsService.get('ActivitiClient.comments-api');
 
     constructor(private logService: LogService, private apiClientsService: ApiClientsService) { }
 

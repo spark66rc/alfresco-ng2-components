@@ -18,11 +18,12 @@
 /* eslint-disable @angular-eslint/no-input-rename */
 
 import { Directive, ElementRef, EventEmitter, HostListener, Input, OnChanges, Output } from '@angular/core';
-import { NodeEntry, Node, DeletedNodeEntity, DeletedNode, TrashcanApi, NodesApi } from '@alfresco/js-api';
+import { NodeEntry, Node, DeletedNodeEntity, DeletedNode, TrashcanApi } from '@alfresco/js-api';
 import { Observable, forkJoin, from, of } from 'rxjs';
 import { AlfrescoApiService } from '../services/alfresco-api.service';
 import { TranslationService } from '../services/translation.service';
 import { map, catchError, retry } from 'rxjs/operators';
+import { ApiClientsService } from '../api';
 
 interface ProcessedNodeData {
     entry: Node | DeletedNode;
@@ -68,11 +69,7 @@ export class NodeDeleteDirective implements OnChanges {
         return this._trashcanApi;
     }
 
-    _nodesApi: NodesApi;
-    get nodesApi(): NodesApi {
-        this._nodesApi = this._nodesApi ?? new NodesApi(this.alfrescoApiService.getInstance());
-        return this._nodesApi;
-    }
+    nodesApi = this.apiClientsService.get('Content.nodes');
 
     @HostListener('click')
     onClick() {
@@ -80,8 +77,9 @@ export class NodeDeleteDirective implements OnChanges {
     }
 
     constructor(private alfrescoApiService: AlfrescoApiService,
-                private translation: TranslationService,
-                private elementRef: ElementRef) {
+        private translation: TranslationService,
+        private elementRef: ElementRef,
+        private apiClientsService: ApiClientsService) {
     }
 
     ngOnChanges() {

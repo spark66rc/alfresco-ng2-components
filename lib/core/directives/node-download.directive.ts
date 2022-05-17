@@ -17,10 +17,10 @@
 
 import { Directive, Input, HostListener } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { AlfrescoApiService } from '../services/alfresco-api.service';
 import { DownloadZipDialogComponent } from '../dialogs/download-zip/download-zip.dialog';
 import { ContentApi, NodeEntry, VersionEntry } from '@alfresco/js-api';
 import { DownloadService } from '../services/download.service';
+import { ApiClientsService } from '../api';
 
 /**
  * Directive selectors without adf- prefix will be deprecated on 3.0.0
@@ -31,11 +31,7 @@ import { DownloadService } from '../services/download.service';
 })
 export class NodeDownloadDirective {
 
-    _contentApi: ContentApi;
-    get contentApi(): ContentApi {
-        this._contentApi = this._contentApi ?? new ContentApi(this.apiService.getInstance());
-        return this._contentApi;
-    }
+    contentApi: ContentApi = this.apiClientsService.get('ContentCustom.content');
 
     /** Nodes to download. */
     @Input('adfNodeDownload')
@@ -51,9 +47,9 @@ export class NodeDownloadDirective {
     }
 
     constructor(
-        private apiService: AlfrescoApiService,
         private downloadService: DownloadService,
-        private dialog: MatDialog) {
+        private dialog: MatDialog,
+        private apiClientsService: ApiClientsService) {
     }
 
     /**

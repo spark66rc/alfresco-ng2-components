@@ -27,7 +27,8 @@ import {
     RenditionEntry,
     NodeEntry,
     VersionEntry,
-    SharedlinksApi, NodesApi, ContentApi
+    SharedlinksApi,
+    ContentApi
 } from '@alfresco/js-api';
 import { BaseEvent } from '../../events';
 import { AlfrescoApiService } from '../../services/alfresco-api.service';
@@ -288,17 +289,9 @@ export class ViewerComponent implements OnChanges, OnInit, OnDestroy {
 
     versionsApi = this.apiClients.get('Content.versions');
 
-    _nodesApi: NodesApi;
-    get nodesApi(): NodesApi {
-        this._nodesApi = this._nodesApi ?? new NodesApi(this.apiService.getInstance());
-        return this._nodesApi;
-    }
+    nodesApi = this.apiClients.get('Content.nodes');
 
-    _contentApi: ContentApi;
-    get contentApi(): ContentApi {
-        this._contentApi = this._contentApi ?? new ContentApi(this.apiService.getInstance());
-        return this._contentApi;
-    }
+    contentApi: ContentApi = this.apiClients.get('ContentCustom.content');
 
     constructor(
         private apiService: AlfrescoApiService,
@@ -310,7 +303,7 @@ export class ViewerComponent implements OnChanges, OnInit, OnDestroy {
         private el: ElementRef,
         public dialog: MatDialog,
         private cdr: ChangeDetectorRef,
-        private apiClients: ApiClientsService,
+        private apiClients: ApiClientsService
     ) {
         viewUtilService.maxRetries = this.maxRetries;
     }
@@ -322,8 +315,8 @@ export class ViewerComponent implements OnChanges, OnInit, OnDestroy {
     ngOnInit() {
         this.apiService.nodeUpdated.pipe(
             filter((node) => node && node.id === this.nodeId &&
-                    (node.name !== this.fileName ||
-                        this.getNodeVersionProperty(this.nodeEntry.entry) !== this.getNodeVersionProperty(node))),
+                (node.name !== this.fileName ||
+                    this.getNodeVersionProperty(this.nodeEntry.entry) !== this.getNodeVersionProperty(node))),
             takeUntil(this.onDestroy$)
         ).subscribe((node) => this.onNodeUpdated(node));
 

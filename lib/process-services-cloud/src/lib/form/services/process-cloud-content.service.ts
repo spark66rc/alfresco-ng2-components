@@ -16,8 +16,10 @@
  */
 
 import {
-    AlfrescoApiService, ApiClientsService, ContentService,
-    DownloadService, LogService
+    ApiClientsService,
+    ContentService,
+    DownloadService,
+    LogService
 } from '@alfresco/adf-core';
 import { AuthenticationApi, Node } from '@alfresco/js-api';
 import { Injectable } from '@angular/core';
@@ -29,21 +31,15 @@ import { catchError, map } from 'rxjs/operators';
 })
 export class ProcessCloudContentService {
 
-    private _authenticationApi;
-    get authenticationApi(): AuthenticationApi {
-        this._authenticationApi = this._authenticationApi ?? new AuthenticationApi(this.apiService.getInstance());
-        return this._authenticationApi;
-    }
-
+    private authenticationApi: AuthenticationApi = this.apiClients.get('Auth.authentication');
     uploadApi = this.apiClients.get('ContentCustom.upload');
 
     constructor(
-        private apiService: AlfrescoApiService,
         private logService: LogService,
         public contentService: ContentService,
         private downloadService: DownloadService,
         private apiClients: ApiClientsService
-    ) {}
+    ) { }
 
     createTemporaryRawRelatedContent(
         file: File,

@@ -17,6 +17,7 @@
 
 import { NgModule } from '@angular/core';
 import { ActivitiClientModule } from './activiti/activiti-client.module';
+import { AuthClientModule } from './auth/auth-client.module';
 import { ContentCustomClientModule } from './content-custom/content-custom-client.module';
 import { ContentClientModule } from './content/content-client.module';
 import { DiscoveryClientModule } from './discovery/discovery-client.module';
@@ -25,6 +26,7 @@ import { ModelClientModule } from './model/model-client.module';
 @NgModule({
     imports: [
         ActivitiClientModule,
+        AuthClientModule,
         DiscoveryClientModule,
         ContentCustomClientModule,
         ContentClientModule,

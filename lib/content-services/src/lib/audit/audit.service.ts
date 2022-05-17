@@ -17,7 +17,7 @@
 
 import { Injectable } from '@angular/core';
 import { Observable, from, throwError } from 'rxjs';
-import { AlfrescoApiService, LogService } from '@alfresco/adf-core';
+import { AlfrescoApiService, ApiClientsService, LogService } from '@alfresco/adf-core';
 import {
     AuditApi,
     AuditAppPaging,
@@ -34,13 +34,9 @@ import { catchError } from 'rxjs/operators';
 })
 export class AuditService {
 
-    _auditApi: AuditApi;
-    get auditApi(): AuditApi {
-        this._auditApi = this._auditApi ?? new AuditApi(this.apiService.getInstance());
-        return this._auditApi;
-    }
+    auditApi: AuditApi = this.apiClientsService.get('Content.audit');
 
-    constructor(private apiService: AlfrescoApiService, private logService: LogService) {
+    constructor(private logService: LogService, private apiClientsService: ApiClientsService) {
     }
 
     getAuditApps(opts?: any): Observable<AuditAppPaging> {

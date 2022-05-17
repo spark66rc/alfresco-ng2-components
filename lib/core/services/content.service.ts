@@ -17,7 +17,7 @@
 
 import { Injectable } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { ContentApi, MinimalNode, Node, NodeEntry, NodesApi } from '@alfresco/js-api';
+import { MinimalNode, Node, NodeEntry } from '@alfresco/js-api';
 import { Observable, Subject, from, throwError } from 'rxjs';
 import { FolderCreatedEvent } from '../events/folder-created.event';
 import { AlfrescoApiService } from './alfresco-api.service';
@@ -28,6 +28,7 @@ import { PermissionsEnum } from '../models/permissions.enum';
 import { AllowableOperationsEnum } from '../models/allowable-operations.enum';
 import { DownloadService } from './download.service';
 import { ThumbnailService } from './thumbnail.service';
+import { ApiClientsService } from '../api';
 
 @Injectable({
     providedIn: 'root'
@@ -38,24 +39,16 @@ export class ContentService {
     folderCreate: Subject<MinimalNode> = new Subject<MinimalNode>();
     folderEdit: Subject<MinimalNode> = new Subject<MinimalNode>();
 
-    _contentApi: ContentApi;
-    get contentApi(): ContentApi {
-        this._contentApi = this._contentApi ?? new ContentApi(this.apiService.getInstance());
-        return this._contentApi;
-    }
-
-    _nodesApi: NodesApi;
-    get nodesApi(): NodesApi {
-        this._nodesApi = this._nodesApi ?? new NodesApi(this.apiService.getInstance());
-        return this._nodesApi;
-    }
+    contentApi = this.apiClientsService.get('ContentCustom.content');
+    nodesApi = this.apiClientsService.get('Content.nodes');
 
     constructor(public authService: AuthenticationService,
-                public apiService: AlfrescoApiService,
-                private logService: LogService,
-                private sanitizer: DomSanitizer,
-                private downloadService: DownloadService,
-                private thumbnailService: ThumbnailService) {
+        public apiService: AlfrescoApiService,
+        private logService: LogService,
+        private sanitizer: DomSanitizer,
+        private downloadService: DownloadService,
+        private thumbnailService: ThumbnailService,
+        private apiClientsService: ApiClientsService) {
     }
 
     /**

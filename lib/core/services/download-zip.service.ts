@@ -19,22 +19,18 @@ import { DownloadEntry, DownloadBodyCreate, DownloadsApi } from '@alfresco/js-ap
 import { Injectable } from '@angular/core';
 import { Observable, from, throwError } from 'rxjs';
 import { LogService } from './log.service';
-import { AlfrescoApiService } from './alfresco-api.service';
 import { catchError } from 'rxjs/operators';
+import { ApiClientsService } from '../api';
 
 @Injectable({
     providedIn: 'root'
 })
 export class DownloadZipService {
 
-    private _downloadsApi: DownloadsApi;
-    get downloadsApi(): DownloadsApi {
-        this._downloadsApi = this._downloadsApi ?? new DownloadsApi(this.apiService.getInstance());
-        return this._downloadsApi;
-    }
+    private downloadsApi: DownloadsApi = this.apiClientsService.get('Content.downloads');
 
-    constructor(private apiService: AlfrescoApiService,
-                private logService: LogService) {
+    constructor(private logService: LogService,
+        private apiClientsService: ApiClientsService) {
     }
 
     /**

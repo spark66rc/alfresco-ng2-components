@@ -29,10 +29,7 @@ import { AspectEntry, AspectPaging, AspectsApi } from '@alfresco/js-api';
 })
 export class AspectListService {
 
-    _aspectsApi: AspectsApi = this.apiClientsService.get('ModelClient.aspects');
-    get aspectsApi(): AspectsApi {
-        return this._aspectsApi;
-    }
+    aspectsApi: AspectsApi = this.apiClientsService.get('ModelClient.aspects');
 
     constructor(private appConfigService: AppConfigService,
         private dialog: MatDialog,

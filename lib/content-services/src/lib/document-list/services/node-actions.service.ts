@@ -18,7 +18,7 @@
 import { Injectable, Output, EventEmitter } from '@angular/core';
 import { Node, NodeEntry } from '@alfresco/js-api';
 import { Subject } from 'rxjs';
-import { AlfrescoApiService, ContentService, NodeDownloadDirective, DownloadService } from '@alfresco/adf-core';
+import { ContentService, NodeDownloadDirective, DownloadService, ApiClientsService } from '@alfresco/adf-core';
 import { MatDialog } from '@angular/material/dialog';
 
 import { DocumentListService } from './document-list.service';
@@ -35,15 +35,15 @@ export class NodeActionsService {
     error = new EventEmitter<any>();
 
     constructor(private contentDialogService: ContentNodeDialogService,
-                public dialogRef: MatDialog,
-                public content: ContentService,
-                private documentListService?: DocumentListService,
-                private apiService?: AlfrescoApiService,
-                private dialog?: MatDialog,
-                private downloadService?: DownloadService) {}
+        public dialogRef: MatDialog,
+        public content: ContentService,
+        private documentListService?: DocumentListService,
+        private dialog?: MatDialog,
+        private downloadService?: DownloadService,
+        private apiClientsService?: ApiClientsService) { }
 
     downloadNode(node: NodeEntry) {
-        new NodeDownloadDirective(this.apiService, this.downloadService, this.dialog)
+        new NodeDownloadDirective(this.downloadService, this.dialog, this.apiClientsService)
             .downloadNode(node);
     }
 
@@ -104,14 +104,14 @@ export class NodeActionsService {
                 const selection = selections[0];
                 this.documentListService[`${action.toLowerCase()}Node`].call(this.documentListService, contentEntry.id, selection.id)
                     .subscribe(
-                    observable.next.bind(observable, `OPERATION.SUCCESS.${type.toUpperCase()}.${action}`),
-                    observable.error.bind(observable)
+                        observable.next.bind(observable, `OPERATION.SUCCESS.${type.toUpperCase()}.${action}`),
+                        observable.error.bind(observable)
                     );
             },
-            (error) => {
-                observable.error(error);
-                return observable;
-            });
+                (error) => {
+                    observable.error(error);
+                    return observable;
+                });
         return observable;
     }
 }

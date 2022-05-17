@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-import { AlfrescoApiService, LogService, PaginationModel } from '@alfresco/adf-core';
+import { AlfrescoApiService, ApiClientsService, LogService, PaginationModel } from '@alfresco/adf-core';
 import {
     NodePaging,
     DeletedNodesPaging,
@@ -24,13 +24,10 @@ import {
     FavoritePaging,
     SiteMemberPaging,
     SiteRolePaging,
-    PeopleApi,
     SitesApi,
     SearchApi,
-    FavoritesApi,
     SharedlinksApi,
-    TrashcanApi,
-    NodesApi
+    TrashcanApi
 } from '@alfresco/js-api';
 import { Injectable } from '@angular/core';
 import { Observable, from, of, throwError } from 'rxjs';
@@ -41,11 +38,7 @@ const CREATE_PERMISSION: string = 'create';
 @Injectable({ providedIn: 'root' })
 export class CustomResourcesService {
 
-    private _peopleApi: PeopleApi;
-    get peopleApi(): PeopleApi {
-        this._peopleApi = this._peopleApi ?? new PeopleApi(this.apiService.getInstance());
-        return this._peopleApi;
-    }
+    private peopleApi = this.apiClientsService.get('Content.people');
 
     private _sitesApi: SitesApi;
     get sitesApi(): SitesApi {
@@ -71,19 +64,10 @@ export class CustomResourcesService {
         return this._sharedLinksApi;
     }
 
-    private _favoritesApi: FavoritesApi;
-    get favoritesApi(): FavoritesApi {
-        this._favoritesApi = this._favoritesApi ?? new FavoritesApi(this.apiService.getInstance());
-        return this._favoritesApi;
-    }
+    private favoritesApi = this.apiClientsService.get('Content.favorites');
+    nodesApi = this.apiClientsService.get('Content.nodes');
 
-    private _nodesApi: NodesApi;
-    get nodesApi(): NodesApi {
-        this._nodesApi = this._nodesApi ?? new NodesApi(this.apiService.getInstance());
-        return this._nodesApi;
-    }
-
-    constructor(private apiService: AlfrescoApiService, private logService: LogService) {
+    constructor(private apiService: AlfrescoApiService, private logService: LogService, private apiClientsService: ApiClientsService) {
     }
 
     /**
@@ -121,46 +105,46 @@ export class CustomResourcesService {
         return new Observable((observer) => {
             this.peopleApi.getPerson(personId)
                 .then((person) => {
-                        const username = person.entry.id;
-                        const filterQueries = [
-                            { query: `cm:modified:[NOW/DAY-30DAYS TO NOW/DAY+1DAY]` },
-                            { query: `cm:modifier:${username} OR cm:creator:${username}` },
-                            { query: defaultFilter.join(' AND ') }
-                        ];
+                    const username = person.entry.id;
+                    const filterQueries = [
+                        { query: `cm:modified:[NOW/DAY-30DAYS TO NOW/DAY+1DAY]` },
+                        { query: `cm:modifier:${username} OR cm:creator:${username}` },
+                        { query: defaultFilter.join(' AND ') }
+                    ];
 
-                        if (filters && filters.length > 0) {
-                            filterQueries.push({
-                                query: filters.join()
-                            });
-                        }
-
-                        const query = new SearchRequest({
-                            query: {
-                                query: '*',
-                                language: 'afts'
-                            },
-                            filterQueries,
-                            include: ['path', 'properties', 'allowableOperations'],
-                            sort: [{
-                                type: 'FIELD',
-                                field: 'cm:modified',
-                                ascending: false
-                            }],
-                            paging: {
-                                maxItems: pagination.maxItems,
-                                skipCount: pagination.skipCount
-                            }
+                    if (filters && filters.length > 0) {
+                        filterQueries.push({
+                            query: filters.join()
                         });
-                        return this.searchApi.search(query)
-                            .then((searchResult) => {
-                                    observer.next(searchResult);
-                                    observer.complete();
-                                },
-                                (err) => {
-                                    observer.error(err);
-                                    observer.complete();
-                                });
-                    },
+                    }
+
+                    const query = new SearchRequest({
+                        query: {
+                            query: '*',
+                            language: 'afts'
+                        },
+                        filterQueries,
+                        include: ['path', 'properties', 'allowableOperations'],
+                        sort: [{
+                            type: 'FIELD',
+                            field: 'cm:modified',
+                            ascending: false
+                        }],
+                        paging: {
+                            maxItems: pagination.maxItems,
+                            skipCount: pagination.skipCount
+                        }
+                    });
+                    return this.searchApi.search(query)
+                        .then((searchResult) => {
+                            observer.next(searchResult);
+                            observer.complete();
+                        },
+                            (err) => {
+                                observer.error(err);
+                                observer.complete();
+                            });
+                },
                     (err) => {
                         observer.error(err);
                         observer.complete();
@@ -190,30 +174,30 @@ export class CustomResourcesService {
         return new Observable((observer) => {
             this.favoritesApi.listFavorites('-me-', options)
                 .then((result: FavoritePaging) => {
-                        const page: FavoritePaging = {
-                            list: {
-                                entries: result.list.entries
-                                    .map(({ entry }: any) => {
-                                        const target = entry.target.file || entry.target.folder;
-                                        target.properties = {
-                                            ...(target.properties || {
-                                                'cm:title': entry.title || target.title,
-                                                'cm:description': entry.description || target.description
-                                            }),
-                                            ...(entry.properties || {})
-                                        };
+                    const page: FavoritePaging = {
+                        list: {
+                            entries: result.list.entries
+                                .map(({ entry }: any) => {
+                                    const target = entry.target.file || entry.target.folder;
+                                    target.properties = {
+                                        ...(target.properties || {
+                                            'cm:title': entry.title || target.title,
+                                            'cm:description': entry.description || target.description
+                                        }),
+                                        ...(entry.properties || {})
+                                    };
 
-                                        return {
-                                            entry: target
-                                        };
-                                    }),
-                                pagination: result.list.pagination
-                            }
-                        };
+                                    return {
+                                        entry: target
+                                    };
+                                }),
+                            pagination: result.list.pagination
+                        }
+                    };
 
-                        observer.next(page);
-                        observer.complete();
-                    },
+                    observer.next(page);
+                    observer.complete();
+                },
                     (err) => {
                         observer.error(err);
                         observer.complete();
@@ -239,23 +223,23 @@ export class CustomResourcesService {
         return new Observable((observer) => {
             this.sitesApi.listSiteMembershipsForPerson('-me-', options)
                 .then((result: SiteRolePaging) => {
-                        const page: SiteMemberPaging = new SiteMemberPaging({
-                            list: {
-                                entries: result.list.entries
-                                    .map(({ entry: { site } }: any) => {
-                                        site.allowableOperations = site.allowableOperations ? site.allowableOperations : [CREATE_PERMISSION];
-                                        site.name = site.name || site.title;
-                                        return {
-                                            entry: site
-                                        };
-                                    }),
-                                pagination: result.list.pagination
-                            }
-                        });
+                    const page: SiteMemberPaging = new SiteMemberPaging({
+                        list: {
+                            entries: result.list.entries
+                                .map(({ entry: { site } }: any) => {
+                                    site.allowableOperations = site.allowableOperations ? site.allowableOperations : [CREATE_PERMISSION];
+                                    site.name = site.name || site.title;
+                                    return {
+                                        entry: site
+                                    };
+                                }),
+                            pagination: result.list.pagination
+                        }
+                    });
 
-                        observer.next(page);
-                        observer.complete();
-                    },
+                    observer.next(page);
+                    observer.complete();
+                },
                     (err) => {
                         observer.error(err);
                         observer.complete();

@@ -15,14 +15,13 @@
  * limitations under the License.
  */
 
+import { Pagination, PersonBodyCreate, PersonBodyUpdate, PersonEntry } from '@alfresco/js-api';
 import { Injectable } from '@angular/core';
-import { Observable, from, throwError } from 'rxjs';
-import { AlfrescoApiService } from './alfresco-api.service';
+import { from, Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { PersonEntry, PeopleApi, PersonBodyCreate, Pagination, PersonBodyUpdate } from '@alfresco/js-api';
+import { ApiClientsService } from '../api';
 import { EcmUserModel } from '../models/ecm-user.model';
 import { LogService } from './log.service';
-import { AuthenticationService } from './authentication.service';
 
 // eslint-disable-next-line no-shadow
 export enum ContentGroups {
@@ -52,21 +51,9 @@ export class PeopleContentService {
     private hasContentAdminRole: boolean = false;
     hasCheckedIsContentAdmin: boolean = false;
 
-    private _peopleApi: PeopleApi;
-    get peopleApi(): PeopleApi {
-        this._peopleApi = this._peopleApi ?? new PeopleApi(this.apiService.getInstance());
-        return this._peopleApi;
-    }
+    peopleApi = this.apiClientsService.get('Content.people');
 
-    constructor(
-        private apiService: AlfrescoApiService,
-        authenticationService: AuthenticationService,
-        private logService: LogService
-    ) {
-        authenticationService.onLogout.subscribe(() => {
-            this.hasCheckedIsContentAdmin = false;
-            this.hasContentAdminRole = false;
-        });
+    constructor(private logService: LogService, private apiClientsService: ApiClientsService) {
     }
 
     /**

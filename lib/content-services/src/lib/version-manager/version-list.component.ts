@@ -15,8 +15,8 @@
  * limitations under the License.
  */
 
-import { AlfrescoApiService, ApiClientsService, ContentService } from '@alfresco/adf-core';
-import { ContentApi, Node, NodeEntry, NodesApi, VersionEntry, VersionPaging } from '@alfresco/js-api';
+import { ApiClientsService, ContentService } from '@alfresco/adf-core';
+import { Node, NodeEntry, VersionEntry, VersionPaging } from '@alfresco/js-api';
 import { Component, EventEmitter, Input, OnChanges, Output, ViewEncapsulation } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../dialogs/confirm.dialog';
@@ -31,19 +31,9 @@ import { ContentVersionService } from './content-version.service';
 })
 export class VersionListComponent implements OnChanges {
 
-    _contentApi: ContentApi;
-    get contentApi(): ContentApi {
-        this._contentApi = this._contentApi ?? new ContentApi(this.alfrescoApi.getInstance());
-        return this._contentApi;
-    }
-
+    contentApi = this.apiClients.get('ContentCustom.content');
     versionsApi = this.apiClients.get('Content.versions');
-
-    _nodesApi: NodesApi;
-    get nodesApi(): NodesApi {
-        this._nodesApi = this._nodesApi ?? new NodesApi(this.alfrescoApi.getInstance());
-        return this._nodesApi;
-    }
+    nodesApi = this.apiClients.get('Content.nodes');
 
     versions: VersionEntry[] = [];
     isLoading = true;
@@ -81,12 +71,11 @@ export class VersionListComponent implements OnChanges {
     viewVersion = new EventEmitter<string>();
 
     constructor(
-        private alfrescoApi: AlfrescoApiService,
         private contentService: ContentService,
         private contentVersionService: ContentVersionService,
         private dialog: MatDialog,
         private apiClients: ApiClientsService
-    ) {}
+    ) { }
 
     ngOnChanges() {
         this.loadVersionHistory();

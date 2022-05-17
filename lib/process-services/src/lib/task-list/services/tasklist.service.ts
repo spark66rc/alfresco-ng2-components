@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-import { AlfrescoApiService, LogService } from '@alfresco/adf-core';
+import { AlfrescoApiService, ApiClientsService, LogService } from '@alfresco/adf-core';
 import { Injectable } from '@angular/core';
 import { Observable, from, forkJoin, throwError, of } from 'rxjs';
 import { map, catchError, switchMap, flatMap, filter } from 'rxjs/operators';
@@ -25,7 +25,7 @@ import { TaskDetailsModel } from '../models/task-details.model';
 import { TaskListModel } from '../models/task-list.model';
 import {
     TaskQueryRepresentation, AssigneeIdentifierRepresentation,
-    TaskUpdateRepresentation, ModelsApi, TaskActionsApi, TasksApi,
+    TaskUpdateRepresentation, TaskActionsApi, TasksApi,
     ChecklistsApi
 } from '@alfresco/js-api';
 
@@ -33,11 +33,7 @@ import {
     providedIn: 'root'
 })
 export class TaskListService {
-    private _modelsApi: ModelsApi;
-    get modelsApi(): ModelsApi {
-        this._modelsApi = this._modelsApi ?? new ModelsApi(this.apiService.getInstance());
-        return this._modelsApi;
-    }
+    private modelsApi = this.apiClientsService.get('ActivitiClient.models');
 
     private _tasksApi: TasksApi;
     get tasksApi(): TasksApi {
@@ -51,14 +47,11 @@ export class TaskListService {
         return this._taskActionsApi;
     }
 
-    private _checklistsApi: ChecklistsApi;
-    get checklistsApi(): ChecklistsApi {
-        this._checklistsApi = this._checklistsApi ?? new ChecklistsApi(this.apiService.getInstance());
-        return this._checklistsApi;
-    }
+    private checklistsApi: ChecklistsApi = this.apiClientsService.get('ActivitiClient.checklist');
 
     constructor(private apiService: AlfrescoApiService,
-                private logService: LogService) {
+        private logService: LogService,
+        private apiClientsService: ApiClientsService) {
     }
 
     /**
@@ -420,7 +413,7 @@ export class TaskListService {
      * @param filter The filter to use
      * @returns The search query
      */
-     private generateTaskRequestNodeFromFilter(filterModel: FilterRepresentationModel): TaskQueryRequestRepresentationModel {
+    private generateTaskRequestNodeFromFilter(filterModel: FilterRepresentationModel): TaskQueryRequestRepresentationModel {
         const requestNode = {
             appDefinitionId: filterModel.appId,
             assignment: filterModel.filter.assignment,

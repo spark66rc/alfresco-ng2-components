@@ -25,10 +25,7 @@ import { throwError } from 'rxjs';
 })
 export class ProcessUploadService extends UploadService {
 
-    _contentApi: ActivitiContentApi = this.apiClientsService.get('ActivitiClient.activiti-content');
-    get contentApi(): ActivitiContentApi {
-        return this._contentApi;
-    }
+    contentApi: ActivitiContentApi = this.apiClientsService.get('ActivitiClient.activiti-content');
 
     constructor(protected apiService: AlfrescoApiService, appConfigService: AppConfigService, discoveryApiService: DiscoveryApiService, private apiClientsService: ApiClientsService) {
         super(apiService, appConfigService, discoveryApiService, apiClientsService);

@@ -18,21 +18,18 @@
 import { Injectable } from '@angular/core';
 import { Observable, from, of } from 'rxjs';
 
-import { NodePaging, NodesApi, TrashcanApi } from '@alfresco/js-api';
+import { NodePaging, TrashcanApi } from '@alfresco/js-api';
 import { AlfrescoApiService } from './alfresco-api.service';
 import { UserPreferencesService } from './user-preferences.service';
 import { catchError } from 'rxjs/operators';
+import { ApiClientsService } from '../api';
 
 @Injectable({
     providedIn: 'root'
 })
 export class DeletedNodesApiService {
 
-    _nodesApi: NodesApi;
-    get nodesApi(): NodesApi {
-        this._nodesApi = this._nodesApi ?? new NodesApi(this.apiService.getInstance());
-        return this._nodesApi;
-    }
+    nodesApi = this.apiClientsService.get('Content.nodes');
 
     _trashcanApi: TrashcanApi;
     get trashcanApi(): TrashcanApi {
@@ -42,7 +39,9 @@ export class DeletedNodesApiService {
 
     constructor(
         private apiService: AlfrescoApiService,
-        private preferences: UserPreferencesService
+        private preferences: UserPreferencesService,
+        private apiClientsService: ApiClientsService
+
     ) {
     }
 
@@ -54,7 +53,7 @@ export class DeletedNodesApiService {
      */
     getDeletedNodes(options?: any): Observable<NodePaging> {
         const defaultOptions = {
-            include: [ 'path', 'properties' ],
+            include: ['path', 'properties'],
             maxItems: this.preferences.paginationSize,
             skipCount: 0
         };

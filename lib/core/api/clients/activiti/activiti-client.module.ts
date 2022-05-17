@@ -15,7 +15,25 @@
  * limitations under the License.
  */
 
-import { AboutApi, ActivitiCommentsApi, ActivitiContentApi, ProcessDefinitionsApi, ProcessInstancesApi, ProcessInstanceVariablesApi, ScriptFilesApi, SystemPropertiesApi, UserFiltersApi, UserProfileApi, UsersApi } from '@alfresco/js-api';
+import {
+    AboutApi,
+    ActivitiCommentsApi,
+    ActivitiContentApi,
+    ActivitiGroupsApi,
+    ChecklistsApi,
+    FormModelsApi,
+    IntegrationAlfrescoOnPremiseApi,
+    ModelJsonBpmnApi,
+    ModelsApi,
+    ProcessDefinitionsApi,
+    ProcessInstancesApi,
+    ProcessInstanceVariablesApi,
+    ScriptFilesApi,
+    SystemPropertiesApi,
+    UserFiltersApi,
+    UserProfileApi,
+    UsersApi
+} from '@alfresco/js-api';
 import { NgModule } from '@angular/core';
 import { ApiClientsService } from '../../api-clients.service';
 
@@ -34,6 +52,12 @@ declare global {
             ['ActivitiClient.user-filters']: UserFiltersApi;
             ['ActivitiClient.comments-api']: ActivitiCommentsApi;
             ['ActivitiClient.activiti-content']: ActivitiContentApi;
+            ['ActivitiClient.activiti-groups']: ActivitiGroupsApi;
+            ['ActivitiClient.checklist']: ChecklistsApi;
+            ['ActivitiClient.form-models']: FormModelsApi;
+            ['ActivitiClient.integration-alfresco-on-premise']: IntegrationAlfrescoOnPremiseApi;
+            ['ActivitiClient.model-json-bpmn']: ModelJsonBpmnApi;
+            ['ActivitiClient.models']: ModelsApi;
         }
     }
 }
@@ -52,5 +76,11 @@ export class ActivitiClientModule {
         this.apiClientsService.register('ActivitiClient.user-filters', UserFiltersApi);
         this.apiClientsService.register('ActivitiClient.comments-api', ActivitiCommentsApi);
         this.apiClientsService.register('ActivitiClient.activiti-content', ActivitiContentApi);
+        this.apiClientsService.register('ActivitiClient.activiti-groups', ActivitiGroupsApi);
+        this.apiClientsService.register('ActivitiClient.checklist', ChecklistsApi);
+        this.apiClientsService.register('ActivitiClient.form-models', FormModelsApi);
+        this.apiClientsService.register('ActivitiClient.integration-alfresco-on-premise', IntegrationAlfrescoOnPremiseApi);
+        this.apiClientsService.register('ActivitiClient.model-json-bpmn', ModelJsonBpmnApi);
+        this.apiClientsService.register('ActivitiClient.models', ModelsApi);
     }
 }

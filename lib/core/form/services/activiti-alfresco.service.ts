@@ -15,15 +15,12 @@
  * limitations under the License.
  */
 
-import { AlfrescoApiService } from '../../services/alfresco-api.service';
 import { LogService } from '../../services/log.service';
 import { SitesService } from '../../services/sites.service';
 import { Injectable } from '@angular/core';
 import {
-    IntegrationAlfrescoOnPremiseApi,
     MinimalNode,
-    RelatedContentRepresentation,
-    ActivitiContentApi
+    RelatedContentRepresentation
 } from '@alfresco/js-api';
 import { Observable, from, throwError } from 'rxjs';
 import { ExternalContent } from '../components/widgets/core/external-content';
@@ -39,19 +36,10 @@ export class ActivitiContentService {
     static UNKNOWN_ERROR_MESSAGE: string = 'Unknown error';
     static GENERIC_ERROR_MESSAGE: string = 'Server error';
 
-    _integrationAlfrescoOnPremiseApi: IntegrationAlfrescoOnPremiseApi;
-    get integrationAlfrescoOnPremiseApi(): IntegrationAlfrescoOnPremiseApi {
-        this._integrationAlfrescoOnPremiseApi = this._integrationAlfrescoOnPremiseApi ?? new IntegrationAlfrescoOnPremiseApi(this.apiService.getInstance());
-        return this._integrationAlfrescoOnPremiseApi;
-    }
+    integrationAlfrescoOnPremiseApi = this.apiClientsService.get('ActivitiClient.integration-alfresco-on-premise');
+    contentApi = this.apiClientsService.get('ActivitiClient.activiti-content');
 
-    _contentApi: ActivitiContentApi = this.apiClientsService.get('ActivitiClient.activiti-content');
-    get contentApi(): ActivitiContentApi {
-        return this._contentApi;
-    }
-
-    constructor(private apiService: AlfrescoApiService,
-        private logService: LogService,
+    constructor(private logService: LogService,
         private sitesService: SitesService,
         private apiClientsService: ApiClientsService) {
     }

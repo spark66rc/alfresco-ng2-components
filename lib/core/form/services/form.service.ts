@@ -27,12 +27,9 @@ import { EcmModelService } from './ecm-model.service';
 import { map, catchError, switchMap, combineAll, defaultIfEmpty } from 'rxjs/operators';
 import {
     CompleteFormRepresentation,
-    ModelsApi,
     SaveFormRepresentation,
     TasksApi,
-    TaskFormsApi,
-    FormModelsApi,
-    ActivitiGroupsApi
+    TaskFormsApi
 } from '@alfresco/js-api';
 import { FormOutcomeEvent } from '../components/widgets/core/form-outcome-event.model';
 import { FormValues } from '../components/widgets/core/form-values';
@@ -68,28 +65,12 @@ export class FormService implements FormValidationService {
         return this._taskApi;
     }
 
-    _modelsApi: ModelsApi;
-    get modelsApi(): ModelsApi {
-        this._modelsApi = this._modelsApi ?? new ModelsApi(this.apiService.getInstance());
-        return this._modelsApi;
-    }
-
-    _editorApi: FormModelsApi;
-    get editorApi(): FormModelsApi {
-        this._editorApi = this._editorApi ?? new FormModelsApi(this.apiService.getInstance());
-        return this._editorApi;
-    }
-
+    modelsApi = this.apiClients.get('ActivitiClient.models');
+    editorApi = this.apiClients.get('ActivitiClient.form-models');
     processDefinitionsApi = this.apiClients.get('ActivitiClient.process-definitions');
     processInstanceVariablesApi = this.apiClients.get('ActivitiClient.process-instance-variables');
     processInstancesApi = this.apiClients.get('ActivitiClient.process-instances');
-
-    _groupsApi: ActivitiGroupsApi;
-    get groupsApi(): ActivitiGroupsApi {
-        this._groupsApi = this._groupsApi ?? new ActivitiGroupsApi(this.apiService.getInstance());
-        return this._groupsApi;
-    }
-
+    groupsApi = this.apiClients.get('ActivitiClient.activiti-groups');
     usersApi = this.apiClients.get('ActivitiClient.users');
 
     formLoaded = new Subject<FormEvent>();
@@ -117,7 +98,7 @@ export class FormService implements FormValidationService {
         private apiService: AlfrescoApiService,
         protected logService: LogService,
         private apiClients: ApiClientsService
-    ) {}
+    ) { }
 
     /**
      * Parses JSON data to create a corresponding Form model.

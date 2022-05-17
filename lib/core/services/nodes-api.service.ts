@@ -16,12 +16,13 @@
  */
 
 import { Injectable } from '@angular/core';
-import { MinimalNode, NodeEntry, NodePaging, NodesApi, TrashcanApi } from '@alfresco/js-api';
+import { MinimalNode, NodeEntry, NodePaging, TrashcanApi } from '@alfresco/js-api';
 import { from, Observable, throwError } from 'rxjs';
 import { AlfrescoApiService } from './alfresco-api.service';
 import { UserPreferencesService } from './user-preferences.service';
 import { catchError, map } from 'rxjs/operators';
 import { NodeMetadata } from '../models/node-metadata.model';
+import { ApiClientsService } from '../api';
 
 @Injectable({
     providedIn: 'root'
@@ -34,14 +35,11 @@ export class NodesApiService {
         return this._trashcanApi;
     }
 
-    _nodesApi: NodesApi;
-    get nodesApi(): NodesApi {
-        this._nodesApi = this._nodesApi ?? new NodesApi(this.apiService.getInstance());
-        return this._nodesApi;
-    }
+    nodesApi = this.apiClientsService.get('Content.nodes');
 
     constructor(private apiService: AlfrescoApiService,
-                private preferences: UserPreferencesService) {
+        private preferences: UserPreferencesService,
+        private apiClientsService: ApiClientsService) {
     }
 
     private getEntryFromEntity(entity: NodeEntry) {
@@ -227,9 +225,9 @@ export class NodesApiService {
             for (const key in nodeEntry.entry.properties) {
                 if (key) {
                     if (key.indexOf(':') !== -1) {
-                        metadata [key.split(':')[1]] = nodeEntry.entry.properties[key];
+                        metadata[key.split(':')[1]] = nodeEntry.entry.properties[key];
                     } else {
-                        metadata [key] = nodeEntry.entry.properties[key];
+                        metadata[key] = nodeEntry.entry.properties[key];
                     }
                 }
             }

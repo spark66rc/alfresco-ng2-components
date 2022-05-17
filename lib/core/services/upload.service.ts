@@ -15,7 +15,6 @@
  * limitations under the License.
  */
 
-import { NodesApi } from '@alfresco/js-api';
 import { EventEmitter, Injectable } from '@angular/core';
 import { Minimatch } from 'minimatch';
 import { Subject } from 'rxjs';
@@ -64,11 +63,7 @@ export class UploadService {
 
     uploadApi = this.apiClients.get('ContentCustom.upload');
 
-    private _nodesApi: NodesApi;
-    get nodesApi(): NodesApi {
-        this._nodesApi = this._nodesApi ?? new NodesApi(this.apiService.getInstance());
-        return this._nodesApi;
-    }
+    nodesApi = this.apiClients.get('Content.nodes');
 
     versionsApi = this.apiClients.get('Content.versions');
 
@@ -232,7 +227,7 @@ export class UploadService {
         if (file.id) {
             return this.nodesApi.updateNodeContent(file.id, file.file as any, opts);
         } else {
-            const nodeBody = { ... file.options };
+            const nodeBody = { ...file.options };
             delete nodeBody['versioningEnabled'];
 
             return this.uploadApi.uploadFile(

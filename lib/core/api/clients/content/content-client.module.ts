@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-import { VersionsApi } from '@alfresco/js-api';
+import { AuditApi, CommentsApi, DownloadsApi, FavoritesApi, GroupsApi, NodesApi, PeopleApi, VersionsApi } from '@alfresco/js-api';
 import { NgModule } from '@angular/core';
 import { ApiClientsService } from '../../api-clients.service';
 
@@ -24,6 +24,13 @@ declare global {
     namespace Api {
         interface ApiRegistry {
             ['Content.versions']: VersionsApi;
+            ['Content.audit']: AuditApi;
+            ['Content.comments']: CommentsApi;
+            ['Content.downloads']: DownloadsApi;
+            ['Content.favorites']: FavoritesApi;
+            ['Content.groups']: GroupsApi;
+            ['Content.nodes']: NodesApi;
+            ['Content.people']: PeopleApi;
         }
     }
 }
@@ -32,5 +39,12 @@ declare global {
 export class ContentClientModule {
     constructor(private apiClientsService: ApiClientsService) {
         this.apiClientsService.register('Content.versions', VersionsApi);
+        this.apiClientsService.register('Content.audit', AuditApi);
+        this.apiClientsService.register('Content.comments', CommentsApi);
+        this.apiClientsService.register('Content.downloads', DownloadsApi);
+        this.apiClientsService.register('Content.favorites', FavoritesApi);
+        this.apiClientsService.register('Content.groups', GroupsApi);
+        this.apiClientsService.register('Content.nodes', NodesApi);
+        this.apiClientsService.register('Content.people', PeopleApi);
     }
 }
