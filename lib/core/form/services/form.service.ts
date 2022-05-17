@@ -53,11 +53,7 @@ export class FormService implements FormValidationService {
     static UNKNOWN_ERROR_MESSAGE: string = 'Unknown error';
     static GENERIC_ERROR_MESSAGE: string = 'Server error';
 
-    _taskFormsApi: TaskFormsApi;
-    get taskFormsApi(): TaskFormsApi {
-        this._taskFormsApi = this._taskFormsApi ?? new TaskFormsApi(this.apiService.getInstance());
-        return this._taskFormsApi;
-    }
+    taskFormsApi: TaskFormsApi = this.apiClients.get('ActivitiClient.task-forms');
 
     _taskApi: TasksApi;
     get taskApi(): TasksApi {
