@@ -28,6 +28,7 @@ import {
     ProcessDefinitionsApi,
     ProcessInstancesApi,
     ProcessInstanceVariablesApi,
+    ReportApi,
     ScriptFilesApi,
     SystemPropertiesApi,
     UserFiltersApi,
@@ -58,6 +59,7 @@ declare global {
             ['ActivitiClient.integration-alfresco-on-premise']: IntegrationAlfrescoOnPremiseApi;
             ['ActivitiClient.model-json-bpmn']: ModelJsonBpmnApi;
             ['ActivitiClient.models']: ModelsApi;
+            ['ActivitiClient.report']: ReportApi;
         }
     }
 }
@@ -82,5 +84,6 @@ export class ActivitiClientModule {
         this.apiClientsService.register('ActivitiClient.integration-alfresco-on-premise', IntegrationAlfrescoOnPremiseApi);
         this.apiClientsService.register('ActivitiClient.model-json-bpmn', ModelJsonBpmnApi);
         this.apiClientsService.register('ActivitiClient.models', ModelsApi);
+        this.apiClientsService.register('ActivitiClient.report', ReportApi);
     }
 }

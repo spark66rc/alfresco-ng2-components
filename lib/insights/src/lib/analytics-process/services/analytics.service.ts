@@ -15,8 +15,7 @@
  * limitations under the License.
  */
 
-import { AlfrescoApiService, ApiClientsService, LogService } from '@alfresco/adf-core';
-import { ReportApi } from '@alfresco/js-api';
+import { ApiClientsService, LogService } from '@alfresco/adf-core';
 import { Injectable } from '@angular/core';
 import { from, Observable, of, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
@@ -33,19 +32,12 @@ import { ReportParametersModel } from '../../diagram/models/report/report-parame
 @Injectable({ providedIn: 'root' })
 export class AnalyticsService {
 
-    private _reportApi: ReportApi;
-    get reportApi(): ReportApi {
-        this._reportApi = this._reportApi ?? new ReportApi(this.apiService.getInstance());
-        return this._reportApi;
-    }
-
-
+    reportApi = this.apiClients.get('ActivitiClient.report');
     processDefinitionsApi = this.apiClients.get('ActivitiClient.process-definitions');
 
     constructor(
-        private apiService: AlfrescoApiService,
         private logService: LogService,
-        private apiClients: ApiClientsService,
+        private apiClients: ApiClientsService
     ) {}
 
     /**
