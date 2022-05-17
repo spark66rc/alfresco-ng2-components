@@ -20,11 +20,7 @@ import { Observable, from, throwError } from 'rxjs';
 import { UserProcessModel } from '../models/user-process.model';
 import { LogService } from './log.service';
 import { catchError, map } from 'rxjs/operators';
-import {
-    TaskActionsApi,
-    ResultListDataRepresentationLightUserRepresentation,
-    UsersApi
-} from '@alfresco/js-api';
+import { ResultListDataRepresentationLightUserRepresentation } from '@alfresco/js-api';
 import { ApiClientsService } from '../api/api-clients.service';
 
 @Injectable({
@@ -32,8 +28,8 @@ import { ApiClientsService } from '../api/api-clients.service';
 })
 export class PeopleProcessService {
 
-    taskActionsApi: TaskActionsApi = this.apiClientsService.get('ActivitiClient.task-actions');
-    usersApi: UsersApi = this.apiClientsService.get('ActivitiClient.users');
+    taskActionsApi = this.apiClientsService.get('ActivitiClient.task-actions');
+    usersApi = this.apiClientsService.get('ActivitiClient.users');
 
     constructor(
         private logService: LogService,

@@ -17,13 +17,12 @@
 
 import { Injectable } from '@angular/core';
 import { ApiClientsService } from '@alfresco/adf-core';
-import { ContentApi } from '@alfresco/js-api';
 import { Observable, of } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class ContentVersionService {
 
-    private contentApi: ContentApi = this.apiClientsService.get('ContentCustom.content');
+    private contentApi = this.apiClientsService.get('ContentCustom.content');
 
     constructor(private apiClientsService: ApiClientsService) { }
 

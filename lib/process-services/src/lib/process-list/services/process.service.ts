@@ -16,10 +16,7 @@
  */
 
 import { ApiClientsService, FormValues } from '@alfresco/adf-core';
-import {
-    ProcessDefinitionsApi,
-    ProcessInstanceRepresentation, ProcessInstancesApi, ProcessInstanceVariablesApi, RestVariable, TasksApi
-} from '@alfresco/js-api';
+import { ProcessInstanceRepresentation, RestVariable } from '@alfresco/js-api';
 import { DatePipe } from '@angular/common';
 import { Injectable } from '@angular/core';
 import { from, Observable, of, throwError } from 'rxjs';
@@ -38,10 +35,10 @@ declare let moment: any;
 })
 export class ProcessService {
 
-    private tasksApi: TasksApi = this.apiClientsService.get('ActivitiClient.tasks');
-    processDefinitionsApi: ProcessDefinitionsApi = this.apiClientsService.get('ActivitiClient.process-definitions');
-    processInstanceVariablesApi: ProcessInstanceVariablesApi = this.apiClientsService.get('ActivitiClient.process-instance-variables');
-    processInstancesApi: ProcessInstancesApi = this.apiClientsService.get('ActivitiClient.process-instances');
+    private tasksApi = this.apiClientsService.get('ActivitiClient.tasks');
+    processDefinitionsApi = this.apiClientsService.get('ActivitiClient.process-definitions');
+    processInstanceVariablesApi = this.apiClientsService.get('ActivitiClient.process-instance-variables');
+    processInstancesApi = this.apiClientsService.get('ActivitiClient.process-instances');
 
     constructor(private apiClientsService: ApiClientsService) { }
 

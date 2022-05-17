@@ -29,8 +29,7 @@ import {
     SiteMembershipBodyCreate,
     SiteMembershipBodyUpdate,
     SiteMembershipRequestWithPersonPaging,
-    SitePaging,
-    SitesApi
+    SitePaging
 } from '@alfresco/js-api';
 import { catchError } from 'rxjs/operators';
 import { LogService } from './log.service';
@@ -41,7 +40,7 @@ import { ApiClientsService } from '../api';
 })
 export class SitesService {
 
-    private sitesApi: SitesApi = this.apiClientsService.get('Content.sites');
+    private sitesApi = this.apiClientsService.get('Content.sites');
 
     constructor(private apiService: AlfrescoApiService, private logService: LogService, private apiClientsService: ApiClientsService) {
     }

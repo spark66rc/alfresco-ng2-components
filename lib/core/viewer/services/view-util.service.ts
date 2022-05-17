@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-import { ContentApi, RenditionEntry, RenditionPaging, RenditionsApi } from '@alfresco/js-api';
+import { RenditionEntry, RenditionPaging } from '@alfresco/js-api';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { ApiClientsService } from '../../api/api-clients.service';
@@ -74,9 +74,9 @@ export class ViewUtilService {
     viewerTypeChange: Subject<string> = new Subject<string>();
     urlFileContentChange: Subject<string> = new Subject<string>();
 
-    contentApi: ContentApi = this.apiClientsService.get('ContentCustom.content');
+    contentApi = this.apiClientsService.get('ContentCustom.content');
     versionsApi = this.apiClientsService.get('Content.versions');
-    renditionsApi: RenditionsApi = this.apiClientsService.get('Content.renditions');
+    renditionsApi = this.apiClientsService.get('Content.renditions');
 
     constructor(
         private logService: LogService,

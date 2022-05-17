@@ -20,7 +20,7 @@ import { Observable, from, throwError } from 'rxjs';
 import { CommentModel } from '../models/comment.model';
 import { LogService } from '../services/log.service';
 import { map, catchError } from 'rxjs/operators';
-import { CommentEntry, CommentsApi } from '@alfresco/js-api';
+import { CommentEntry } from '@alfresco/js-api';
 import { ApiClientsService } from '../api';
 
 @Injectable({
@@ -28,7 +28,7 @@ import { ApiClientsService } from '../api';
 })
 export class CommentContentService {
 
-    commentsApi: CommentsApi = this.apiClientsService.get('Content.comments');
+    commentsApi = this.apiClientsService.get('Content.comments');
 
     constructor(private logService: LogService, private apiClientsService: ApiClientsService) {
     }

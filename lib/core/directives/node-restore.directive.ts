@@ -18,9 +18,8 @@
 /* eslint-disable @angular-eslint/component-selector, @angular-eslint/no-input-rename */
 
 import { Directive, EventEmitter, HostListener, Input, Output } from '@angular/core';
-import { TrashcanApi, DeletedNodeEntry, DeletedNodesPaging, PathInfoEntity } from '@alfresco/js-api';
+import { DeletedNodeEntry, DeletedNodesPaging, PathInfoEntity } from '@alfresco/js-api';
 import { Observable, forkJoin, from, of } from 'rxjs';
-import { AlfrescoApiService } from '../services/alfresco-api.service';
 import { TranslationService } from '../services/translation.service';
 import { tap, mergeMap, map, catchError } from 'rxjs/operators';
 import { ApiClientsService } from '../api';
@@ -37,7 +36,7 @@ export class RestoreMessageModel {
 export class NodeRestoreDirective {
     private readonly restoreProcessStatus;
 
-    trashcanApi: TrashcanApi = this.apiClientsService.get('Content.trashcan');
+    trashcanApi = this.apiClientsService.get('Content.trashcan');
 
     /** Array of deleted nodes to restore. */
     @Input('adf-restore')

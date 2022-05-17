@@ -19,7 +19,7 @@ import { ApplicationsUtil } from './applications.util';
 import { Logger } from '../../core/utils/logger';
 import { StringUtil } from '../../../shared/utils/string.util';
 import { ApiService } from '../../../shared/api/api.service';
-import { TasksApi, ProcessInstancesApi, TaskRepresentation, ProcessDefinitionsApi } from '@alfresco/js-api';
+import { ProcessInstancesApi, TaskRepresentation, ProcessDefinitionsApi } from '@alfresco/js-api';
 import { ApiClientsService } from '../../../../../../core';
 
 export class ProcessUtil {
@@ -28,7 +28,7 @@ export class ProcessUtil {
     processInstancesApi: ProcessInstancesApi;
     processDefinitionsApi: ProcessDefinitionsApi;
     applicationsUtil: ApplicationsUtil;
-    tasksApi: TasksApi = this.apiClientsService.get('ActivitiClient.tasks');
+    tasksApi = this.apiClientsService.get('ActivitiClient.tasks');
 
     constructor(apiService: ApiService, private apiClientsService: ApiClientsService) {
         this.api = apiService;

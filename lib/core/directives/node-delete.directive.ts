@@ -18,9 +18,8 @@
 /* eslint-disable @angular-eslint/no-input-rename */
 
 import { Directive, ElementRef, EventEmitter, HostListener, Input, OnChanges, Output } from '@angular/core';
-import { NodeEntry, Node, DeletedNodeEntity, DeletedNode, TrashcanApi, NodesApi } from '@alfresco/js-api';
+import { NodeEntry, Node, DeletedNodeEntity, DeletedNode } from '@alfresco/js-api';
 import { Observable, forkJoin, from, of } from 'rxjs';
-import { AlfrescoApiService } from '../services/alfresco-api.service';
 import { TranslationService } from '../services/translation.service';
 import { map, catchError, retry } from 'rxjs/operators';
 import { ApiClientsService } from '../api';
@@ -63,8 +62,8 @@ export class NodeDeleteDirective implements OnChanges {
     @Output()
     delete: EventEmitter<any> = new EventEmitter();
 
-    trashcanApi: TrashcanApi = this.apiClientsService.get('Content.trashcan');
-    nodesApi: NodesApi = this.apiClientsService.get('Content.nodes');
+    trashcanApi = this.apiClientsService.get('Content.trashcan');
+    nodesApi = this.apiClientsService.get('Content.nodes');
 
     @HostListener('click')
     onClick() {

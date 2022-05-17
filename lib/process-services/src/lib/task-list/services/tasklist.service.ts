@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-import { AlfrescoApiService, ApiClientsService, LogService } from '@alfresco/adf-core';
+import { ApiClientsService, LogService } from '@alfresco/adf-core';
 import { Injectable } from '@angular/core';
 import { Observable, from, forkJoin, throwError, of } from 'rxjs';
 import { map, catchError, switchMap, flatMap, filter } from 'rxjs/operators';
@@ -24,9 +24,9 @@ import { Form } from '../models/form.model';
 import { TaskDetailsModel } from '../models/task-details.model';
 import { TaskListModel } from '../models/task-list.model';
 import {
-    TaskQueryRepresentation, AssigneeIdentifierRepresentation,
-    TaskUpdateRepresentation, TaskActionsApi, TasksApi,
-    ChecklistsApi
+    TaskQueryRepresentation,
+    AssigneeIdentifierRepresentation,
+    TaskUpdateRepresentation
 } from '@alfresco/js-api';
 
 @Injectable({
@@ -35,9 +35,9 @@ import {
 export class TaskListService {
 
     private modelsApi = this.apiClientsService.get('ActivitiClient.models');
-    private tasksApi: TasksApi = this.apiClientsService.get('ActivitiClient.tasks');
-    private checklistsApi: ChecklistsApi = this.apiClientsService.get('ActivitiClient.checklist');
-    taskActionsApi: TaskActionsApi = this.apiClientsService.get('ActivitiClient.task-actions');
+    private tasksApi = this.apiClientsService.get('ActivitiClient.tasks');
+    private checklistsApi = this.apiClientsService.get('ActivitiClient.checklist');
+    taskActionsApi = this.apiClientsService.get('ActivitiClient.task-actions');
 
     constructor(private logService: LogService, private apiClientsService: ApiClientsService) { }
 

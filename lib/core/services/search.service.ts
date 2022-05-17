@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-import { NodePaging, QueriesApi, QueryBody, ResultSetPaging, SearchApi } from '@alfresco/js-api';
+import { NodePaging, QueryBody, ResultSetPaging, SearchApi } from '@alfresco/js-api';
 import { Injectable } from '@angular/core';
 import { from, Observable, Subject, throwError } from 'rxjs';
 import { ApiClientsService } from '../api';
@@ -35,7 +35,7 @@ export class SearchService {
         return this._searchApi;
     }
 
-    queriesApi: QueriesApi = this.apiClientsService.get('Content.queries');
+    queriesApi = this.apiClientsService.get('Content.queries');
 
     constructor(
         private apiService: AlfrescoApiService,

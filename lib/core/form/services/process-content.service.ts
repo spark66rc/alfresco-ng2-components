@@ -17,7 +17,7 @@
 
 import { LogService } from '../../services/log.service';
 import { Injectable } from '@angular/core';
-import { ActivitiContentApi, RelatedContentRepresentation } from '@alfresco/js-api';
+import { RelatedContentRepresentation } from '@alfresco/js-api';
 import { Observable, from, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { ApiClientsService } from '../../api';
@@ -30,7 +30,7 @@ export class ProcessContentService {
     static UNKNOWN_ERROR_MESSAGE: string = 'Unknown error';
     static GENERIC_ERROR_MESSAGE: string = 'Server error';
 
-    contentApi: ActivitiContentApi = this.apiClientsService.get('ActivitiClient.activiti-content');
+    contentApi = this.apiClientsService.get('ActivitiClient.activiti-content');
 
     constructor(private apiClientsService: ApiClientsService,
         private logService: LogService) {

@@ -21,7 +21,7 @@ import {
     DownloadService,
     LogService
 } from '@alfresco/adf-core';
-import { AuthenticationApi, Node } from '@alfresco/js-api';
+import { Node } from '@alfresco/js-api';
 import { Injectable } from '@angular/core';
 import { from, Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
@@ -31,7 +31,7 @@ import { catchError, map } from 'rxjs/operators';
 })
 export class ProcessCloudContentService {
 
-    private authenticationApi: AuthenticationApi = this.apiClientsService.get('Auth.authentication');
+    private authenticationApi = this.apiClientsService.get('Auth.authentication');
     uploadApi = this.apiClientsService.get('ContentCustom.upload');
 
     constructor(

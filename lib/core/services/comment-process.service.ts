@@ -21,7 +21,6 @@ import { CommentModel } from '../models/comment.model';
 import { UserProcessModel } from '../models/user-process.model';
 import { LogService } from './log.service';
 import { map, catchError } from 'rxjs/operators';
-import { ActivitiCommentsApi } from '@alfresco/js-api';
 import { ApiClientsService } from '../api';
 
 @Injectable({
@@ -29,7 +28,7 @@ import { ApiClientsService } from '../api';
 })
 export class CommentProcessService {
 
-    commentsApi: ActivitiCommentsApi = this.apiClientsService.get('ActivitiClient.comments-api');
+    commentsApi = this.apiClientsService.get('ActivitiClient.comments-api');
 
     constructor(private logService: LogService, private apiClientsService: ApiClientsService) { }
 

@@ -16,7 +16,7 @@
  */
 
 import { Injectable } from '@angular/core';
-import { MinimalNode, NodeEntry, NodePaging, NodesApi, TrashcanApi } from '@alfresco/js-api';
+import { MinimalNode, NodeEntry, NodePaging } from '@alfresco/js-api';
 import { from, Observable, throwError } from 'rxjs';
 import { UserPreferencesService } from './user-preferences.service';
 import { catchError, map } from 'rxjs/operators';
@@ -28,8 +28,8 @@ import { ApiClientsService } from '../api';
 })
 export class NodesApiService {
 
-    trashcanApi: TrashcanApi = this.apiClientsService.get('Content.trashcan');
-    nodesApi: NodesApi = this.apiClientsService.get('Content.nodes');
+    trashcanApi = this.apiClientsService.get('Content.trashcan');
+    nodesApi = this.apiClientsService.get('Content.nodes');
 
     constructor(private preferences: UserPreferencesService, private apiClientsService: ApiClientsService) { }
 

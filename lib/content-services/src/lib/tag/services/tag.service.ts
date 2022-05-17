@@ -19,7 +19,7 @@ import { ApiClientsService, LogService } from '@alfresco/adf-core';
 import { EventEmitter, Injectable, Output } from '@angular/core';
 import { Observable, from, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { TagBody, TagPaging, TagEntry, TagsApi } from '@alfresco/js-api';
+import { TagBody, TagPaging, TagEntry } from '@alfresco/js-api';
 
 @Injectable({
     providedIn: 'root'
@@ -27,7 +27,7 @@ import { TagBody, TagPaging, TagEntry, TagsApi } from '@alfresco/js-api';
 // eslint-disable-next-line @angular-eslint/directive-class-suffix
 export class TagService {
 
-    tagsApi: TagsApi = this.apiClientsService.get('Content.tags');
+    tagsApi = this.apiClientsService.get('Content.tags');
 
     /** Emitted when tag information is updated. */
     @Output()

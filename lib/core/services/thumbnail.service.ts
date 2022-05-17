@@ -20,7 +20,7 @@ import { Injectable } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { AlfrescoApiService } from './alfresco-api.service';
-import { ContentApi, NodeEntry } from '@alfresco/js-api';
+import { NodeEntry } from '@alfresco/js-api';
 import { ApiClientsService } from '../api';
 
 const DEFAULT_ICON = './assets/images/ft_ic_miscellaneous.svg';
@@ -164,7 +164,7 @@ export class ThumbnailService {
         task: './assets/images/task.svg'
     };
 
-    contentApi: ContentApi = this.apiClientsService.get('ContentCustom.content');
+    contentApi = this.apiClientsService.get('ContentCustom.content');
 
     constructor(protected apiService: AlfrescoApiService, matIconRegistry: MatIconRegistry, sanitizer: DomSanitizer, private apiClientsService: ApiClientsService) {
         Object.keys(this.mimeTypeIcons).forEach((key) => {

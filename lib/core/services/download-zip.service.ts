@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-import { DownloadEntry, DownloadBodyCreate, DownloadsApi } from '@alfresco/js-api';
+import { DownloadEntry, DownloadBodyCreate } from '@alfresco/js-api';
 import { Injectable } from '@angular/core';
 import { Observable, from, throwError } from 'rxjs';
 import { LogService } from './log.service';
@@ -27,7 +27,7 @@ import { ApiClientsService } from '../api';
 })
 export class DownloadZipService {
 
-    private downloadsApi: DownloadsApi = this.apiClientsService.get('Content.downloads');
+    private downloadsApi = this.apiClientsService.get('Content.downloads');
 
     constructor(private logService: LogService,
         private apiClientsService: ApiClientsService) {

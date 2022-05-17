@@ -17,15 +17,15 @@
 
 import { Logger } from '../../core/utils/logger';
 import { ApiService } from '../../../shared/api/api.service';
-import { TaskFormsApi, TaskRepresentation, TasksApi } from '@alfresco/js-api';
+import { TaskRepresentation } from '@alfresco/js-api';
 import { StringUtil } from '../../../shared/utils/string.util';
 import { ApiClientsService } from '../../../../../../core';
 
 export class TaskUtil {
 
     api: ApiService;
-    tasksApi: TasksApi = this.apiClientsService.get('ActivitiClient.tasks');
-    taskFormsApi: TaskFormsApi = this.apiClientsService.get('ActivitiClient.task-forms');
+    tasksApi = this.apiClientsService.get('ActivitiClient.tasks');
+    taskFormsApi = this.apiClientsService.get('ActivitiClient.task-forms');
 
     constructor(apiService: ApiService, private apiClientsService: ApiClientsService) {
         this.api = apiService;

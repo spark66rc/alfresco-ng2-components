@@ -20,7 +20,6 @@ import { Injectable } from '@angular/core';
 import { Observable, from } from 'rxjs';
 import { FormModel } from '../components/widgets/core/form.model';
 import { map, catchError } from 'rxjs/operators';
-import { CustomModelApi } from '@alfresco/js-api';
 import { ApiClientsService } from '../../api';
 
 @Injectable({
@@ -32,7 +31,7 @@ export class EcmModelService {
     public static MODEL_NAME: string = 'activitiFormsModel';
     public static TYPE_MODEL: string = 'cm:folder';
 
-    customModelApi: CustomModelApi = this.apiClientsService.get('ContentCustom.custom-model');
+    customModelApi = this.apiClientsService.get('ContentCustom.custom-model');
 
     constructor(private logService: LogService, private apiClientsService: ApiClientsService) {
     }
