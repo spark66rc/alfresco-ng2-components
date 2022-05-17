@@ -27,6 +27,7 @@ import {
     RatingsApi,
     RenditionsApi,
     SitesApi,
+    TagsApi,
     VersionsApi
 } from '@alfresco/js-api';
 import { NgModule } from '@angular/core';
@@ -48,6 +49,7 @@ declare global {
             ['Content.ratings']: RatingsApi;
             ['Content.renditions']: RenditionsApi;
             ['Content.sites']: SitesApi;
+            ['Content.tags']: TagsApi;
         }
     }
 }
@@ -67,5 +69,6 @@ export class ContentClientModule {
         this.apiClientsService.register('Content.ratings', RatingsApi);
         this.apiClientsService.register('Content.renditions', RenditionsApi);
         this.apiClientsService.register('Content.sites', SitesApi);
+        this.apiClientsService.register('Content.tags', TagsApi);
     }
 }

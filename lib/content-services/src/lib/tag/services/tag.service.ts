@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-import { AlfrescoApiService, LogService } from '@alfresco/adf-core';
+import { ApiClientsService, LogService } from '@alfresco/adf-core';
 import { EventEmitter, Injectable, Output } from '@angular/core';
 import { Observable, from, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -27,18 +27,14 @@ import { TagBody, TagPaging, TagEntry, TagsApi } from '@alfresco/js-api';
 // eslint-disable-next-line @angular-eslint/directive-class-suffix
 export class TagService {
 
-    _tagsApi: TagsApi;
-    get tagsApi(): TagsApi {
-        this._tagsApi = this._tagsApi ?? new TagsApi(this.apiService.getInstance());
-        return this._tagsApi;
-    }
+    tagsApi: TagsApi = this.apiClientsService.get('Content.tags');
 
     /** Emitted when tag information is updated. */
     @Output()
     refresh = new EventEmitter();
 
-    constructor(private apiService: AlfrescoApiService,
-                private logService: LogService) {
+    constructor(private logService: LogService,
+        private apiClientsService: ApiClientsService) {
     }
 
     /**
