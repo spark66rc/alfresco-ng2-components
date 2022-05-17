@@ -22,6 +22,7 @@ import { ContentCustomClientModule } from './content-custom/content-custom-clien
 import { ContentClientModule } from './content/content-client.module';
 import { DiscoveryClientModule } from './discovery/discovery-client.module';
 import { ModelClientModule } from './model/model-client.module';
+import { SearchClientModule } from './search/search-client.module';
 
 @NgModule({
     imports: [
@@ -30,7 +31,8 @@ import { ModelClientModule } from './model/model-client.module';
         DiscoveryClientModule,
         ContentCustomClientModule,
         ContentClientModule,
-        ModelClientModule
+        ModelClientModule,
+        SearchClientModule
     ]
 })
 export class AlfrescoJsClientsModule { }

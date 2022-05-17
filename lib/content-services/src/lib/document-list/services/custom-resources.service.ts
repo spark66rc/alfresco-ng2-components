@@ -17,21 +17,12 @@
 
 import { AlfrescoApiService, ApiClientsService, LogService, PaginationModel } from '@alfresco/adf-core';
 import {
-    NodePaging,
-    DeletedNodesPaging,
-    SearchRequest,
-    SharedLinkPaging,
-    FavoritePaging,
-    SiteMemberPaging,
-    SiteRolePaging,
-    SearchApi,
-    SharedlinksApi,
-    TrashcanApi,
-    PeopleApi,
-    SitesApi
+    DeletedNodesPaging, FavoritePaging, NodePaging, PeopleApi, SearchRequest,
+    SharedLinkPaging, SharedlinksApi, SiteMemberPaging,
+    SiteRolePaging, SitesApi, TrashcanApi
 } from '@alfresco/js-api';
 import { Injectable } from '@angular/core';
-import { Observable, from, of, throwError } from 'rxjs';
+import { from, Observable, of, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
 const CREATE_PERMISSION: string = 'create';
@@ -43,11 +34,7 @@ export class CustomResourcesService {
     private sitesApi: SitesApi = this.apiClientsService.get('Content.sites');
     private trashcanApi: TrashcanApi = this.apiClientsService.get('Content.trashcan');
 
-    private _searchApi: SearchApi;
-    get searchApi(): SearchApi {
-        this._searchApi = this._searchApi ?? new SearchApi(this.apiService.getInstance());
-        return this._searchApi;
-    }
+    searchApi = this.apiClientsService.get('SearchClient.search');
 
     private _sharedLinksApi: SharedlinksApi;
     get sharedLinksApi(): SharedlinksApi {
