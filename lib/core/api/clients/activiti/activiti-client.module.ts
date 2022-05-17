@@ -29,6 +29,7 @@ import {
     ProcessInstancesApi,
     ProcessInstanceVariablesApi,
     ReportApi,
+    RuntimeAppDefinitionsApi,
     ScriptFilesApi,
     SystemPropertiesApi,
     TaskActionsApi,
@@ -66,6 +67,7 @@ declare global {
             ['ActivitiClient.task-actions']: TaskActionsApi;
             ['ActivitiClient.task-forms']: TaskFormsApi;
             ['ActivitiClient.tasks']: TasksApi;
+            ['ActivitiClient.runtime-app-definitions']: RuntimeAppDefinitionsApi;
         }
     }
 }
@@ -94,5 +96,6 @@ export class ActivitiClientModule {
         this.apiClientsService.register('ActivitiClient.task-actions', TaskActionsApi);
         this.apiClientsService.register('ActivitiClient.task-forms', TaskFormsApi);
         this.apiClientsService.register('ActivitiClient.tasks', TasksApi);
+        this.apiClientsService.register('ActivitiClient.runtime-app-definitions', RuntimeAppDefinitionsApi);
     }
 }
