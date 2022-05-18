@@ -19,8 +19,7 @@ import { ApplicationsUtil } from './applications.util';
 import { Logger } from '../../core/utils/logger';
 import { StringUtil } from '../../../shared/utils/string.util';
 import { ApiService } from '../../../shared/api/api.service';
-import { ProcessInstancesApi, TaskRepresentation, ProcessDefinitionsApi } from '@alfresco/js-api';
-import { ApiClientsService } from '../../../../../../core';
+import { ProcessInstancesApi, TaskRepresentation, ProcessDefinitionsApi, TasksApi } from '@alfresco/js-api';
 
 export class ProcessUtil {
 
@@ -28,13 +27,14 @@ export class ProcessUtil {
     processInstancesApi: ProcessInstancesApi;
     processDefinitionsApi: ProcessDefinitionsApi;
     applicationsUtil: ApplicationsUtil;
-    tasksApi = this.apiClientsService.get('ActivitiClient.tasks');
+    tasksApi: TasksApi;
 
-    constructor(apiService: ApiService, private apiClientsService: ApiClientsService) {
+    constructor(apiService: ApiService) {
         this.api = apiService;
         this.processInstancesApi = new ProcessInstancesApi(apiService.getInstance());
         this.processDefinitionsApi = new ProcessDefinitionsApi(apiService.getInstance());
         this.applicationsUtil = new ApplicationsUtil(apiService);
+        this.tasksApi = new TasksApi(apiService.getInstance());
     }
 
     async startProcessByDefinitionName(appName: string, processDefinitionName: string, processName?: string): Promise<any> {

@@ -17,15 +17,16 @@
 
 import { Logger } from '../../core/utils/logger';
 import { ApiService } from '../../../shared/api/api.service';
-import { ApiClientsService } from '../../../../../../core/api';
+import { TaskActionsApi } from '@alfresco/js-api';
 
 export class TaskActionsUtil {
 
     api: ApiService;
-    taskActionsApi = this.apiClientsService.get('ActivitiClient.task-actions');
+    taskActionsApi: TaskActionsApi;
 
-    constructor(apiService: ApiService, private apiClientsService: ApiClientsService) {
+    constructor(apiService: ApiService) {
         this.api = apiService;
+        this.taskActionsApi = new TaskActionsApi(apiService.getInstance());
     }
 
     async claimTask(taskInstance: string): Promise<any> {

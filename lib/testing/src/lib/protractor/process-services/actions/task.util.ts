@@ -17,18 +17,19 @@
 
 import { Logger } from '../../core/utils/logger';
 import { ApiService } from '../../../shared/api/api.service';
-import { TaskRepresentation } from '@alfresco/js-api';
+import { TaskFormsApi, TaskRepresentation, TasksApi } from '@alfresco/js-api';
 import { StringUtil } from '../../../shared/utils/string.util';
-import { ApiClientsService } from '../../../../../../core';
 
 export class TaskUtil {
 
     api: ApiService;
-    tasksApi = this.apiClientsService.get('ActivitiClient.tasks');
-    taskFormsApi = this.apiClientsService.get('ActivitiClient.task-forms');
+    tasksApi: TasksApi;
+    taskFormsApi: TaskFormsApi;
 
-    constructor(apiService: ApiService, private apiClientsService: ApiClientsService) {
+    constructor(apiService: ApiService) {
         this.api = apiService;
+        this.tasksApi = new TasksApi(apiService.getInstance());
+        this.taskFormsApi = new TaskFormsApi(apiService.getInstance());
     }
 
     async createStandaloneTask(taskName: string = StringUtil.generateRandomString()): Promise<any> {
