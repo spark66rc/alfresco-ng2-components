@@ -20,7 +20,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
-import { CoreModule } from '@alfresco/adf-core';
+import { CoreModule, IdentityGroupService, IDENTITY_GROUP_SERVICE_TOKEN } from '@alfresco/adf-core';
 import { MaterialModule } from '../material.module';
 import { GroupCloudComponent } from './components/group-cloud.component';
 import { InitialGroupNamePipe } from './pipe/group-initial.pipe';
@@ -34,6 +34,11 @@ import { InitialGroupNamePipe } from './pipe/group-initial.pipe';
         ReactiveFormsModule,
         CoreModule
     ],
+    providers:
+	[{
+		provide: IDENTITY_GROUP_SERVICE_TOKEN,
+		useClass: IdentityGroupService
+	}],
     declarations: [GroupCloudComponent, InitialGroupNamePipe],
     exports: [GroupCloudComponent, InitialGroupNamePipe]
 })

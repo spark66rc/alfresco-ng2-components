@@ -16,8 +16,8 @@
  */
 
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { from, Observable, of, Subject, throwError } from 'rxjs';
+import { catchError, concatAll, filter, map, mergeMap, switchMap, tap, toArray } from 'rxjs/operators';
 import { AppConfigService } from '../app-config/app-config.service';
 import {
     IdentityGroupSearchParam,
@@ -33,10 +33,24 @@ import { OAuth2Service } from './oauth2.service';
 @Injectable({ providedIn: 'root' })
 export class IdentityGroupService implements IdentityGroupServiceInterface {
 
+    private groupNameSubject = new Subject<string>();
+    groupNameAction$ = this.groupNameSubject.asObservable();
+
+    groups$: Observable<IdentityGroupModel[]>;
+    groupsWithRoles$: Observable<IdentityGroupModel[]>;
+    groupsHasRoles$: Observable<boolean>;
+
+
     constructor(
         private oAuth2Service: OAuth2Service,
         private appConfigService: AppConfigService
-    ) {}
+    ) {
+        this.getGroupsByName();
+    }
+
+    changeGroupNameChange(name: string ) {
+        this.groupNameSubject.next(name);
+    }
 
     private get identityHost(): string {
         return `${this.appConfigService.get('identityHost')}`;
@@ -195,11 +209,116 @@ export class IdentityGroupService implements IdentityGroupServiceInterface {
         if (searchParams.name === '') {
             return of([]);
         }
-        const url = `${this.identityHost}/groups`;
-        const queryParams = { search: searchParams.name };
-
-        return this.oAuth2Service.get({ url, queryParams });
+        this.getGroupsWithRoles();
+        return this.groupsWithRoles$;
     }
+
+    getGroupsByName() {
+        const url = `${this.identityHost}/groups`;
+
+        this.groups$ = this.groupNameAction$.pipe(
+            switchMap((groupName) =>  this.oAuth2Service.get<IdentityGroupModel[]>({ url, queryParams: {search: groupName} })
+            .pipe(
+                catchError(this.handleError))
+            ));
+    }
+
+    hasGroupsWithRoles() {
+        this.groupsHasRoles$ = this.groups$.pipe(
+            concatAll(),
+            mergeMap( (group) => {
+                return this.checkGroupHasRole(group.name, ['ACTIVITI_USER']);
+            })
+            )
+    }
+
+    getGroupsWithRoles() {
+        this.groupsWithRoles$ = from([{name: 'hr'}, {name: 'ciao'}]).pipe(
+            mergeMap(group =>
+                this.hasGroupRoles(group.name, ['ACTIVITI_USER']).pipe(
+                  filter(hasRole => hasRole),
+                  map(() => {
+                      return group;
+                  })
+                )
+            ),
+            toArray()
+        );
+
+    }
+
+    hasGroupRoles(name, test?: any) {
+        console.log(test)
+        return of(name === 'hr' ? true : false); // mock api logic
+    }
+
+    examples() {
+        // this.groupsWithRoles$ = this.groups$.pipe(
+        //     concatAll(),
+        //     // mergeMap( (group) =>
+        //     //      this.checkGroupHasRole(group.name, ['ACTIVITI_USER'])
+        //     // )
+        //     mergeMap(group =>
+        //         this.hasRoutePermission(group.name).pipe(
+        //           filter(permission => permission),
+        //           map(() => {
+        //               return group;
+        //           })
+        //         )
+        //     ),
+        //     toArray()
+        // );
+
+        this.groupsWithRoles$ = from([{name: 'hr'}, {name: 'ciao'}]).pipe(
+            // mergeMap( (group) =>
+            //      this.checkGroupHasRole(group.name, ['ACTIVITI_USER'])
+            // )
+            mergeMap(group =>
+                this.hasRoutePermission(group.name, ['ACTIVITI_USER']).pipe(
+                  filter(permission => permission),
+                  map(() => {
+                      return group;
+                  })
+                )
+            ),
+            toArray()
+        );
+
+    }
+
+
+
+    private handleError(error: any): Observable<never> {
+        return throwError(error || '');
+    }
+
+    findGroupsByNameWithGlobalAccess(searchParams: IdentityGroupSearchParam, roles: string[]): Observable<any> {
+        return this.findGroupsByName(searchParams).pipe(
+            map(groups =>  {
+                return groups.filter(group => {
+                    return this.checkGroupHasRole(group.id, roles).pipe(
+                        map((hasRole: boolean) => ({ hasRole, group })),
+                        filter((filteredGroup: { hasRole: boolean; group: IdentityGroupModel }) => filteredGroup.hasRole),
+                        map((filteredGroup: { hasRole: boolean; group: IdentityGroupModel }) => filteredGroup.group));
+                 });
+            })
+        );
+    }
+
+    // findGroupsByNameWithGlobalAccess2(searchParams: IdentityGroupSearchParam, roles: string[]): Observable<any> {
+    //     const a = this.findGroupsByName(searchParams)
+    //         .pipe(
+    //             map(groups =>  groups.map(group => zip(group, this.checkGroupHasRole(group.id, roles))))
+
+
+    //             Observables<[group, boolean]>[]
+    //     //         //     return ).pipe(
+    //             //         map((hasRole: boolean) => ({ hasRole, group })),
+    //             //         filter((filteredGroup: { hasRole: boolean; group: IdentityGroupModel }) => filteredGroup.hasRole),
+    //             //         map((filteredGroup: { hasRole: boolean; group: IdentityGroupModel }) => filteredGroup.group));
+    //             //  });
+    //     );
+    // }
 
     /**
      * Gets details for a specified group.

@@ -28,13 +28,14 @@ import {
     OnChanges,
     OnDestroy,
     ChangeDetectionStrategy,
-    SimpleChange
+    SimpleChange,
+    Inject
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { Observable, of, BehaviorSubject, Subject } from 'rxjs';
 import { distinctUntilChanged, switchMap, mergeMap, filter, tap, map, takeUntil, debounceTime } from 'rxjs/operators';
-import { IdentityGroupModel, IdentityGroupService, LogService } from '@alfresco/adf-core';
+import { IdentityGroupModel, IdentityGroupServiceInterface, IDENTITY_GROUP_SERVICE_TOKEN, LogService } from '@alfresco/adf-core';
 import { ComponentSelectionMode } from '../../types';
 
 @Component({
@@ -50,6 +51,7 @@ import { ComponentSelectionMode } from '../../types';
             ])
         ])
     ],
+
     changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None
 })
@@ -138,12 +140,22 @@ export class GroupCloudComponent implements OnInit, OnChanges, OnDestroy {
     searchLoading = false;
 
     constructor(
-        private identityGroupService: IdentityGroupService,
+        @Inject(IDENTITY_GROUP_SERVICE_TOKEN) private identityGroupService: IdentityGroupServiceInterface,
+        // private identityGroupService: IdentityGroupServiceInterface,
         private logService: LogService) {}
 
     ngOnInit(): void {
         this.loadClientId();
         this.initSearch();
+        this.doSomething();
+    }
+
+    async doSomething() {
+        this.identityGroupService.changeGroupNameChange('s');
+        this.identityGroupService.findGroupsByName({name: 'f'}).subscribe( (groupWithRoles) => {
+            console.log(groupWithRoles);
+
+        })
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -202,8 +214,14 @@ export class GroupCloudComponent implements OnInit, OnChanges, OnDestroy {
                 }
             }),
             tap(() => this.resetSearchGroups()),
-            switchMap((name: string) =>
-                this.identityGroupService.findGroupsByName({ name: name.trim() })
+            switchMap((name: string) => {
+                this.identityGroupService.changeGroupNameChange(name);
+                if (this.hasRoles()) {
+                    return this.identityGroupService.findGroupsByNameWithGlobalAccess({ name: name.trim() }, this.roles);
+                } else {
+                    return  this.identityGroupService.findGroupsByName({ name: name.trim() });
+                }
+            }
             ),
             mergeMap((groups) => {
                 this.resetSearchGroups();
@@ -218,8 +236,8 @@ export class GroupCloudComponent implements OnInit, OnChanges, OnDestroy {
                             hasRole => hasRole ? of(group) : of()
                         )
                     );
-                } else if (this.hasRoles()) {
-                    return this.filterGroupsByRoles(group);
+                // } else if (this.hasRoles()) {
+                //     return this.filterGroupsByRoles(group);
                 } else {
                     return of(group);
                 }

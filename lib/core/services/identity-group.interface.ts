@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 
+import { InjectionToken } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
     IdentityGroupModel,
@@ -24,6 +25,8 @@ import {
     IdentityGroupSearchParam
 } from '../models/identity-group.model';
 import { IdentityRoleModel } from '../models/identity-role.model';
+
+export const IDENTITY_GROUP_SERVICE_TOKEN = new InjectionToken<IdentityGroupServiceInterface>('identity-group');
 
 export interface IdentityGroupServiceInterface {
 
@@ -38,7 +41,9 @@ export interface IdentityGroupServiceInterface {
     createGroup(newGroup: IdentityGroupModel): Observable<any>;
     updateGroup(groupId: string, updatedGroup: IdentityGroupModel);
     deleteGroup(groupId: string): Observable<any>;
+    changeGroupNameChange(name: string);
     findGroupsByName(searchParams: IdentityGroupSearchParam): Observable<IdentityGroupModel[]>;
+    findGroupsByNameWithGlobalAccess(searchParams: IdentityGroupSearchParam, roles: string[]): Observable<IdentityGroupModel[]>;
     getGroupRoles(groupId: string): Observable<IdentityRoleModel[]>;
     checkGroupHasRole(groupId: string, roleNames: string[]): Observable<boolean>;
     getClientIdByApplicationName(applicationName: string): Observable<string>;

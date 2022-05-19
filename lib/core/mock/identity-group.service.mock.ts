@@ -44,6 +44,10 @@ export class IdentityGroupServiceMock implements IdentityGroupServiceInterface {
         return of(mockIdentityRoles);
     }
 
+    changeGroupNameChange() {
+
+    }
+
     assignRoles(_groupId: string, _roles: IdentityRoleModel[]): Observable<any> {
         return of();
     }
@@ -81,6 +85,18 @@ export class IdentityGroupServiceMock implements IdentityGroupServiceInterface {
             return of([]);
         }
 
+        return of(mockIdentityGroups.filter(group =>
+            group.name.toUpperCase().includes(searchParams.name.toUpperCase())
+        ));
+    }
+
+    findGroupsByNameWithGlobalAccess(searchParams: IdentityGroupSearchParam, roles: string[]): Observable<IdentityGroupModel[]> {
+        if (searchParams.name === '') {
+            return of([]);
+        }
+        if (roles) {
+            return of([]);
+        }
         return of(mockIdentityGroups.filter(group =>
             group.name.toUpperCase().includes(searchParams.name.toUpperCase())
         ));
