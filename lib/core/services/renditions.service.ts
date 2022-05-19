@@ -16,7 +16,7 @@
  */
 
 import { Injectable } from '@angular/core';
-import { RenditionEntry, RenditionPaging, RenditionsApi, ContentApi } from '@alfresco/js-api';
+import { RenditionEntry, RenditionPaging, RenditionsApi } from '@alfresco/js-api';
 import { Observable, from, interval, empty } from 'rxjs';
 import { AlfrescoApiService } from './alfresco-api.service';
 import { concatMap, switchMap, takeWhile, map } from 'rxjs/operators';

@@ -20,6 +20,7 @@ import { Injectable } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { AlfrescoApiService } from './alfresco-api.service';
+import { NodeEntry } from '@alfresco/js-api';
 import { ApiClientsService } from '../api/api-clients.service';
 
 const DEFAULT_ICON = './assets/images/ft_ic_miscellaneous.svg';

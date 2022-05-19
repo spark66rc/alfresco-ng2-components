@@ -17,7 +17,7 @@
 
 import { AlfrescoApiService, ApiClientsService, ContentService } from '@alfresco/adf-core';
 import { Component, Input, OnChanges, ViewEncapsulation, EventEmitter, Output } from '@angular/core';
-import { VersionsApi, Node, VersionEntry, VersionPaging, NodesApi, NodeEntry, ContentApi } from '@alfresco/js-api';
+import { VersionsApi, Node, VersionEntry, VersionPaging, NodesApi, NodeEntry } from '@alfresco/js-api';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../dialogs/confirm.dialog';
 import { ContentVersionService } from './content-version.service';

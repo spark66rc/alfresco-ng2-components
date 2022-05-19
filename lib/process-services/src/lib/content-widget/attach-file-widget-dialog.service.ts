@@ -20,7 +20,7 @@ import { EventEmitter, Injectable, Output } from '@angular/core';
 import { AlfrescoApiService, ApiClientsService, TranslationService } from '@alfresco/adf-core';
 import { Observable, of, Subject } from 'rxjs';
 import { AttachFileWidgetDialogComponentData } from './attach-file-widget-dialog-component.interface';
-import { AlfrescoEndpointRepresentation, Node, ContentApi } from '@alfresco/js-api';
+import { AlfrescoEndpointRepresentation, Node } from '@alfresco/js-api';
 import { AttachFileWidgetDialogComponent } from './attach-file-widget-dialog.component';
 import { switchMap } from 'rxjs/operators';
 
