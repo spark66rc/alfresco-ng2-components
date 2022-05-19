@@ -20,6 +20,7 @@ import { RenditionEntry, RenditionPaging, RenditionsApi, ContentApi } from '@alf
 import { Observable, from, interval, empty } from 'rxjs';
 import { AlfrescoApiService } from './alfresco-api.service';
 import { concatMap, switchMap, takeWhile, map } from 'rxjs/operators';
+import { ApiClientsService } from '../api/api-clients.service';
 
 @Injectable({
     providedIn: 'root'
@@ -32,14 +33,11 @@ export class RenditionsService {
         return this._renditionsApi;
     }
 
-    private _contentApi: ContentApi;
-    get contentApi(): ContentApi {
-        this._contentApi = this._contentApi ?? new ContentApi(this.apiService.getInstance());
-        return this._contentApi;
+    get contentApi() {
+        return this.apiClientsService.get('ContentCustomClient.content');
     }
 
-    constructor(private apiService: AlfrescoApiService) {
-    }
+    constructor(private apiService: AlfrescoApiService, private apiClientsService: ApiClientsService) {}
 
     /**
      * Gets the first available rendition found for a node.

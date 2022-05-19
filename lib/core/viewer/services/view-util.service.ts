@@ -22,6 +22,7 @@ import { LogService } from '../../services/log.service';
 import { Subject } from 'rxjs';
 import { Track } from '../models/viewer.model';
 import { TranslationService } from '../../services/translation.service';
+import { ApiClientsService } from '../../api/api-clients.service';
 
 @Injectable({
     providedIn: 'root'
@@ -80,10 +81,8 @@ export class ViewUtilService {
         return this._renditionsApi;
     }
 
-    _contentApi: ContentApi;
-    get contentApi(): ContentApi {
-        this._contentApi = this._contentApi ?? new ContentApi(this.apiService.getInstance());
-        return this._contentApi;
+    get contentApi() {
+        return this.apiClientsService.get('ContentCustomClient.content');
     }
 
     _versionsApi: VersionsApi;
@@ -92,10 +91,12 @@ export class ViewUtilService {
         return this._versionsApi;
     }
 
-    constructor(private apiService: AlfrescoApiService,
-                private logService: LogService,
-                private translateService: TranslationService) {
-    }
+    constructor(
+        private apiService: AlfrescoApiService,
+        private logService: LogService,
+        private translateService: TranslationService,
+        private apiClientsService: ApiClientsService
+    ) {}
 
     /**
      * This method takes a url to trigger the print dialog against, and the type of artifact that it

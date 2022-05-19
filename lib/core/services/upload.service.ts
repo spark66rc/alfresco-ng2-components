@@ -29,7 +29,8 @@ import { FileModel, FileUploadProgress, FileUploadStatus } from '../models/file.
 import { AlfrescoApiService } from './alfresco-api.service';
 import { DiscoveryApiService } from './discovery-api.service';
 import { filter } from 'rxjs/operators';
-import { NodesApi, UploadApi, VersionsApi } from '@alfresco/js-api';
+import { NodesApi, VersionsApi } from '@alfresco/js-api';
+import { ApiClientsService } from '../api/api-clients.service';
 
 const MIN_CANCELLABLE_FILE_SIZE = 1000000;
 const MAX_CANCELLABLE_FILE_PERCENTAGE = 50;
@@ -61,10 +62,8 @@ export class UploadService {
     private abortedFile: string;
     private isThumbnailGenerationEnabled: boolean;
 
-    private _uploadApi: UploadApi;
-    get uploadApi(): UploadApi {
-        this._uploadApi = this._uploadApi ?? new UploadApi(this.apiService.getInstance());
-        return this._uploadApi;
+    get uploadApi() {
+        return this.apiClientsService.get('ContentCustomClient.upload');
     }
 
     private _nodesApi: NodesApi;
@@ -82,7 +81,9 @@ export class UploadService {
     constructor(
         protected apiService: AlfrescoApiService,
         private appConfigService: AppConfigService,
-        private discoveryApiService: DiscoveryApiService) {
+        private discoveryApiService: DiscoveryApiService,
+        protected apiClientsService: ApiClientsService,
+    ) {
 
         this.discoveryApiService.ecmProductInfo$.pipe(filter(info => !!info))
             .subscribe(({ status }) => {
