@@ -15,16 +15,18 @@
  * limitations under the License.
  */
 
-import { NgModule } from '@angular/core';
-import { ActivitiClientModule } from './activiti/activiti-client.module';
-import { DiscoveryClientModule } from './discovery/discovery-client.module';
-import { SearchClientModule } from './search/search-client.module';
+import { NgModule } from "@angular/core";
+import { ActivitiClientModule } from "./activiti/activiti-client.module";
+import { DiscoveryClientModule } from "./discovery/discovery-client.module";
+import { ModelClientModule } from "./model/model-client.module";
+import { SearchClientModule } from "./search/search-client.module";
 
 @NgModule({
     imports: [
         ActivitiClientModule,
         DiscoveryClientModule,
-        SearchClientModule
+        SearchClientModule,
+        ModelClientModule
     ]
 })
-export class AlfrescoJsClientsModule { }
+export class AlfrescoJsClientsModule {}
