@@ -16,8 +16,8 @@
  */
 
 import { Injectable } from '@angular/core';
-import { from, Observable, of, Subject, throwError } from 'rxjs';
-import { catchError, concatAll, filter, map, mergeMap, switchMap, tap, toArray } from 'rxjs/operators';
+import { forkJoin, Observable, of, Subject, throwError, zip } from 'rxjs';
+import { catchError, concatAll, map, mergeMap, switchMap } from 'rxjs/operators';
 import { AppConfigService } from '../app-config/app-config.service';
 import {
     IdentityGroupSearchParam,
@@ -44,9 +44,7 @@ export class IdentityGroupService implements IdentityGroupServiceInterface {
     constructor(
         private oAuth2Service: OAuth2Service,
         private appConfigService: AppConfigService
-    ) {
-        this.getGroupsByName();
-    }
+    ) {}
 
     changeGroupNameChange(name: string ) {
         this.groupNameSubject.next(name);
@@ -199,28 +197,14 @@ export class IdentityGroupService implements IdentityGroupServiceInterface {
         return this.oAuth2Service.delete({ url });
     }
 
-    /**
-     * Finds groups filtered by name.
-     *
-     * @param searchParams Object containing the name filter string
-     * @returns List of group information
-     */
-    findGroupsByName(searchParams: IdentityGroupSearchParam): Observable<IdentityGroupModel[]> {
-        if (searchParams.name === '') {
-            return of([]);
-        }
-        this.getGroupsWithRoles();
-        return this.groupsWithRoles$;
-    }
 
-    getGroupsByName() {
+    getGroupsByName(name: string) {
         const url = `${this.identityHost}/groups`;
 
-        this.groups$ = this.groupNameAction$.pipe(
-            switchMap((groupName) =>  this.oAuth2Service.get<IdentityGroupModel[]>({ url, queryParams: {search: groupName} })
+        return this.oAuth2Service.get<IdentityGroupModel[]>({ url, queryParams: {search: name} })
             .pipe(
-                catchError(this.handleError))
-            ));
+                catchError(this.handleError)
+            );
     }
 
     hasGroupsWithRoles() {
@@ -232,77 +216,54 @@ export class IdentityGroupService implements IdentityGroupServiceInterface {
             )
     }
 
-    getGroupsWithRoles() {
-        this.groupsWithRoles$ = from([{name: 'hr'}, {name: 'ciao'}]).pipe(
-            mergeMap(group =>
-                this.hasGroupRoles(group.name, ['ACTIVITI_USER']).pipe(
-                  filter(hasRole => hasRole),
-                  map(() => {
-                      return group;
-                  })
-                )
-            ),
-            toArray()
+    getGroupsWithRoles(name: string, roles: string []) {
+         return this.getGroupsByName(name).pipe(
+            switchMap(groups => forkJoin(groups.map((group) => this.zipGroupWithHasRole(group, roles)))),
+            map( groupsWithHasRoles => {
+                const groupsWithRoles: IdentityGroupModel[] = [];
+                groupsWithHasRoles.forEach(groupWithHasRole => {
+                    const hasRole = groupWithHasRole[1];
+                    const group = groupWithHasRole[0];
+                    if (hasRole) {
+                        groupsWithRoles.push(group);
+                    }
+                });
+                return groupsWithRoles;
+             })
         );
 
     }
 
-    hasGroupRoles(name, test?: any) {
-        console.log(test)
-        return of(name === 'hr' ? true : false); // mock api logic
-    }
-
-    examples() {
-        // this.groupsWithRoles$ = this.groups$.pipe(
-        //     concatAll(),
-        //     // mergeMap( (group) =>
-        //     //      this.checkGroupHasRole(group.name, ['ACTIVITI_USER'])
-        //     // )
-        //     mergeMap(group =>
-        //         this.hasRoutePermission(group.name).pipe(
-        //           filter(permission => permission),
-        //           map(() => {
-        //               return group;
-        //           })
-        //         )
-        //     ),
-        //     toArray()
-        // );
-
-        this.groupsWithRoles$ = from([{name: 'hr'}, {name: 'ciao'}]).pipe(
-            // mergeMap( (group) =>
-            //      this.checkGroupHasRole(group.name, ['ACTIVITI_USER'])
-            // )
-            mergeMap(group =>
-                this.hasRoutePermission(group.name, ['ACTIVITI_USER']).pipe(
-                  filter(permission => permission),
-                  map(() => {
-                      return group;
-                  })
-                )
-            ),
-            toArray()
+    zipGroupWithHasRole(group, roles): any {
+        return zip(
+            of(group),
+            this.checkGroupHasRole(group.id, roles)
         );
-
     }
-
 
 
     private handleError(error: any): Observable<never> {
         return throwError(error || '');
     }
 
-    findGroupsByNameWithGlobalAccess(searchParams: IdentityGroupSearchParam, roles: string[]): Observable<any> {
-        return this.findGroupsByName(searchParams).pipe(
-            map(groups =>  {
-                return groups.filter(group => {
-                    return this.checkGroupHasRole(group.id, roles).pipe(
-                        map((hasRole: boolean) => ({ hasRole, group })),
-                        filter((filteredGroup: { hasRole: boolean; group: IdentityGroupModel }) => filteredGroup.hasRole),
-                        map((filteredGroup: { hasRole: boolean; group: IdentityGroupModel }) => filteredGroup.group));
-                 });
-            })
-        );
+    /**
+     * Finds groups filtered by name.
+     *
+     * @param searchParams Object containing the name filter string
+     * @returns List of group information
+     */
+     findGroupsByName(searchParams: IdentityGroupSearchParam): Observable<IdentityGroupModel[]> {
+        if (searchParams.name === '') {
+            return of([]);
+        }
+        return this.getGroupsByName(searchParams?.name);
+    }
+
+    findGroupsByNameWithGlobalAccess(searchParams: IdentityGroupSearchParam, roles: string[]): Observable<IdentityGroupModel[]> {
+        if (searchParams.name === '') {
+            return of([]);
+        }
+        return this.getGroupsWithRoles(searchParams.name, roles);
     }
 
     // findGroupsByNameWithGlobalAccess2(searchParams: IdentityGroupSearchParam, roles: string[]): Observable<any> {
@@ -326,7 +287,7 @@ export class IdentityGroupService implements IdentityGroupServiceInterface {
      * @param groupId Id of the target group
      * @returns Group details
      */
-    getGroupRoles(groupId: string): Observable<IdentityRoleModel[]> {
+    getGroupRoles(groupId: string): Observable<any[]> {
         const url = this.buildRolesUrl(groupId);
         return this.oAuth2Service.get({ url });
     }

@@ -146,13 +146,12 @@ export class GroupCloudComponent implements OnInit, OnChanges, OnDestroy {
 
     ngOnInit(): void {
         this.loadClientId();
-        this.initSearch();
+        // this.initSearch();
         this.doSomething();
     }
 
     async doSomething() {
-        this.identityGroupService.changeGroupNameChange('s');
-        this.identityGroupService.findGroupsByName({name: 'f'}).subscribe( (groupWithRoles) => {
+        this.identityGroupService.findGroupsByNameWithGlobalAccess({name: 's'}, ['ACTIVITI_USER']).subscribe( (groupWithRoles) => {
             console.log(groupWithRoles);
 
         })
