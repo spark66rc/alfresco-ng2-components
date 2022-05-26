@@ -20,7 +20,7 @@ import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ChartsModule } from 'ng2-charts';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateModule } from '@ngx-translate/core';
 import {
@@ -29,7 +29,7 @@ import {
     DebugAppConfigService,
     CoreModule,
     CoreAutomationService,
-    AuthBearerInterceptor
+    AppConfigModule
 } from '@alfresco/adf-core';
 import { ExtensionsModule } from '@alfresco/adf-extensions';
 import { AppComponent } from './app.component';
@@ -115,6 +115,8 @@ import localeSv from '@angular/common/locales/sv';
 import { setupAppNotifications } from './services/app-notifications-factory';
 import { AppNotificationsService } from './services/app-notifications.service';
 import { SearchFilterChipsComponent } from './components/search/search-filter-chips.component';
+import { AlfrescoApiModule } from '@alfresco/adf-core/alfresco-api';
+import { OIDCAuthModule } from '@alfresco/adf-core/authentication';
 
 registerLocaleData(localeFr);
 registerLocaleData(localeDe);
@@ -138,13 +140,15 @@ registerLocaleData(localeSv);
         BrowserModule,
         environment.e2e ? NoopAnimationsModule : BrowserAnimationsModule,
         ReactiveFormsModule,
-        RouterModule.forRoot(appRoutes, { useHash: true, relativeLinkResolution: 'legacy' }),
+        // initialNavigation: false needs because of the OIDC package!!!
+        // https://manfredsteyer.github.io/angular-oauth2-oidc/docs/additional-documentation/routing-with-the-hashstrategy.html
+        RouterModule.forRoot(appRoutes, { useHash: true, relativeLinkResolution: 'legacy', initialNavigation: false }),
         FormsModule,
         HttpClientModule,
         MaterialModule,
         FlexLayoutModule,
         TranslateModule.forRoot(),
-        CoreModule.forRoot(),
+        CoreModule.forRoot({ legacyAlfrescoApiService: false }),
         ContentModule.forRoot(),
         InsightsModule.forRoot(),
         ProcessModule.forRoot(),
@@ -153,6 +157,9 @@ registerLocaleData(localeSv);
         ThemePickerModule,
         ChartsModule,
         AppCloudSharedModule,
+        AlfrescoApiModule,
+        AppConfigModule.forRoot(),
+        OIDCAuthModule,
         MonacoEditorModule.forRoot()
     ],
     declarations: [
@@ -209,10 +216,6 @@ registerLocaleData(localeSv);
         SearchFilterChipsComponent
     ],
     providers: [
-        {
-            provide: HTTP_INTERCEPTORS, useClass:
-            AuthBearerInterceptor, multi: true
-        },
         { provide: AppConfigService, useClass: DebugAppConfigService }, // not use this service in production
         {
             provide: TRANSLATION_PROVIDER,
