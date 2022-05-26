@@ -17,6 +17,7 @@
 
 import { NgModule } from '@angular/core';
 import { ActivitiClientModule } from './activiti/activiti-client.module';
+import { ContentCustomClientModule } from './content-custom/content-custom-client.module';
 import { DiscoveryClientModule } from './discovery/discovery-client.module';
 import { ModelClientModule } from './model/model-client.module';
 import { SearchClientModule } from './search/search-client.module';
@@ -26,7 +27,8 @@ import { SearchClientModule } from './search/search-client.module';
         ActivitiClientModule,
         DiscoveryClientModule,
         SearchClientModule,
-        ModelClientModule
+        ModelClientModule,
+        ContentCustomClientModule
     ]
 })
 export class AlfrescoJsClientsModule { }
