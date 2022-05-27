@@ -15,23 +15,18 @@
  * limitations under the License.
  */
 
+import { MatDialog } from '@angular/material/dialog';
 import {
-    Router,
-    CanActivate,
-    ActivatedRouteSnapshot,
-    RouterStateSnapshot,
-    CanActivateChild,
-    UrlTree
+    ActivatedRouteSnapshot, CanActivate, CanActivateChild, Router, RouterStateSnapshot, UrlTree
 } from '@angular/router';
-import { AuthenticationService } from './authentication.service';
+import { Observable } from 'rxjs';
 import {
     AppConfigService,
     AppConfigValues
 } from '../app-config/app-config.service';
 import { OauthConfigModel } from '../models/oauth-config.model';
-import { MatDialog } from '@angular/material/dialog';
+import { AuthenticationService } from './authentication.service';
 import { StorageService } from './storage.service';
-import { Observable } from 'rxjs';
 
 export abstract class AuthGuardBase implements CanActivate, CanActivateChild {
 
@@ -61,6 +56,10 @@ export abstract class AuthGuardBase implements CanActivate, CanActivateChild {
         state: RouterStateSnapshot
     ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
+        // if (this.shouldBeBypassed()) {
+        //     return true;
+        // }
+
         if (this.authenticationService.isLoggedIn() && this.authenticationService.isOauth() && this.isLoginFragmentPresent()) {
             return this.redirectSSOSuccessURL();
         }
@@ -73,6 +72,10 @@ export abstract class AuthGuardBase implements CanActivate, CanActivateChild {
         state: RouterStateSnapshot
     ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
         return this.canActivate(route, state);
+    }
+
+    shouldBeBypassed() {
+        return this.authenticationService.oidcHandlerEnabled();
     }
 
     protected async redirectSSOSuccessURL(): Promise<boolean | UrlTree> {
