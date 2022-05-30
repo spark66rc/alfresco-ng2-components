@@ -15,20 +15,20 @@
  * limitations under the License.
  */
 
-import { Injectable } from '@angular/core';
-import { Observable, from, throwError, ReplaySubject, of } from 'rxjs';
-import { LogService } from '../../services/log.service';
-import { RedirectionModel } from '../../models/redirection.model';
-import { AppConfigService, AppConfigValues } from '../../app-config/app-config.service';
-import { PeopleApi, UserProfileApi, UserRepresentation } from '@alfresco/js-api';
-import { JwtHelperService } from '../../services/jwt-helper.service';
-import { StorageService } from '../../services/storage.service';
-import { OauthConfigModel } from '../../models/oauth-config.model';
-import { BaseAuthenticationService } from '../base-authentication.service';
-import { ADFAuthenticationService } from '../authentication.interface';
-import { OAuthService } from 'angular-oauth2-oidc';
 import { ApiClientsService } from '@alfresco/adf-core/api';
+import { PeopleApi, UserProfileApi, UserRepresentation } from '@alfresco/js-api';
+import { Injectable } from '@angular/core';
+import { OAuthService } from 'angular-oauth2-oidc';
 import minimatch from 'minimatch';
+import { from, Observable, of, ReplaySubject, throwError } from 'rxjs';
+import { AppConfigService, AppConfigValues } from '../../app-config/app-config.service';
+import { OauthConfigModel } from '../../models/oauth-config.model';
+import { RedirectionModel } from '../../models/redirection.model';
+import { JwtHelperService } from '../../services/jwt-helper.service';
+import { LogService } from '../../services/log.service';
+import { StorageService } from '../../services/storage.service';
+import { ADFAuthenticationService } from '../authentication.interface';
+import { BaseAuthenticationService } from '../base-authentication.service';
 
 @Injectable({
     providedIn: 'root'

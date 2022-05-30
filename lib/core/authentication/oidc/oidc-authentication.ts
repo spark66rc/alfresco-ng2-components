@@ -16,14 +16,14 @@
  */
 
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthConfig, OAuthService } from 'angular-oauth2-oidc';
 import { JwksValidationHandler } from 'angular-oauth2-oidc-jwks';
-import { OauthConfigModel } from '../../models/oauth-config.model';
 import { take } from 'rxjs/operators';
 import { AppConfigService, AppConfigValues } from '../../app-config/app-config.service';
-import { Router } from '@angular/router';
-import { StorageService } from '../../services/storage.service';
+import { OauthConfigModel } from '../../models/oauth-config.model';
 import { AuthenticationService } from '../../services/authentication.service';
+import { StorageService } from '../../services/storage.service';
 
 export const configureOIDCAuthentication = (oidcAuthentication: OIDCAuthentication) => () => oidcAuthentication.init();
 
@@ -64,12 +64,18 @@ export class OIDCAuthentication {
 
     private getAuthConfig(codeFlow = false): AuthConfig {
         const oauth2: OauthConfigModel = Object.assign({}, this.appConfigService.get<OauthConfigModel>(AppConfigValues.OAUTHCONFIG, null));
+
+        const origin = window.location.origin;
+
+        console.log(`%c DEBUG:LOG oauth2.clientId`, 'color: green');
+        console.log(oauth2.clientId);
+        console.log('%c ------------------------------', 'color: tomato');
+
         return {
             issuer: oauth2.host,
-            loginUrl: `${oauth2.host}/protocol/openid-connect/auth`,
-            silentRefreshRedirectUri: oauth2.redirectSilentIframeUri,
-            redirectUri: window.location.origin + oauth2.redirectUri,
-            postLogoutRedirectUri: window.location.origin + oauth2.redirectUriLogout,
+            silentRefreshRedirectUri: `${origin}/silent-refresh.html`,
+            redirectUri: `${origin}${oauth2.redirectUri}`,
+            postLogoutRedirectUri: `${origin}/${oauth2.redirectUriLogout}`,
             clientId: oauth2.clientId,
             scope: oauth2.scope,
             ...(codeFlow ? { responseType: 'code' } : {})
