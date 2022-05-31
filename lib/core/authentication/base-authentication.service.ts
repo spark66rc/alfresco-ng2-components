@@ -15,11 +15,11 @@
  * limitations under the License.
  */
 
-import { Observable, Observer } from 'rxjs';
 import { HttpHeaders } from '@angular/common/http';
+import { Observable, Observer } from 'rxjs';
 
 export abstract class BaseAuthenticationService {
-    protected bearerExcludedUrls: string[] = ['auth/realms', 'resources/', 'assets/'];
+    protected bearerExcludedUrls: string[] = ['auth/realms', 'resources/', 'assets/', 'idp/'];
 
     abstract getToken(): string;
 

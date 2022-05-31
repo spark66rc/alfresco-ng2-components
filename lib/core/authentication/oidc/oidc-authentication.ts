@@ -68,7 +68,7 @@ export class OIDCAuthentication {
         const origin = window.location.origin;
 
         console.log(`%c DEBUG:LOG oauth2.clientId`, 'color: green');
-        console.log(oauth2.clientId);
+        console.log(oauth2);
         console.log('%c ------------------------------', 'color: tomato');
 
         return {
@@ -78,6 +78,7 @@ export class OIDCAuthentication {
             postLogoutRedirectUri: `${origin}/${oauth2.redirectUriLogout}`,
             clientId: oauth2.clientId,
             scope: oauth2.scope,
+            dummyClientSecret: oauth2.secret,
             ...(codeFlow ? { responseType: 'code' } : {})
         };
     }
