@@ -17,7 +17,7 @@
 
 import { CommonModule } from '@angular/common';
 import { APP_INITIALIZER, NgModule, ModuleWithProviders } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HttpClientXsrfModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule, TranslateLoader, TranslateStore, TranslateService } from '@ngx-translate/core';
 
@@ -67,10 +67,13 @@ import { versionCompatibilityFactory } from './services/version-compatibility-fa
 import { VersionCompatibilityService } from './services/version-compatibility.service';
 import { API_CLIENT_FACTORY_TOKEN, ApiClientsService, AlfrescoJsClientsModule } from '@alfresco/adf-core/api';
 import { LegacyClientFactory } from './api-factories/legacy-api-client.factory';
+import { AuthBearerInterceptor } from './services';
 
-interface Config {
+interface ModuleConfig {
     useLegacy: boolean;
 };
+
+const defaultConfig: ModuleConfig = { useLegacy: true };
 
 @NgModule({
     imports: [
@@ -108,6 +111,10 @@ interface Config {
         SearchTextModule,
         BlankPageModule,
         HttpClientModule,
+        HttpClientXsrfModule.withOptions({
+            cookieName: 'CSRF-TOKEN',
+            headerName: 'X-CSRF-TOKEN'
+        }),
         AlfrescoJsClientsModule
     ],
     exports: [
@@ -147,23 +154,14 @@ interface Config {
     ]
 })
 export class CoreModule {
-    static forRoot(config: Config = { useLegacy: true }): ModuleWithProviders<CoreModule> {
+    static forRoot(config: ModuleConfig = defaultConfig): ModuleWithProviders<CoreModule> {
         return {
             ngModule: CoreModule,
             providers: [
-                ApiClientsService,
-                { provide: API_CLIENT_FACTORY_TOKEN, useClass: LegacyClientFactory },
                 TranslateStore,
                 TranslateService,
+                ApiClientsService,
                 { provide: TranslateLoader, useClass: TranslateLoaderService },
-                {
-                    provide: APP_INITIALIZER,
-                    useFactory: startupServiceFactory,
-                    deps: [
-                        AlfrescoApiService
-                    ],
-                    multi: true
-                },
                 {
                     provide: APP_INITIALIZER,
                     useFactory: directionalityConfigFactory,
@@ -176,11 +174,20 @@ export class CoreModule {
                     deps: [VersionCompatibilityService],
                     multi: true
                 },
-                ApiClientsService,
+                { provide: HTTP_INTERCEPTORS, useClass: AuthBearerInterceptor, multi: true },
                 ...(config.useLegacy ?
-                    [] : [
+                    [
+                        { provide: API_CLIENT_FACTORY_TOKEN, useClass: LegacyClientFactory },
+                        {
+                            provide: APP_INITIALIZER,
+                            useFactory: startupServiceFactory,
+                            deps: [ AlfrescoApiService ],
+                            multi: true
+                        }
+                    ] : [
                         AlfrescoApiV2,
                         LegacyAlfrescoApiServiceFacade,
+                        { provide: API_CLIENT_FACTORY_TOKEN, useClass: AngularClientFactory },
                         {
                             provide: APP_INITIALIZER,
                             useFactory: createAlfrescoApiV2Service,
@@ -188,13 +195,13 @@ export class CoreModule {
                                 AlfrescoApiV2LoaderService
                             ],
                             multi: true
+                        },
+                        {
+                            provide: AlfrescoApiService,
+                            useExisting: LegacyAlfrescoApiServiceFacade
                         }
                     ]
-                ),
-                {
-                    provide: API_CLIENT_FACTORY_TOKEN,
-                    useClass: config.useLegacy ? LegacyClientFactory : AngularClientFactory
-                }
+                )
             ]
         };
     }

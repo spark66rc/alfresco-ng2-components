@@ -48,8 +48,7 @@ export abstract class AuthGuardBase implements CanActivate, CanActivateChild {
         protected appConfigService: AppConfigService,
         protected dialog: MatDialog,
         private storageService: StorageService
-    ) {
-    }
+    ) {}
 
     abstract checkLogin(
         activeRoute: ActivatedRouteSnapshot,

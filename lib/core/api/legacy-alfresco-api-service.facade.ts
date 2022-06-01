@@ -17,13 +17,21 @@
 
 /*tslint:disable*/ // => because of ADF file naming problems... Try to remove it, if you don't believe me :P
 
-import { AlfrescoApiType } from '@alfresco/js-api';
+import { AlfrescoApi, AlfrescoApiType } from '@alfresco/js-api';
 import { Injectable } from '@angular/core';
-import { ReplaySubject } from 'rxjs';
+import { ReplaySubject, Subject } from 'rxjs';
 import { AlfrescoApiV2 } from './alfresco-api-v2';
 
 @Injectable()
 export class LegacyAlfrescoApiServiceFacade {
+
+    /**
+     * Publish/subscribe to events related to node updates.
+     */
+    nodeUpdated = new Subject<Node>();
+
+    protected alfrescoApi: AlfrescoApi;
+
     constructor(private alfrescoApiV2: AlfrescoApiV2) {}
 
     alfrescoApiInitialized: ReplaySubject<boolean> = new ReplaySubject(1);
@@ -35,4 +43,15 @@ export class LegacyAlfrescoApiServiceFacade {
     init() {
         this.alfrescoApiInitialized.next(true);
     }
+
+    // NOT WORKING CORRECTLY
+
+    async reset() {
+        if (this.alfrescoApi) {
+            this.alfrescoApi.setConfig(this.alfrescoApiV2.config);
+        } else {
+            this.alfrescoApi = new AlfrescoApi(this.alfrescoApiV2.config);
+        }
+    }
+
 }

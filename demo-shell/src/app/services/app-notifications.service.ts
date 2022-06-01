@@ -15,12 +15,7 @@
  * limitations under the License.
  */
 import {
-    AuthenticationService,
-    AppConfigService,
-    NotificationService,
-    NotificationModel,
-    AlfrescoApiService,
-    IdentityUserService
+    AlfrescoApiService, AppConfigService, AuthenticationService, IdentityUserService, NotificationModel, NotificationService
 } from '@alfresco/adf-core';
 import { NotificationCloudService } from '@alfresco/adf-process-services-cloud';
 import { Injectable } from '@angular/core';
@@ -30,7 +25,7 @@ import { map } from 'rxjs/operators';
 const SUBSCRIPTION_QUERY = `
     subscription {
         engineEvents(eventType: [
-            PROCESS_STARTED
+            PROCESS_STARTEDnoti
             TASK_ASSIGNED
             TASK_UPDATED,
             TASK_CREATED
