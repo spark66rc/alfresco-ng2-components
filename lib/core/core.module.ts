@@ -114,7 +114,8 @@ const defaultConfig: ModuleConfig = { useLegacy: true };
         HttpClientXsrfModule.withOptions({
             cookieName: 'CSRF-TOKEN',
             headerName: 'X-CSRF-TOKEN'
-        })
+        }),
+        AlfrescoJsClientsModule
     ],
     exports: [
         AboutModule,
@@ -149,8 +150,7 @@ const defaultConfig: ModuleConfig = { useLegacy: true };
         IconModule,
         NotificationHistoryModule,
         SearchTextModule,
-        BlankPageModule,
-        AlfrescoJsClientsModule
+        BlankPageModule
     ]
 })
 export class CoreModule {
