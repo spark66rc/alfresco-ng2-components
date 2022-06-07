@@ -61,7 +61,7 @@ export class OIDCAuthentication {
                 this.router.navigate(['/']);
             }).catch((e: HttpErrorResponse) => {
                 if(e) {
-                    this.router.navigate(['/settings']);
+                    // this.router.navigate(['/settings']);
                 }
             });
         }

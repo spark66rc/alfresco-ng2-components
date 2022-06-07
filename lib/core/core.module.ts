@@ -114,8 +114,7 @@ const defaultConfig: ModuleConfig = { useLegacy: true };
         HttpClientXsrfModule.withOptions({
             cookieName: 'CSRF-TOKEN',
             headerName: 'X-CSRF-TOKEN'
-        }),
-        AlfrescoJsClientsModule
+        })
     ],
     exports: [
         AboutModule,
@@ -158,6 +157,7 @@ export class CoreModule {
         return {
             ngModule: CoreModule,
             providers: [
+                AlfrescoJsClientsModule,
                 TranslateStore,
                 TranslateService,
                 ApiClientsService,
