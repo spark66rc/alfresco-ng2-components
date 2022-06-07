@@ -149,7 +149,8 @@ const defaultConfig: ModuleConfig = { useLegacy: true };
         IconModule,
         NotificationHistoryModule,
         SearchTextModule,
-        BlankPageModule
+        BlankPageModule,
+        AlfrescoJsClientsModule
     ]
 })
 export class CoreModule {
@@ -157,7 +158,6 @@ export class CoreModule {
         return {
             ngModule: CoreModule,
             providers: [
-                AlfrescoJsClientsModule,
                 TranslateStore,
                 TranslateService,
                 ApiClientsService,

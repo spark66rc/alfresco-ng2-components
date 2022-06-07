@@ -15,7 +15,6 @@
  * limitations under the License.
  */
 
-import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthConfig, OAuthService } from 'angular-oauth2-oidc';
@@ -59,10 +58,6 @@ export class OIDCAuthentication {
                 // initialNavigation: false needs because of the OIDC package!!!
                 // https://manfredsteyer.github.io/angular-oauth2-oidc/docs/additional-documentation/routing-with-the-hashstrategy.html
                 this.router.navigate(['/']);
-            }).catch((e: HttpErrorResponse) => {
-                if(e) {
-                    // this.router.navigate(['/settings']);
-                }
             });
         }
     }
