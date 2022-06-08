@@ -37,7 +37,7 @@ import { ApiClientsService } from '../../api-clients.service';
 
 declare global {
     // eslint-disable-next-line @typescript-eslint/no-namespace
-    namespace Api {
+    namespace AlfrescoCore {
         interface ApiRegistry {
             ['ContentClient.versions']: VersionsApi;
             ['ContentClient.audit']: AuditApi;
