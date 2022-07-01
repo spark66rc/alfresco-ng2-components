@@ -17,16 +17,16 @@
 
 import { HttpClientConfig } from '@alfresco/js-api';
 import { HttpClient } from '@angular/common/http';
-import { BaseAuthenticationService } from '@alfresco/adf-core/auth';
+import { OAuthService } from 'angular-oauth2-oidc';
 import { BaseJsApiAngularHttpClient } from './js-api-angular-http-client';
 
 export class OauthJsApiAngularHttpClient extends BaseJsApiAngularHttpClient {
 
     get token() {
-        return this.auth.getToken();
+        return this.oidc.getAccessToken();
     }
 
-    constructor(config: HttpClientConfig, httpClient: HttpClient, private readonly auth: BaseAuthenticationService) {
+    constructor(config: HttpClientConfig, httpClient: HttpClient, private readonly oidc: OAuthService) {
         super(config, httpClient);
     }
 

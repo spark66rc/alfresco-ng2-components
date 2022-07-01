@@ -17,6 +17,7 @@
 
 /*tslint:disable*/ // => because of ADF file naming problems... Try to remove it, if you don't believe me :P
 
+import { AuthService } from '@alfresco/adf-core/auth';
 import { AlfrescoApiType, Node } from '@alfresco/js-api';
 import { Injectable } from '@angular/core';
 import { ReplaySubject, Subject } from 'rxjs';
@@ -27,7 +28,7 @@ export class LegacyAlfrescoApiServiceFacade {
 
     nodeUpdated = new Subject<Node>();
 
-    constructor(private alfrescoApiV2: AlfrescoApiV2) { }
+    constructor(private alfrescoApiV2: AlfrescoApiV2, private readonly auth: AuthService) { }
 
     alfrescoApiInitialized: ReplaySubject<boolean> = new ReplaySubject(1);
 
@@ -40,6 +41,7 @@ export class LegacyAlfrescoApiServiceFacade {
     }
 
     async reset() {
+        this.auth.login();
     }
 
 }

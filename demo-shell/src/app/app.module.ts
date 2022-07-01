@@ -20,7 +20,7 @@ import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ChartsModule } from 'ng2-charts';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateModule } from '@ngx-translate/core';
 import {
@@ -29,7 +29,7 @@ import {
     DebugAppConfigService,
     CoreModule,
     CoreAutomationService,
-    AuthBearerInterceptor
+    AppConfigModule
 } from '@alfresco/adf-core';
 import { ExtensionsModule } from '@alfresco/adf-extensions';
 import { AppComponent } from './app.component';
@@ -138,13 +138,13 @@ registerLocaleData(localeSv);
         BrowserModule,
         environment.e2e ? NoopAnimationsModule : BrowserAnimationsModule,
         ReactiveFormsModule,
-        RouterModule.forRoot(appRoutes, { useHash: true, relativeLinkResolution: 'legacy' }),
+        RouterModule.forRoot(appRoutes, { useHash: true, relativeLinkResolution: 'legacy'}),
         FormsModule,
         HttpClientModule,
         MaterialModule,
         FlexLayoutModule,
         TranslateModule.forRoot(),
-        CoreModule.forRoot({ useLegacy: false }),
+        CoreModule.forRoot(),
         ContentModule.forRoot(),
         InsightsModule.forRoot(),
         ProcessModule.forRoot(),
@@ -153,6 +153,7 @@ registerLocaleData(localeSv);
         ThemePickerModule,
         ChartsModule,
         AppCloudSharedModule,
+        AppConfigModule.forRoot(),
         MonacoEditorModule.forRoot()
     ],
     declarations: [
@@ -209,10 +210,6 @@ registerLocaleData(localeSv);
         SearchFilterChipsComponent
     ],
     providers: [
-        {
-            provide: HTTP_INTERCEPTORS, useClass:
-            AuthBearerInterceptor, multi: true
-        },
         { provide: AppConfigService, useClass: DebugAppConfigService }, // not use this service in production
         {
             provide: TRANSLATION_PROVIDER,
