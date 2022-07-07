@@ -28,7 +28,7 @@ export class RedirectAuthService extends AuthService {
   constructor(
     private oauthService: OAuthService,
     protected _oauthStorage: OAuthStorage,
-    @Inject(AUTH_CONFIG) private readonly authConfig: any
+    @Inject(AUTH_CONFIG) private readonly authConfig: AuthConfig | Promise<AuthConfig>
   ) {
     super();
   }
