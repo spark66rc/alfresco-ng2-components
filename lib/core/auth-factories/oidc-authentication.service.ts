@@ -32,6 +32,7 @@ import { LogService } from '../services/log.service';
     providedIn: 'root'
 })
 export class OIDCAuthenticationService extends BaseAuthenticationService  {
+
     onLogin: ReplaySubject<any> = new ReplaySubject<any>(1);
     onLogout: ReplaySubject<any> = new ReplaySubject<any>(1);
 
