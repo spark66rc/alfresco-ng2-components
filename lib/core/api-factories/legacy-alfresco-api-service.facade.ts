@@ -19,8 +19,8 @@ import { AuthService } from '@alfresco/adf-core/auth';
 import { AlfrescoApiType, Node } from '@alfresco/js-api';
 import { Injectable } from '@angular/core';
 import { ReplaySubject, Subject } from 'rxjs';
+import { AlfrescoApiV2 } from '@alfresco/adf-core/api';
 import { AuthConfigService } from '../auth-factories/auth-config.service';
-import { AlfrescoApiV2 } from './alfresco-api-v2';
 
 @Injectable()
 export class LegacyAlfrescoApiServiceFacade {

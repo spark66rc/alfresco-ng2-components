@@ -15,12 +15,13 @@
  * limitations under the License.
  */
 
-import { AlfrescoApiV2, LegacyAlfrescoApiServiceFacade } from '@alfresco/adf-core/api';
+import { AlfrescoApiV2 } from '@alfresco/adf-core/api';
 import { AlfrescoApi, AlfrescoApiConfig } from '@alfresco/js-api';
 import { Injectable } from '@angular/core';
 import { take } from 'rxjs/operators';
 import { AppConfigService, AppConfigValues } from '../app-config/app-config.service';
 import { OauthConfigModel } from '../models/oauth-config.model';
+import { LegacyAlfrescoApiServiceFacade } from './legacy-alfresco-api-service.facade';
 
 export function createAlfrescoApiV2Service(angularAlfrescoApiService: AlfrescoApiV2LoaderService) {
     return () => angularAlfrescoApiService.load();

@@ -48,7 +48,7 @@ import { DialogModule } from './dialogs/dialog.module';
 import { DirectiveModule } from './directives/directive.module';
 import { PipeModule } from './pipes/pipe.module';
 
-import { AlfrescoApiV2, AlfrescoJsClientsModule, API_CLIENT_FACTORY_TOKEN, LegacyAlfrescoApiServiceFacade } from '@alfresco/adf-core/api';
+import { AlfrescoApiV2, AlfrescoJsClientsModule, API_CLIENT_FACTORY_TOKEN } from '@alfresco/adf-core/api';
 import { BaseAuthenticationService, AUTH_CONFIG, AuthBearerInterceptor, OidcAuthGuard } from '@alfresco/adf-core/auth';
 import { ExtensionsModule } from '@alfresco/adf-extensions';
 import { OAuthStorage } from 'angular-oauth2-oidc';
@@ -71,6 +71,7 @@ import { SortingPickerModule } from './sorting-picker/sorting-picker.module';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { createAlfrescoApiV2Service, AlfrescoApiV2LoaderService } from './api-factories/alfresco-api-v2-loader.service';
 import { AngularClientFactory } from './api-factories/angular-api-client.factory';
+import { LegacyAlfrescoApiServiceFacade } from './api-factories/legacy-alfresco-api-service.facade';
 
 const defaultConfig: CoreModuleConfig = { useLegacy: true };
 
@@ -201,7 +202,7 @@ export class CoreModule {
                         },
                         { provide: AuthGuard, useClass: OidcAuthGuard },
                         { provide: BaseAuthenticationService, useClass: OIDCAuthenticationService },
-                        { provide: OAuthStorage, useExisting: StorageService },
+                        { provide: OAuthStorage, useClass: StorageService },
                         {
                             provide: AUTH_CONFIG,
                             useFactory: authConfigFactory,
