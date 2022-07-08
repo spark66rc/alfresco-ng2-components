@@ -125,6 +125,12 @@ export class RedirectAuthService extends AuthService {
 
     return this.ensureDiscoveryDocument().then(() =>
       void this.oauthService.setupAutomaticSilentRefresh()
-    );
+    ).catch(() => {
+       // catch error to prevent the app from crashing when trying to access unprotected routes
+    });
+  }
+
+  updateIDPConfiguration(config: AuthConfig) {
+    this.oauthService.configure(config);
   }
 }

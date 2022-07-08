@@ -32,7 +32,7 @@ export class AuthConfigService {
     .then(this.loadAppConfig.bind(this));
   }
 
-  private loadAppConfig(): AuthConfig {
+  loadAppConfig(): AuthConfig {
     const oauth2: OauthConfigModel = Object.assign({}, this.appConfigService.get<OauthConfigModel>(AppConfigValues.OAUTHCONFIG, null));
     const origin = window.location.origin;
     const redirectUri = this.getRedirectUri();
