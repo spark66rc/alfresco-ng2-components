@@ -29,7 +29,7 @@ export class RedirectAuthService extends AuthService {
 
   constructor(
     private oauthService: OAuthService,
-    protected _oauthStorage: OAuthStorage,
+    private _oauthStorage: OAuthStorage,
     // we use any, because currently for prod build we are disabling ivy and thus we can't use the @Inject decorator with correct type inside the constructor
     // as its leading to error: Could not resolve type https://github.com/angular/angular/issues/20351#issuecomment-344009887
     @Inject(AUTH_CONFIG) authConfig: any
