@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 
+import { StorageService } from '@alfresco/adf-core/storage';
 import { Injectable } from '@angular/core';
 import { Observable, from, throwError, ReplaySubject, forkJoin } from 'rxjs';
 import { AlfrescoApiService } from './alfresco-api.service';
@@ -25,7 +26,6 @@ import { AppConfigService, AppConfigValues } from '../app-config/app-config.serv
 import { UserRepresentation } from '@alfresco/js-api';
 import { map, catchError, tap } from 'rxjs/operators';
 import { JwtHelperService } from './jwt-helper.service';
-import { StorageService } from './storage.service';
 import { ApiClientsService } from '@alfresco/adf-core/api';
 
 const REMEMBER_ME_COOKIE_KEY = 'ALFRESCO_REMEMBER_ME';
