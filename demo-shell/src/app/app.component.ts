@@ -16,11 +16,8 @@
  */
 
 import { Component, ViewEncapsulation, OnInit } from '@angular/core';
-import {
-    AuthenticationService,
-    AlfrescoApiService,
-    PageTitleService
-} from '@alfresco/adf-core';
+import { AlfrescoApiService, PageTitleService } from '@alfresco/adf-core';
+import { BaseAuthenticationService } from '@alfresco/adf-core/auth';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 
@@ -34,7 +31,7 @@ export class AppComponent implements OnInit {
 
     constructor(private pageTitleService: PageTitleService,
                 private alfrescoApiService: AlfrescoApiService,
-                private authenticationService: AuthenticationService,
+                private authenticationService: BaseAuthenticationService,
                 private router: Router,
                 private dialogRef: MatDialog) {
 

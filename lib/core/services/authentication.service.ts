@@ -27,6 +27,8 @@ import { map, catchError, tap } from 'rxjs/operators';
 import { HttpHeaders } from '@angular/common/http';
 import { JwtHelperService } from './jwt-helper.service';
 import { StorageService } from '@alfresco/adf-core/storage';
+import { BaseAuthenticationService } from '@alfresco/adf-core/auth';
+import { OauthConfigModel } from '../models/oauth-config.model';
 
 const REMEMBER_ME_COOKIE_KEY = 'ALFRESCO_REMEMBER_ME';
 const REMEMBER_ME_UNTIL = 1000 * 60 * 60 * 24 * 30;
@@ -34,10 +36,10 @@ const REMEMBER_ME_UNTIL = 1000 * 60 * 60 * 24 * 30;
 @Injectable({
     providedIn: 'root'
 })
-export class AuthenticationService {
+export class AuthenticationService extends BaseAuthenticationService {
+    
     private redirectUrl: RedirectionModel = null;
 
-    private bearerExcludedUrls: string[] = ['auth/realms', 'resources/', 'assets/'];
     /**
      * Emits login event
      */
@@ -65,7 +67,9 @@ export class AuthenticationService {
         private storageService: StorageService,
         private alfrescoApi: AlfrescoApiService,
         private cookie: CookieService,
-        private logService: LogService) {
+        private logService: LogService
+    ) {
+        super();
         this.alfrescoApi.alfrescoApiInitialized.subscribe(() => {
             this.alfrescoApi.getInstance().reply('logged-in', () => {
                 this.onLogin.next();
@@ -403,5 +407,14 @@ export class AuthenticationService {
                 observer.error(error);
             }
         });
+    }
+
+    isImplicitFlow(): boolean {
+        const oauth2: OauthConfigModel = Object.assign({}, this.appConfig.get<OauthConfigModel>(AppConfigValues.OAUTHCONFIG, null));
+        return !!oauth2?.implicitFlow;
+    }
+
+    isAuthCodeFlow(): boolean {
+        return false;
     }
 }

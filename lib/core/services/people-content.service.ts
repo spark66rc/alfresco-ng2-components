@@ -22,7 +22,7 @@ import { catchError, map, tap } from 'rxjs/operators';
 import { PeopleApi, PersonBodyCreate, Pagination, PersonBodyUpdate } from '@alfresco/js-api';
 import { EcmUserModel } from '../models/ecm-user.model';
 import { LogService } from './log.service';
-import { AuthenticationService } from './authentication.service';
+import { BaseAuthenticationService } from '@alfresco/adf-core/auth';
 import { ContentService } from './content.service';
 
 // eslint-disable-next-line no-shadow
@@ -60,7 +60,7 @@ export class PeopleContentService {
 
     constructor(
         private apiService: AlfrescoApiService,
-        authenticationService: AuthenticationService,
+        authenticationService: BaseAuthenticationService,
         private logService: LogService,
         private contentService: ContentService
     ) {
