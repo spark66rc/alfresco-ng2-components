@@ -30,7 +30,7 @@ import {
 } from '../app-config/app-config.service';
 import { OauthConfigModel } from '../models/oauth-config.model';
 import { MatDialog } from '@angular/material/dialog';
-import { StorageService } from './storage.service';
+import { StorageService } from '@alfresco/adf-core/storage';
 import { Observable } from 'rxjs';
 
 export abstract class AuthGuardBase implements CanActivate, CanActivateChild {

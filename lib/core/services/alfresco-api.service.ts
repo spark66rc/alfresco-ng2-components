@@ -20,7 +20,7 @@ import { Node, AlfrescoApi, AlfrescoApiConfig } from '@alfresco/js-api';
 import { AppConfigService, AppConfigValues } from '../app-config/app-config.service';
 import { Subject, ReplaySubject } from 'rxjs';
 import { OauthConfigModel } from '../models/oauth-config.model';
-import { StorageService } from './storage.service';
+import { StorageService } from '@alfresco/adf-core/storage';
 import { OpenidConfiguration } from './openid-configuration.interface';
 
 @Injectable({

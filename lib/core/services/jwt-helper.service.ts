@@ -16,7 +16,7 @@
  */
 
 import { Injectable } from '@angular/core';
-import { StorageService } from './storage.service';
+import { StorageService } from '@alfresco/adf-core/storage';
 
 @Injectable({
     providedIn: 'root'

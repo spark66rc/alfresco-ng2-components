@@ -17,7 +17,7 @@
 
 import { Injectable } from '@angular/core';
 import { PreferenceCloudServiceInterface } from './preference-cloud.interface';
-import { StorageService } from '@alfresco/adf-core';
+import { StorageService } from '@alfresco/adf-core/storage';
 import { Observable, of } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
