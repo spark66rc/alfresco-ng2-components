@@ -94,6 +94,7 @@ import {
     CustomWidgetComponent
 } from './components/cloud/custom-form-components/custom-editor.component';
 import { AspectListSampleComponent } from './components/aspect-list-sample/aspect-list-sample.component';
+import { AuthModule } from '@alfresco/adf-core/auth';
 
 import { registerLocaleData } from '@angular/common';
 import localeFr from '@angular/common/locales/fr';
@@ -144,7 +145,8 @@ registerLocaleData(localeSv);
         MaterialModule,
         FlexLayoutModule,
         TranslateModule.forRoot(),
-        CoreModule.forRoot(),
+        AuthModule.forRoot({ useHash: true }),
+        CoreModule.forRoot({ useLegacy: false }),
         ContentModule.forRoot(),
         InsightsModule.forRoot(),
         ProcessModule.forRoot(),

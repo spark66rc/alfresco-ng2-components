@@ -62,6 +62,14 @@ import { versionCompatibilityFactory } from './services/version-compatibility-fa
 import { VersionCompatibilityService } from './services/version-compatibility.service';
 import { AlfrescoJsClientsModule } from '@alfresco/adf-core/api';
 import { LegacyApiClientModule } from './api-factories/legacy-api-client.module';
+import { AuthGuard } from './services/auth-guard.service';
+import { OidcAuthGuard, AUTH_CONFIG } from "@alfresco/adf-core/auth";
+import { authConfigFactory, AuthConfigService } from './auth-factories/auth-config.service';
+import { OIDCAuthenticationService } from './auth-factories/oidc-authentication.service';
+import { BaseAuthenticationService } from "@alfresco/adf-core/auth";
+import { CoreModuleConfig, CORE_MODULE_CONFIG } from './core.module.token';
+
+const defaultConfig: CoreModuleConfig = { useLegacy: true };
 
 @NgModule({
     imports: [
@@ -138,7 +146,7 @@ import { LegacyApiClientModule } from './api-factories/legacy-api-client.module'
     ]
 })
 export class CoreModule {
-    static forRoot(): ModuleWithProviders<CoreModule> {
+    static forRoot(config: CoreModuleConfig = defaultConfig): ModuleWithProviders<CoreModule> {
         return {
             ngModule: CoreModule,
             providers: [
@@ -164,6 +172,19 @@ export class CoreModule {
                     useFactory: versionCompatibilityFactory,
                     deps: [ VersionCompatibilityService ],
                     multi: true
+                },
+                {
+                    provide: CORE_MODULE_CONFIG,
+                    useValue: config
+                },
+                // { provide: BaseAuthenticationService, useClass: AuthenticationService },
+                // AUTH MODULES
+                { provide: AuthGuard, useClass: OidcAuthGuard },
+                { provide: BaseAuthenticationService, useClass: OIDCAuthenticationService },
+                {
+                    provide: AUTH_CONFIG,
+                    useFactory: authConfigFactory,
+                    deps: [AuthConfigService]
                 }
             ]
         };

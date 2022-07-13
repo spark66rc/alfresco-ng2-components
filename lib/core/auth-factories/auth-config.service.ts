@@ -44,6 +44,7 @@ export class AuthConfigService {
         postLogoutRedirectUri: `${origin}/${oauth2.redirectUriLogout}`,
         clientId: oauth2.clientId,
         scope: oauth2.scope,
+        logoutUrl: `${origin}/${oauth2.redirectUriLogout}`,
         dummyClientSecret: oauth2.secret || '',
         ...(oauth2.codeFlow && { responseType: 'code' })
     };

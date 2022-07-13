@@ -172,7 +172,7 @@ export class AppLayoutComponent implements OnInit, OnDestroy {
         private alfrescoApiService: AlfrescoApiService,
         private headerService: HeaderDataService) {
         if (this.alfrescoApiService.getInstance().isOauthConfiguration()) {
-            this.enableRedirect = false;
+            // this.enableRedirect = false;
         }
     }
 
