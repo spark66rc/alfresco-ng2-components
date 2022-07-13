@@ -18,19 +18,20 @@
 import { TestBed } from '@angular/core/testing';
 import { ContentService } from './content.service';
 import { AppConfigService } from '../app-config/app-config.service';
-import { AuthenticationService } from './authentication.service';
+import { BaseAuthenticationService } from '@alfresco/adf-core/auth';
 import { StorageService } from '@alfresco/adf-core/storage';
 import { setupTestBed } from '../testing/setup-test-bed';
 import { Node } from '@alfresco/js-api';
 import { CoreTestingModule } from '../testing';
 import { TranslateModule } from '@ngx-translate/core';
+import { AuthenticationService } from './authentication.service';
 
 declare let jasmine: any;
 
 describe('ContentService', () => {
 
     let contentService: ContentService;
-    let authService: AuthenticationService;
+    let authService: BaseAuthenticationService;
     let storage: StorageService;
     let node: any;
 
@@ -40,11 +41,14 @@ describe('ContentService', () => {
         imports: [
             TranslateModule.forRoot(),
             CoreTestingModule
+        ],
+        providers: [
+            { provide: BaseAuthenticationService, useClass: AuthenticationService },
         ]
     });
 
     beforeEach(() => {
-        authService = TestBed.inject(AuthenticationService);
+        authService = TestBed.inject(BaseAuthenticationService);
         contentService = TestBed.inject(ContentService);
         storage = TestBed.inject(StorageService);
         storage.clear();

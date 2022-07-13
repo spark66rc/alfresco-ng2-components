@@ -19,15 +19,16 @@ import { TestBed } from '@angular/core/testing';
 import { Router, RouterStateSnapshot } from '@angular/router';
 import { AppConfigService } from '../app-config/app-config.service';
 import { AuthGuard } from './auth-guard.service';
-import { AuthenticationService } from './authentication.service';
+import { BaseAuthenticationService } from '@alfresco/adf-core/auth';
 import { setupTestBed } from '../testing/setup-test-bed';
 import { CoreTestingModule } from '../testing/core.testing.module';
 import { TranslateModule } from '@ngx-translate/core';
 import { StorageService } from '@alfresco/adf-core/storage';
+import { AuthenticationService } from './public-api';
 
 describe('AuthGuardService', () => {
     let state;
-    let authService: AuthenticationService;
+    let authService: BaseAuthenticationService;
     let router: Router;
     let authGuard: AuthGuard;
     let storageService: StorageService;
@@ -37,13 +38,16 @@ describe('AuthGuardService', () => {
         imports: [
             TranslateModule.forRoot(),
             CoreTestingModule
+        ],
+        providers: [
+            { provide: BaseAuthenticationService, useClass: AuthenticationService },
         ]
     });
 
     beforeEach(() => {
         localStorage.clear();
         state = { url: '' };
-        authService = TestBed.inject(AuthenticationService);
+        authService = TestBed.inject(BaseAuthenticationService);
         router = TestBed.inject(Router);
         authGuard = TestBed.inject(AuthGuard);
         appConfigService = TestBed.inject(AppConfigService);

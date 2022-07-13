@@ -19,17 +19,18 @@ import { Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import {
-    AuthenticationService,
     SearchService,
     setupTestBed,
     UserPreferencesService,
-    SearchTextInputComponent
+    SearchTextInputComponent,
 } from '@alfresco/adf-core';
+import { BaseAuthenticationService } from '@alfresco/adf-core/auth';
 import { noResult, results } from '../../mock';
 import { SearchControlComponent } from './search-control.component';
 import { of } from 'rxjs';
 import { ContentTestingModule } from '../../testing/content.testing.module';
 import { TranslateModule } from '@ngx-translate/core';
+import { MockProvider } from 'ng-mocks';
 
 @Component({
     template: `
@@ -57,7 +58,6 @@ describe('SearchControlComponent', () => {
     let element: HTMLElement;
     let debugElement: DebugElement;
     let searchService: SearchService;
-    let authService: AuthenticationService;
     let fixtureCustom: ComponentFixture<SimpleSearchTestCustomEmptyComponent>;
     let elementCustom: HTMLElement;
     let componentCustom: SimpleSearchTestCustomEmptyComponent;
@@ -71,6 +71,13 @@ describe('SearchControlComponent', () => {
         ],
         declarations: [
             SimpleSearchTestCustomEmptyComponent
+        ],
+        providers: [
+           MockProvider(BaseAuthenticationService, {
+                isEcmLoggedIn(): boolean {
+                    return true;
+                }
+           })
         ]
     });
 
@@ -78,9 +85,7 @@ describe('SearchControlComponent', () => {
         fixture = TestBed.createComponent(SearchControlComponent);
         debugElement = fixture.debugElement;
         searchService = TestBed.inject(SearchService);
-        authService = TestBed.inject(AuthenticationService);
         userPreferencesService = TestBed.inject(UserPreferencesService);
-        spyOn(authService, 'isEcmLoggedIn').and.returnValue(true);
         component = fixture.componentInstance;
         element = fixture.nativeElement;
 

@@ -19,7 +19,7 @@ import { Component, ContentChildren } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
-import { AuthenticationService } from '../services';
+import { BaseAuthenticationService } from '@alfresco/adf-core/auth';
 import { AppConfigService } from '../app-config/app-config.service';
 import { setupTestBed } from '../testing/setup-test-bed';
 import { LogoutDirective } from './logout.directive';
@@ -41,7 +41,7 @@ describe('LogoutDirective', () => {
 
         let fixture: ComponentFixture<TestComponent>;
         let router: Router;
-        let authService: AuthenticationService;
+        let authService: BaseAuthenticationService;
         let appConfig: AppConfigService;
 
         setupTestBed({
@@ -56,7 +56,7 @@ describe('LogoutDirective', () => {
 
         beforeEach(() => {
             router = TestBed.inject(Router);
-            authService = TestBed.inject(AuthenticationService);
+            authService = TestBed.inject(BaseAuthenticationService);
             appConfig = TestBed.inject(AppConfigService);
             fixture = TestBed.createComponent(TestComponent);
             fixture.detectChanges();
@@ -124,7 +124,7 @@ describe('LogoutDirective', () => {
 
         let fixture: ComponentFixture<TestComponent>;
         let router: Router;
-        let authService: AuthenticationService;
+        let authService: BaseAuthenticationService;
 
         setupTestBed({
             imports: [
@@ -138,7 +138,7 @@ describe('LogoutDirective', () => {
 
         beforeEach(() => {
             router = TestBed.inject(Router);
-            authService = TestBed.inject(AuthenticationService);
+            authService = TestBed.inject(BaseAuthenticationService);
             fixture = TestBed.createComponent(TestComponent);
             fixture.detectChanges();
         });
@@ -168,7 +168,7 @@ describe('LogoutDirective', () => {
 
         let fixture: ComponentFixture<TestComponent>;
         let router: Router;
-        let authService: AuthenticationService;
+        let authService: BaseAuthenticationService;
 
         setupTestBed({
             imports: [
@@ -182,7 +182,7 @@ describe('LogoutDirective', () => {
 
         beforeEach(() => {
             router = TestBed.inject(Router);
-            authService = TestBed.inject(AuthenticationService);
+            authService = TestBed.inject(BaseAuthenticationService);
             fixture = TestBed.createComponent(TestComponent);
             fixture.detectChanges();
         });
