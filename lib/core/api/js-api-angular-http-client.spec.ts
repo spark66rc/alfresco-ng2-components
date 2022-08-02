@@ -14,11 +14,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { RequestOptions, ResultListDataRepresentationTaskRepresentation, SecurityOptions, Emitter } from '@alfresco/js-api';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { TestBed } from '@angular/core/testing';
-import { JsApiAngularHttpClient } from './js-api-angular-http-client';
-
+import {
+    Emitter,
+    RequestOptions,
+    ResultListDataRepresentationTaskRepresentation,
+    SecurityOptions
+} from "@alfresco/js-api";
+import {
+    HttpClientTestingModule,
+    HttpTestingController
+} from "@angular/common/http/testing";
+import { TestBed } from "@angular/core/testing";
+import { JsApiAngularHttpClient } from "./js-api-angular-http-client";
 
 const securityOptions: SecurityOptions = {
     authentications: {},
@@ -35,117 +42,142 @@ const emitter: Emitter = {
     once: () => {}
 };
 
-const mockResponse =  {
+const mockResponse = {
     data: [
         {
             id: 14,
-            name: 'nameFake1',
-            created: '2017-03-01T12:25:17.189+0000'
+            name: "nameFake1",
+            created: "2017-03-01T12:25:17.189+0000"
         }
     ]
 };
 
-
-describe('JsApiAngularHttpClient', () => {
+describe("JsApiAngularHttpClient", () => {
     let angularHttpClient: JsApiAngularHttpClient;
     let controller: HttpTestingController;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [
-                HttpClientTestingModule
-            ]
+            imports: [HttpClientTestingModule]
         });
         angularHttpClient = TestBed.inject(JsApiAngularHttpClient);
         controller = TestBed.inject(HttpTestingController);
     });
 
-
-    describe('deserialize', () => {
-
+    describe("deserialize", () => {
         afterEach(() => {
             controller.verify();
         });
 
-        it('should deserialize incoming request based on return type', (done) => {
-
+        it("should deserialize incoming request based on return type", done => {
             const options: RequestOptions = {
-                path: '',
-                httpMethod: 'POST',
-                returnType: ResultListDataRepresentationTaskRepresentation
+                path: "",
+                httpMethod: "POST",
+                returnType: ResultListDataRepresentationTaskRepresentation,
+                headerParams: {
+                    "Content-Type": "application/json"
+                },
+                accepts: ["application/json"]
             };
 
-            angularHttpClient.request('http://example.com', options, securityOptions, emitter).then((res: ResultListDataRepresentationTaskRepresentation) => {
-                expect(res instanceof ResultListDataRepresentationTaskRepresentation).toBeTruthy();
-                expect(res.data[0].created instanceof Date).toBeTruthy();
-                done();
-            });
+            angularHttpClient
+                .request(
+                    "http://example.com",
+                    options,
+                    securityOptions,
+                    emitter
+                )
+                .then((res: ResultListDataRepresentationTaskRepresentation) => {
+                    expect(
+                        res instanceof
+                            ResultListDataRepresentationTaskRepresentation
+                    ).toBeTruthy();
+                    expect(res.data[0].created instanceof Date).toBeTruthy();
+                    done();
+                });
 
-            const req = controller.expectOne('http://example.com');
-            expect(req.request.method).toEqual('POST');
+            const req = controller.expectOne("http://example.com");
+            expect(req.request.method).toEqual("POST");
 
             req.flush(mockResponse);
-
         });
 
-        it('should return parsed json object when responseType is json', (done) => {
-
+        it("should return parsed json object when responseType is json", done => {
             const options: RequestOptions = {
-                path: '',
-                httpMethod: 'POST',
-                responseType: 'json'
+                path: "",
+                httpMethod: "POST",
+                responseType: "json"
             };
 
-            angularHttpClient.request('http://example.com', options, securityOptions, emitter).then((res) => {
-                expect(res).toEqual(mockResponse);
-                done();
-            });
+            angularHttpClient
+                .request(
+                    "http://example.com",
+                    options,
+                    securityOptions,
+                    emitter
+                )
+                .then(res => {
+                    expect(res).toEqual(mockResponse);
+                    done();
+                });
 
-            const req = controller.expectOne('http://example.com');
-            expect(req.request.method).toEqual('POST');
+            const req = controller.expectOne("http://example.com");
+            expect(req.request.method).toEqual("POST");
 
             req.flush(mockResponse);
-
         });
 
-        it('should return string when responseType and returnType are undefined', (done) => {
-
+        it("should return string when responseType and returnType are undefined", done => {
             const options: RequestOptions = {
-                path: '',
-                httpMethod: 'POST'
+                path: "",
+                httpMethod: "POST"
             };
 
-            angularHttpClient.request('http://example.com', options, securityOptions, emitter).then((res) => {
-                expect(res).toEqual(JSON.stringify(mockResponse));
-                done();
-            });
+            angularHttpClient
+                .request(
+                    "http://example.com",
+                    options,
+                    securityOptions,
+                    emitter
+                )
+                .then(res => {
+                    expect(res).toEqual(JSON.stringify(mockResponse));
+                    done();
+                });
 
-            const req = controller.expectOne('http://example.com');
-            expect(req.request.method).toEqual('POST');
+            const req = controller.expectOne("http://example.com");
+            expect(req.request.method).toEqual("POST");
 
             req.flush(mockResponse);
-
         });
 
-        it('should emit unauthorized message for 401 request', (done) => {
+        it("should emit unauthorized message for 401 request", done => {
             const options: RequestOptions = {
-                path: '',
-                httpMethod: 'POST'
+                path: "",
+                httpMethod: "POST"
             };
 
-            const spy = spyOn(emitter, 'emit').and.callThrough();
+            const spy = spyOn(emitter, "emit").and.callThrough();
 
-            angularHttpClient.request('http://example.com', options, securityOptions, emitter).catch(() => {
-                expect(spy).toHaveBeenCalledWith('unauthorized');
-                done();
+            angularHttpClient
+                .request(
+                    "http://example.com",
+                    options,
+                    securityOptions,
+                    emitter
+                )
+                .catch(() => {
+                    expect(spy).toHaveBeenCalledWith("unauthorized");
+                    done();
+                });
+
+            const req = controller.expectOne("http://example.com");
+            expect(req.request.method).toEqual("POST");
+
+            req.flush("<div></div>", {
+                status: 401,
+                statusText: "unauthorized"
             });
-
-            const req = controller.expectOne('http://example.com');
-            expect(req.request.method).toEqual('POST');
-
-            req.flush('<div></div>', { status: 401, statusText: 'unauthorized'});
         });
-
     });
-
 });

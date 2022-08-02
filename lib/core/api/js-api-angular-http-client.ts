@@ -16,12 +16,10 @@
  */
 
 import {
-    HttpClient as JsApiHttpClient,
-    Emitter as JsEmitter,
-    RequestOptions,
+    Emitter as JsEmitter, HttpClient as JsApiHttpClient, RequestOptions,
     SecurityOptions
 } from '@alfresco/js-api';
-import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpEventType, HttpHeaders, HttpParams, HttpResponse, HttpUploadProgressEvent } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject, throwError } from 'rxjs';
 import { catchError, map, takeUntil } from 'rxjs/operators';
@@ -32,6 +30,10 @@ declare const Buffer: any;
 export const isBrowser = (): boolean => typeof window !== 'undefined' && typeof window.document !== 'undefined';
 
 type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' ;
+
+
+const isHttpUploadProgress = (val: any): val is HttpUploadProgressEvent => val?.type === HttpEventType.UploadProgress;
+const isHttpResponse = <T>(val: any): val is HttpResponse<T> => val?.type === HttpEventType.Response;
 
 @Injectable({
     providedIn: 'root'
@@ -44,16 +46,28 @@ export class JsApiAngularHttpClient implements JsApiHttpClient {
 
         const responseType = this.getResponseType(options);
 
+        const optionsHeaders = {
+            ...options.headerParams,
+            ...(options.accepts?.length && { Accept: options.accepts.join(',') })
+        };
+
+        const contentType = options.contentTypes[0];
+
+        const body = contentType === 'application/x-www-form-urlencoded' ? new HttpParams({ fromObject: this.removeUndefinedValues(options.formParams) }) : options.bodyParam;
+        const headers = new HttpHeaders(optionsHeaders);
+
         const request = this.httpClient.request(
             options.httpMethod,
             url,
             {
-            ...(options.bodyParam ? { body: options.bodyParam } : {}),
-            ...(options.headerParams ? { headers: new HttpHeaders(options.headerParams) } : {}),
-            ...(options.queryParams ? { params: new HttpParams({ fromObject: this.removeUndefinedValues(options.queryParams) }) } : {}),
-            ...(responseType ? { responseType } : {}),
-            observe: 'response'
-        });
+                body,
+                headers,
+                ...(options.queryParams ? { params: new HttpParams({ fromObject: this.removeUndefinedValues(options.queryParams) }) } : {}),
+                ...(responseType ? { responseType } : {}),
+                observe: 'events',
+                reportProgress: true
+            }
+        );
 
         return this.requestWithLegacyEventEmitters<T>(request, eventEmitter, options.returnType);
     }
@@ -115,15 +129,23 @@ export class JsApiAngularHttpClient implements JsApiHttpClient {
         return null;
     }
 
-    private requestWithLegacyEventEmitters<T = any>(request$: Observable<HttpResponse<T>>, emitter: JsEmitter, returnType: any): Promise<T> {
+    private requestWithLegacyEventEmitters<T = any>(request$: Observable<any>, emitter: JsEmitter, returnType: any): Promise<T> {
 
         const abort$ = new Subject<void>();
 
         const promise = request$.pipe(
             map((res) => {
-                emitter.emit('success', res.body);
 
-                return JsApiAngularHttpClient.deserialize(res.body, returnType);
+                if (isHttpUploadProgress(res)) {
+                    const percent = Math.round((res.loaded / res.total) * 100);
+                    emitter.emit('progress', { loaded: res.loaded, total: res.total, percent });
+                }
+
+                if (isHttpResponse<T>(res)) {
+                    emitter.emit('success', res.body);
+                    return JsApiAngularHttpClient.deserialize(res.body, returnType);
+                }
+
             }),
             catchError((err: HttpErrorResponse) => {
                 emitter.emit('error', err);
