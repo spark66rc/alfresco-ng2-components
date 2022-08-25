@@ -28,17 +28,17 @@ module.exports = function (config) {
             },
 
             {pattern: 'node_modules/moment/min/moment.min.js', included: true, watched: false},
-            {pattern: 'lib/insights/src/lib/i18n/**/en.json', included: false, served: true, watched: false},
-            {pattern: 'lib/insights/**/*.ts', included: false, served: true, watched: false},
-            {pattern: 'lib/config/app.config.json', included: false, served: true, watched: false},
+            {pattern: 'libs/insights/src/lib/i18n/**/en.json', included: false, served: true, watched: false},
+            {pattern: 'libs/insights/**/*.ts', included: false, served: true, watched: false},
+            {pattern: 'libs/config/app.config.json', included: false, served: true, watched: false},
         ],
 
         frameworks: ['jasmine-ajax', 'jasmine', '@angular-devkit/build-angular'],
 
         proxies: {
-            '/base/assets/' :'/base/lib/insights/src/lib/assets/',
-            '/assets/adf-insights/i18n/en.json': '/base/lib/insights/src/lib/i18n/en.json',
-            '/app.config.json': '/base/lib/config/app.config.json'
+            '/base/assets/' :'/base/libs/insights/src/lib/assets/',
+            '/assets/adf-insights/i18n/en.json': '/base/libs/insights/src/lib/i18n/en.json',
+            '/app.config.json': '/base/libs/config/app.config.json'
         },
 
         plugins: [

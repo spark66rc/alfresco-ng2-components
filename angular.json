@@ -1,7 +1,6 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
-  "newProjectRoot": "lib",
   "projects": {
     "demoshell": {
       "root": "demo-shell",
@@ -63,47 +62,47 @@
               },
               {
                 "glob": "**/*",
-                "input": "lib/core/src/lib/assets",
+                "input": "libs/core/src/lib/assets",
                 "output": "/assets"
               },
               {
                 "glob": "**/*",
-                "input": "lib/process-services/src/lib/assets",
+                "input": "libs/process-services/src/lib/assets",
                 "output": "/assets"
               },
               {
                 "glob": "**/*",
-                "input": "lib/process-services-cloud/src/lib/assets",
+                "input": "libs/process-services-cloud/src/lib/assets",
                 "output": "/assets"
               },
               {
                 "glob": "**/*",
-                "input": "lib/content-services/src/lib/assets",
+                "input": "libs/content-services/src/lib/assets",
                 "output": "/assets"
               },
               {
                 "glob": "**/*",
-                "input": "lib/core/src/lib/i18n",
+                "input": "libs/core/src/lib/i18n",
                 "output": "/assets/adf-core/i18n"
               },
               {
                 "glob": "**/*",
-                "input": "lib/content-services/src/lib/i18n",
+                "input": "libs/content-services/src/lib/i18n",
                 "output": "/assets/adf-content-services/i18n"
               },
               {
                 "glob": "**/*",
-                "input": "lib/process-services/src/lib/i18n",
+                "input": "libs/process-services/src/lib/i18n",
                 "output": "/assets/adf-process-services/i18n"
               },
               {
                 "glob": "**/*",
-                "input": "lib/process-services-cloud/src/lib/i18n",
+                "input": "libs/process-services-cloud/src/lib/i18n",
                 "output": "/assets/adf-process-services-cloud/i18n"
               },
               {
                 "glob": "**/*",
-                "input": "lib/insights/src/lib/i18n",
+                "input": "libs/insights/src/lib/i18n",
                 "output": "/assets/adf-insights/i18n"
               },
               {
@@ -120,47 +119,47 @@
             "styles": [
               {
                 "inject": false,
-                "input": "lib/core/src/lib/styles/prebuilt/adf-blue-orange.scss",
+                "input": "libs/core/src/lib/styles/prebuilt/adf-blue-orange.scss",
                 "bundleName": "adf-blue-orange"
               },
               {
                 "inject": false,
-                "input": "lib/core/src/lib/styles/prebuilt/adf-blue-purple.scss",
+                "input": "libs/core/src/lib/styles/prebuilt/adf-blue-purple.scss",
                 "bundleName": "adf-blue-purple"
               },
               {
                 "inject": false,
-                "input": "lib/core/src/lib/styles/prebuilt/adf-cyan-orange.scss",
+                "input": "libs/core/src/lib/styles/prebuilt/adf-cyan-orange.scss",
                 "bundleName": "adf-cyan-orange"
               },
               {
                 "inject": false,
-                "input": "lib/core/src/lib/styles/prebuilt/adf-cyan-purple.scss",
+                "input": "libs/core/src/lib/styles/prebuilt/adf-cyan-purple.scss",
                 "bundleName": "adf-cyan-purple"
               },
               {
                 "inject": false,
-                "input": "lib/core/src/lib/styles/prebuilt/adf-green-orange.scss",
+                "input": "libs/core/src/lib/styles/prebuilt/adf-green-orange.scss",
                 "bundleName": "adf-green-orange"
               },
               {
                 "inject": false,
-                "input": "lib/core/src/lib/styles/prebuilt/adf-green-purple.scss",
+                "input": "libs/core/src/lib/styles/prebuilt/adf-green-purple.scss",
                 "bundleName": "adf-green-purple"
               },
               {
                 "inject": false,
-                "input": "lib/core/src/lib/styles/prebuilt/adf-indigo-pink.scss",
+                "input": "libs/core/src/lib/styles/prebuilt/adf-indigo-pink.scss",
                 "bundleName": "adf-indigo-pink"
               },
               {
                 "inject": false,
-                "input": "lib/core/src/lib/styles/prebuilt/adf-pink-bluegrey.scss",
+                "input": "libs/core/src/lib/styles/prebuilt/adf-pink-bluegrey.scss",
                 "bundleName": "adf-pink-bluegrey"
               },
               {
                 "inject": false,
-                "input": "lib/core/src/lib/styles/prebuilt/adf-purple-green.scss",
+                "input": "libs/core/src/lib/styles/prebuilt/adf-purple-green.scss",
                 "bundleName": "adf-purple-green"
               },
               "demo-shell/src/assets/fonts/material-icons/material-icons.css",
@@ -260,7 +259,7 @@
               "options": {
               "commands": [
                   {
-                      "command": "$(npm bin)/cspell 'lib/demo-shell/**/*.ts'"
+                      "command": "$(npm bin)/cspell 'demo-shell/**/*.ts'"
                   }
               ]
           }
@@ -296,24 +295,24 @@
     },
     "core": {
       "projectType": "library",
-      "root": "lib/core",
-      "sourceRoot": "lib/core/src",
+      "root": "libs/core",
+      "sourceRoot": "libs/core/src",
       "prefix": "adf",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
-            "tsConfig": "lib/core/tsconfig.lib.json",
-            "project": "lib/core/ng-package.json"
+            "tsConfig": "libs/core/tsconfig.lib.json",
+            "project": "libs/core/ng-package.json"
           },
           "dependsOn": ["license"],
           "configurations": {
             "production": {
-              "project": "lib/core/ng-package.json",
-              "tsConfig": "lib/core/tsconfig.lib.prod.json"
+              "project": "libs/core/ng-package.json",
+              "tsConfig": "libs/core/tsconfig.lib.prod.json"
             },
             "development": {
-              "tsConfig": "lib/core/tsconfig.lib.json"
+              "tsConfig": "libs/core/tsconfig.lib.json"
             }
           },
           "defaultConfiguration": "production"
@@ -321,9 +320,9 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "lib/core/src/test.ts",
-            "tsConfig": "lib/core/tsconfig.spec.json",
-            "karmaConfig": "lib/core/karma.conf.js",
+            "main": "libs/core/src/test.ts",
+            "tsConfig": "libs/core/tsconfig.spec.json",
+            "karmaConfig": "libs/core/karma.conf.js",
             "sourceMap": true,
             "styles": [
               "demo-shell/src/assets/fonts/material-icons/material-icons.css"
@@ -334,10 +333,10 @@
           "builder": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": [
-              "lib/core/**/*.ts",
-              "lib/core/**/*.html",
-              "lib/core/api/**/*.ts",
-              "lib/core/api/**/*.html"
+              "libs/core/**/*.ts",
+              "libs/core/**/*.html",
+              "libs/core/api/**/*.ts",
+              "libs/core/api/**/*.html"
             ]
           },
           "dependsOn": [
@@ -350,7 +349,7 @@
           "options": {
             "port": 4400,
             "browserTarget": "core:storybook",
-            "configDir": "lib/core/.storybook",
+            "configDir": "libs/core/.storybook",
             "compodoc": false,
             "styles": [
               "demo-shell/src/assets/fonts/material-icons/material-icons.css",
@@ -370,7 +369,7 @@
           "builder": "@storybook/angular:build-storybook",
           "options": {
             "browserTarget": "core:build-storybook",
-            "configDir": "lib/core/.storybook",
+            "configDir": "libs/core/.storybook",
             "outputDir": "dist/storybook/core",
             "compodoc": false,
             "styles": [
@@ -392,7 +391,7 @@
               "options": {
               "commands": [
                   {
-                      "command": "$(npm bin)/cspell 'lib/core/**/*.ts'"
+                      "command": "$(npm bin)/cspell 'libs/core/**/*.ts'"
                   }
               ]
           }
@@ -402,7 +401,7 @@
               "options": {
               "commands": [
                   {
-                      "command": "$(npm bin)/stylelint lib/core/**/*.scss --config stylelint-config.json"
+                      "command": "$(npm bin)/stylelint libs/core/**/*.scss --config stylelint-config.json"
                   }
               ]
           }
@@ -420,30 +419,30 @@
       }
     },
     "content-services": {
-      "root": "lib/content-services",
-      "sourceRoot": "lib/content-services/src",
+      "root": "libs/content-services",
+      "sourceRoot": "libs/content-services/src",
       "projectType": "library",
       "prefix": "adf",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
-            "tsConfig": "lib/content-services/tsconfig.lib.json",
-            "project": "lib/content-services/ng-package.json"
+            "tsConfig": "libs/content-services/tsconfig.lib.json",
+            "project": "libs/content-services/ng-package.json"
           },
           "configurations": {
             "production": {
-              "project": "lib/content-services/ng-package.json",
-              "tsConfig": "lib/content-services/tsconfig.lib.prod.json"
+              "project": "libs/content-services/ng-package.json",
+              "tsConfig": "libs/content-services/tsconfig.lib.prod.json"
             }
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "lib/content-services/src/test.ts",
-            "tsConfig": "lib/content-services/tsconfig.spec.json",
-            "karmaConfig": "lib/content-services/karma.conf.js",
+            "main": "libs/content-services/src/test.ts",
+            "tsConfig": "libs/content-services/tsconfig.spec.json",
+            "karmaConfig": "libs/content-services/karma.conf.js",
             "sourceMap": true
           }
         },
@@ -451,8 +450,8 @@
           "builder": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": [
-              "lib/content-services/**/*.ts",
-              "lib/content-services/**/*.html"
+              "libs/content-services/**/*.ts",
+              "libs/content-services/**/*.html"
             ]
           },
           "dependsOn": [
@@ -465,7 +464,7 @@
           "options": {
             "port": 4400,
             "browserTarget": "content-services:storybook",
-            "configDir": "lib/content-services/.storybook",
+            "configDir": "libs/content-services/.storybook",
             "compodoc": false,
             "styles": [
               "demo-shell/src/assets/fonts/material-icons/material-icons.css",
@@ -485,7 +484,7 @@
           "builder": "@storybook/angular:build-storybook",
           "options": {
             "browserTarget": "content-services:build-storybook",
-            "configDir": "lib/content-services/.storybook",
+            "configDir": "libs/content-services/.storybook",
             "outputDir": "dist/storybook/content-services",
             "compodoc": false,
             "styles": [
@@ -507,7 +506,7 @@
               "options": {
               "commands": [
                   {
-                      "command": "$(npm bin)/cspell 'lib/content-services/**/*.ts'"
+                      "command": "$(npm bin)/cspell 'libs/content-services/**/*.ts'"
                   }
               ]
           }
@@ -517,7 +516,7 @@
               "options": {
               "commands": [
                   {
-                      "command": "$(npm bin)/stylelint lib/content-services/**/*.scss --config stylelint-config.json"
+                      "command": "$(npm bin)/stylelint libs/content-services/**/*.scss --config stylelint-config.json"
                   }
               ]
           }
@@ -525,30 +524,30 @@
       }
     },
     "process-services": {
-      "root": "lib/process-services",
-      "sourceRoot": "lib/process-services",
+      "root": "libs/process-services",
+      "sourceRoot": "libs/process-services",
       "projectType": "library",
       "prefix": "adf",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
-            "tsConfig": "lib/process-services/tsconfig.lib.json",
-            "project": "lib/process-services/ng-package.json"
+            "tsConfig": "libs/process-services/tsconfig.lib.json",
+            "project": "libs/process-services/ng-package.json"
           },
           "configurations": {
             "production": {
-              "project": "lib/process-services/ng-package.json",
-              "tsConfig": "lib/process-services/tsconfig.lib.prod.json"
+              "project": "libs/process-services/ng-package.json",
+              "tsConfig": "libs/process-services/tsconfig.lib.prod.json"
             }
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "lib/process-services/src/test.ts",
-            "tsConfig": "lib/process-services/tsconfig.spec.json",
-            "karmaConfig": "lib/process-services/karma.conf.js",
+            "main": "libs/process-services/src/test.ts",
+            "tsConfig": "libs/process-services/tsconfig.spec.json",
+            "karmaConfig": "libs/process-services/karma.conf.js",
             "sourceMap": true
           }
         },
@@ -556,8 +555,8 @@
           "builder": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": [
-              "lib/process-services/**/*.ts",
-              "lib/process-services/**/*.html"
+              "libs/process-services/**/*.ts",
+              "libs/process-services/**/*.html"
             ]
           },
           "dependsOn": [
@@ -570,7 +569,7 @@
               "options": {
               "commands": [
                   {
-                      "command": "$(npm bin)/cspell 'lib/process-services/**/*.ts'"
+                      "command": "$(npm bin)/cspell 'libs/process-services/**/*.ts'"
                   }
               ]
           },
@@ -579,7 +578,7 @@
                 "options": {
                 "commands": [
                     {
-                        "command": "$(npm bin)/stylelint lib/process-services/**/*.scss --config stylelint-config.json"
+                        "command": "$(npm bin)/stylelint libs/process-services/**/*.scss --config stylelint-config.json"
                     }
                 ]
             }
@@ -590,7 +589,7 @@
               "options": {
               "commands": [
                   {
-                      "command": "$(npm bin)/stylelint lib/process-services-cloud/**/*.scss --config stylelint-config.json"
+                      "command": "$(npm bin)/stylelint libs/process-services-cloud/**/*.scss --config stylelint-config.json"
                   }
               ]
           }
@@ -598,30 +597,30 @@
       }
     },
     "process-services-cloud": {
-      "root": "lib/process-services-cloud",
-      "sourceRoot": "lib/process-services-cloud/src",
+      "root": "libs/process-services-cloud",
+      "sourceRoot": "libs/process-services-cloud/src",
       "projectType": "library",
       "prefix": "adf-cloud",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
-            "tsConfig": "lib/process-services-cloud/tsconfig.lib.json",
-            "project": "lib/process-services-cloud/ng-package.json"
+            "tsConfig": "libs/process-services-cloud/tsconfig.lib.json",
+            "project": "libs/process-services-cloud/ng-package.json"
           },
           "configurations": {
             "production": {
-              "project": "lib/process-services-cloud/ng-package.json",
-              "tsConfig": "lib/process-services-cloud/tsconfig.lib.prod.json"
+              "project": "libs/process-services-cloud/ng-package.json",
+              "tsConfig": "libs/process-services-cloud/tsconfig.lib.prod.json"
             }
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "lib/process-services-cloud/src/test.ts",
-            "tsConfig": "lib/process-services-cloud/tsconfig.spec.json",
-            "karmaConfig": "lib/process-services-cloud/karma.conf.js",
+            "main": "libs/process-services-cloud/src/test.ts",
+            "tsConfig": "libs/process-services-cloud/tsconfig.spec.json",
+            "karmaConfig": "libs/process-services-cloud/karma.conf.js",
             "sourceMap": true
           }
         },
@@ -629,8 +628,8 @@
           "builder": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": [
-              "lib/process-services-cloud/**/*.ts",
-              "lib/process-services-cloud/**/*.html"
+              "libs/process-services-cloud/**/*.ts",
+              "libs/process-services-cloud/**/*.html"
             ]
           },
           "dependsOn": [
@@ -643,7 +642,7 @@
           "options": {
             "port": 4400,
             "browserTarget": "process-services-cloud:storybook",
-            "configDir": "lib/process-services-cloud/.storybook",
+            "configDir": "libs/process-services-cloud/.storybook",
             "compodoc": false,
             "styles": [
               "demo-shell/src/assets/fonts/material-icons/material-icons.css",
@@ -663,7 +662,7 @@
           "builder": "@storybook/angular:build-storybook",
           "options": {
             "browserTarget": "process-services-cloud:build-storybook",
-            "configDir": "lib/process-services-cloud/.storybook",
+            "configDir": "libs/process-services-cloud/.storybook",
             "outputDir": "dist/storybook/process-services-cloud",
             "compodoc": false,
             "styles": [
@@ -685,7 +684,7 @@
               "options": {
               "commands": [
                   {
-                      "command": "$(npm bin)/cspell 'lib/process-services-cloud/**/*.ts'"
+                      "command": "$(npm bin)/cspell 'libs/process-services-cloud/**/*.ts'"
                   }
               ]
           }
@@ -695,7 +694,7 @@
               "options": {
               "commands": [
                   {
-                      "command": "$(npm bin)/stylelint lib/process-services-cloud/**/*.scss --config stylelint-config.json"
+                      "command": "$(npm bin)/stylelint libs/process-services-cloud/**/*.scss --config stylelint-config.json"
                   }
               ]
           }
@@ -703,30 +702,30 @@
       }
     },
     "insights": {
-      "root": "lib/insights",
-      "sourceRoot": "lib/insights/src",
+      "root": "libs/insights",
+      "sourceRoot": "libs/insights/src",
       "projectType": "library",
       "prefix": "adf",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
-            "tsConfig": "lib/insights/tsconfig.lib.json",
-            "project": "lib/insights/ng-package.json"
+            "tsConfig": "libs/insights/tsconfig.lib.json",
+            "project": "libs/insights/ng-package.json"
           },
           "configurations": {
             "production": {
-              "project": "lib/insights/ng-package.json",
-              "tsConfig": "lib/insights/tsconfig.lib.prod.json"
+              "project": "libs/insights/ng-package.json",
+              "tsConfig": "libs/insights/tsconfig.lib.prod.json"
             }
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "lib/insights/src/test.ts",
-            "tsConfig": "lib/insights/tsconfig.spec.json",
-            "karmaConfig": "lib/insights/karma.conf.js",
+            "main": "libs/insights/src/test.ts",
+            "tsConfig": "libs/insights/tsconfig.spec.json",
+            "karmaConfig": "libs/insights/karma.conf.js",
             "sourceMap": true
           }
         },
@@ -734,8 +733,8 @@
           "builder": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": [
-              "lib/insights/**/*.ts",
-              "lib/insights/**/*.html"
+              "libs/insights/**/*.ts",
+              "libs/insights/**/*.html"
             ]
           },
           "dependsOn": [
@@ -748,7 +747,7 @@
               "options": {
               "commands": [
                   {
-                      "command": "$(npm bin)/cspell 'lib/insights/**/*.ts'"
+                      "command": "$(npm bin)/cspell 'libs/insights/**/*.ts'"
                   }
               ]
           }
@@ -758,7 +757,7 @@
               "options": {
               "commands": [
                   {
-                      "command": "$(npm bin)/stylelint lib/insights/**/*.scss --config stylelint-config.json"
+                      "command": "$(npm bin)/stylelint libs/insights/**/*.scss --config stylelint-config.json"
                   }
               ]
           }
@@ -766,29 +765,29 @@
       }
     },
     "extensions": {
-      "root": "lib/extensions",
-      "sourceRoot": "lib/extensions/src",
+      "root": "libs/extensions",
+      "sourceRoot": "libs/extensions/src",
       "projectType": "library",
       "prefix": "adf",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
-            "tsConfig": "lib/extensions/tsconfig.lib.json",
-            "project": "lib/extensions/ng-package.json"
+            "tsConfig": "libs/extensions/tsconfig.lib.json",
+            "project": "libs/extensions/ng-package.json"
           },
           "configurations": {
             "production": {
-              "tsConfig": "lib/extensions/tsconfig.lib.prod.json"
+              "tsConfig": "libs/extensions/tsconfig.lib.prod.json"
             }
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "lib/extensions/src/test.ts",
-            "tsConfig": "lib/extensions/tsconfig.spec.json",
-            "karmaConfig": "lib/extensions/karma.conf.js",
+            "main": "libs/extensions/src/test.ts",
+            "tsConfig": "libs/extensions/tsconfig.spec.json",
+            "karmaConfig": "libs/extensions/karma.conf.js",
             "sourceMap": true
           }
         },
@@ -796,8 +795,8 @@
           "builder": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": [
-              "lib/extensions/**/*.ts",
-              "lib/extensions/**/*.html"
+              "libs/extensions/**/*.ts",
+              "libs/extensions/**/*.html"
             ]
           },
           "dependsOn": ["spellcheck"]
@@ -807,7 +806,7 @@
               "options": {
               "commands": [
                   {
-                      "command": "$(npm bin)/cspell 'lib/extensions/**/*.ts'"
+                      "command": "$(npm bin)/cspell 'libs/extensions/**/*.ts'"
                   }
               ]
           }
@@ -815,33 +814,33 @@
       }
     },
     "testing": {
-      "root": "lib/testing",
-      "sourceRoot": "lib/testing/src",
+      "root": "libs/testing",
+      "sourceRoot": "libs/testing/src",
       "projectType": "library",
       "prefix": "adf",
       "architect": {
         "build": {
           "builder": "@nrwl/node:webpack",
           "options": {
-            "projectRoot": "lib/testing",
+            "projectRoot": "libs/testing",
             "outputPath": "dist/libs/testing",
-            "main": "lib/testing/index.ts",
+            "main": "libs/testing/index.ts",
             "generatePackageJson" : true,
-            "tsConfig": "lib/testing/tsconfig.lib.prod.json",
+            "tsConfig": "libs/testing/tsconfig.lib.prod.json",
             "additionalEntryPoints": [
               {
                 "entryName": "shared",
-                "entryPath": "/lib/testing/src/lib/shared/index.ts"
+                "entryPath": "/libs/testing/src/lib/shared/index.ts"
               }
             ]
           },
           "configurations": {
             "production": {
-              "projectRoot": "lib/testing",
+              "projectRoot": "libs/testing",
               "outputPath": "dist/libs/testing",
-              "main": "lib/testing/index.ts",
+              "main": "libs/testing/index.ts",
               "generatePackageJson" : true,
-              "tsConfig": "lib/testing/tsconfig.lib.prod.json"
+              "tsConfig": "libs/testing/tsconfig.lib.prod.json"
             }
           }
         },
@@ -849,16 +848,16 @@
           "builder": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": [
-              "lib/testing/**/*.ts",
-              "lib/testing/**/*.html"
+              "libs/testing/**/*.ts",
+              "libs/testing/**/*.html"
             ]
           }
         }
       }
     },
     "cli": {
-      "root": "lib/cli",
-      "sourceRoot": "lib/cli",
+      "root": "libs/cli",
+      "sourceRoot": "libs/cli",
       "projectType": "library",
       "prefix": "adf",
       "architect": {
@@ -866,12 +865,12 @@
           "builder": "@nrwl/workspace:run-commands",
           "options": {
             "commands": [
-              "cd lib/cli && npm i && npm run dist"
+              "cd libs/cli && npm i && npm run dist"
             ]
           },
           "configurations": {
             "production": {
-              "tsConfig": "lib/cli/tsconfig.json"
+              "tsConfig": "libs/cli/tsconfig.json"
             }
           }
         },
@@ -879,16 +878,16 @@
           "builder": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": [
-              "lib/cli/**/*.ts",
-              "lib/cli/**/*.html"
+              "libs/cli/**/*.ts",
+              "libs/cli/**/*.html"
             ]
           }
         }
       }
     },
     "stories": {
-      "root": "lib/stories",
-      "sourceRoot": "lib/stories",
+      "root": "libs/stories",
+      "sourceRoot": "libs/stories",
       "projectType": "library",
       "architect": {
         "storybook": {
@@ -896,7 +895,7 @@
           "options": {
             "port": 4400,
             "browserTarget": "core:storybook",
-            "configDir": "lib/core/.storybook",
+            "configDir": "libs/core/.storybook",
             "compodoc": false,
             "styles": [
               "demo-shell/src/assets/fonts/material-icons/material-icons.css",
@@ -916,7 +915,7 @@
           "builder": "@storybook/angular:build-storybook",
           "options": {
             "browserTarget": "core:build-storybook",
-            "configDir": "lib/core/.storybook",
+            "configDir": "libs/core/.storybook",
             "outputDir": "dist/storybook/core",
             "compodoc": false,
             "styles": [

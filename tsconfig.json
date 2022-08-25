@@ -22,19 +22,19 @@
     "types": ["jasmine", "node", "jasminewd2"],
     "lib": ["es2018", "esnext.array", "esnext.asynciterable", "dom"],
     "paths": {
-      "@alfresco/adf-content-services": ["lib/content-services"],
-      "@alfresco/adf-core": ["lib/core"],
-      "@alfresco/adf-core/*": ["lib/core/*/public-api.ts"],
-      "@alfresco/adf-extensions": ["lib/extensions"],
-      "@alfresco/adf-insights": ["lib/insights"],
-      "@alfresco/adf-process-services": ["lib/process-services"],
-      "@alfresco/adf-process-services-cloud": ["lib/process-services-cloud"],
-      "@alfresco/adf-testing": ["lib/testing"],
+      "@alfresco/adf-content-services": ["libs/content-services"],
+      "@alfresco/adf-core": ["libs/core"],
+      "@alfresco/adf-core/*": ["libs/core/*/public-api.ts"],
+      "@alfresco/adf-extensions": ["libs/extensions"],
+      "@alfresco/adf-insights": ["libs/insights"],
+      "@alfresco/adf-process-services": ["libs/process-services"],
+      "@alfresco/adf-process-services-cloud": ["libs/process-services-cloud"],
+      "@alfresco/adf-testing": ["libs/testing"],
       "@alfresco/js-api": ["node_modules/@alfresco/js-api"]
     }
   },
   "exclude": [
-    "lib/config",
+    "libs/config",
     "integration",
     "scripts",
     "assets",

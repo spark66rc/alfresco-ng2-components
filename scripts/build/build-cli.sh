@@ -2,13 +2,13 @@
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-cd $DIR/../../lib/cli/
+cd $DIR/../../libs/cli/
 
 echo "====== Cli ======"
 
 cd $DIR/../../
-cp -R ./lib/cli/dist dist/libs/cli/
-cp ./lib/cli/README.md dist/libs/cli/README.md
+cp -R ./libs/cli/dist dist/libs/cli/
+cp ./libs/cli/README.md dist/libs/cli/README.md
 
 echo "====== Cli Move to node_modules ======"
 rm -rf ./node_modules/@alfresco/adf-cli/ && \

@@ -24,6 +24,6 @@ echo "====== Run Cli ====="
 ./scripts/build/build-cli.sh || exit 1
 
 echo "====== Copy schema ====="
-cp lib/core/src/lib/app-config/schema.json dist/libs/core/app.config.schema.json
+cp libs/core/src/lib/app-config/schema.json dist/libs/core/app.config.schema.json
 
 
