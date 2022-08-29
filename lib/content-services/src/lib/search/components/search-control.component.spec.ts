@@ -22,7 +22,8 @@ import {
     SearchService,
     setupTestBed,
     UserPreferencesService,
-    SearchTextInputComponent
+    SearchTextInputComponent,
+    AuthenticationService
 } from '@alfresco/adf-core';
 import { BaseAuthenticationService } from '@alfresco/adf-core/auth';
 import { noResult, results } from '../../mock';

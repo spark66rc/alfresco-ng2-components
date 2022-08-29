@@ -69,6 +69,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { createAlfrescoApiV2Service, AlfrescoApiLoaderService } from './api-factories/alfresco-api-v2-loader.service';
 import { LegacyAlfrescoApiServiceFacade } from './api-factories/legacy-alfresco-api-service.facade';
 import { LegacyClientFactory } from './api-factories/legacy-api-client.factory';
+import { LegacyApiClientModule } from './api-factories/legacy-api-client.module';
 
 const defaultConfig: CoreModuleConfig = { useLegacy: true };
 
@@ -108,7 +109,8 @@ const defaultConfig: CoreModuleConfig = { useLegacy: true };
         SearchTextModule,
         BlankPageModule,
         AlfrescoJsClientsModule,
-        HttpClientModule
+        HttpClientModule,
+        LegacyApiClientModule
     ],
     exports: [
         AboutModule,
@@ -170,7 +172,6 @@ export class CoreModule {
                     provide: CORE_MODULE_CONFIG,
                     useValue: config
                 },
-                { provide: API_CLIENT_FACTORY_TOKEN, useClass: LegacyClientFactory },
                 {
                     provide: APP_INITIALIZER,
                     useFactory: createAlfrescoApiV2Service,
