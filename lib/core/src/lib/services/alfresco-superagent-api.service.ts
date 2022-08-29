@@ -15,33 +15,17 @@
  * limitations under the License.
  */
 
-import { AlfrescoApiConfig, AlfrescoApi } from '@alfresco/js-api';
 import { Injectable } from '@angular/core';
-import { AppConfigService } from '../app-config/app-config.service';
-import { AlfrescoApiService } from '../services/alfresco-api.service';
-import { StorageService } from '../services/storage.service';
+import { AlfrescoApi, AlfrescoApiConfig } from '@alfresco/js-api';
+import { AlfrescoApiService } from './alfresco-api.service';
 
-@Injectable()
-export class AlfrescoApiServiceMock extends AlfrescoApiService {
-
-    constructor(
-        protected appConfig: AppConfigService,
-        protected storageService: StorageService
-    ) {
-        super(appConfig, storageService);
-        if (!this.alfrescoApi) {
-            this.initAlfrescoApi();
-        }
-    }
-
+@Injectable({
+    providedIn: 'root'
+})
+export class AlfrescoSuperagentApiService extends AlfrescoApiService {
     createAlfrescoApi(config: AlfrescoApiConfig): AlfrescoApi {
         return new AlfrescoApi(config);
     }
-
-    initialize(): Promise<any> {
-        return new Promise((resolve) => {
-            this.alfrescoApiInitialized.next(true);
-            resolve({});
-        });
-    }
 }
+
+

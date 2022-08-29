@@ -65,6 +65,19 @@ import { LegacyApiClientModule } from './api-factories/legacy-api-client.module'
 import { RichTextEditorModule } from './rich-text-editor/rich-text-editor.module';
 import { HttpClientModule, HttpClientXsrfModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthBearerInterceptor } from './services/auth-bearer.interceptor';
+import { AlfrescoSuperagentApiService } from './services/alfresco-superagent-api.service';
+import { AlfrescoApiWithCustomHttpClientService } from './services/alfresco-api-with-custom-http-client.service';
+
+interface Config {
+    /**
+     *  Provide custom angular http client for making requests in @alfresco/js-api
+     */
+    readonly provideCustomHttpClient: boolean;
+}
+
+const defaultConfig: Config = {
+    provideCustomHttpClient: false
+};
 
 @NgModule({
     imports: [
@@ -148,7 +161,7 @@ import { AuthBearerInterceptor } from './services/auth-bearer.interceptor';
     ]
 })
 export class CoreModule {
-    static forRoot(): ModuleWithProviders<CoreModule> {
+    static forRoot(config: Config = defaultConfig): ModuleWithProviders<CoreModule> {
         return {
             ngModule: CoreModule,
             providers: [
@@ -175,7 +188,11 @@ export class CoreModule {
                     deps: [ VersionCompatibilityService ],
                     multi: true
                 },
-                { provide: HTTP_INTERCEPTORS, useClass: AuthBearerInterceptor, multi: true }
+                { provide: HTTP_INTERCEPTORS, useClass: AuthBearerInterceptor, multi: true },
+                { provide: AlfrescoApiService, useClass: config.provideCustomHttpClient
+                    ? AlfrescoApiWithCustomHttpClientService
+                    : AlfrescoSuperagentApiService
+                }
             ]
         };
     }

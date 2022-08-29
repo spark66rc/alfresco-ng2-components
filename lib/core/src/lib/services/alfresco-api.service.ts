@@ -16,7 +16,6 @@
  */
 
 import { Injectable } from '@angular/core';
-import { AlfrescoApiHttpClient } from '@alfresco/adf-core/api';
 import { Node, AlfrescoApi, AlfrescoApiConfig } from '@alfresco/js-api';
 import { AppConfigService, AppConfigValues } from '../app-config/app-config.service';
 import { Subject, ReplaySubject } from 'rxjs';
@@ -27,7 +26,7 @@ import { OpenidConfiguration } from './openid-configuration.interface';
 @Injectable({
     providedIn: 'root'
 })
-export class AlfrescoApiService {
+export abstract class AlfrescoApiService {
     /**
      * Publish/subscribe to events related to node updates.
      */
@@ -48,10 +47,11 @@ export class AlfrescoApiService {
         return this.alfrescoApi;
     }
 
+    abstract createAlfrescoApi(config: AlfrescoApiConfig): AlfrescoApi;
+
     constructor(
         protected appConfig: AppConfigService,
-        protected storageService: StorageService,
-        private alfrescoApiHttpClient: AlfrescoApiHttpClient
+        protected storageService: StorageService
     ) {}
 
     async load() {
@@ -123,7 +123,7 @@ export class AlfrescoApiService {
         if (this.alfrescoApi && this.isDifferentConfig(this.lastConfig, this.currentAppConfig)) {
             this.alfrescoApi.setConfig(this.currentAppConfig);
         } else {
-            this.alfrescoApi = new AlfrescoApi(this.currentAppConfig, this.alfrescoApiHttpClient);
+            this.alfrescoApi = this.createAlfrescoApi(this.currentAppConfig);
         }
         this.lastConfig = this.currentAppConfig;
     }
