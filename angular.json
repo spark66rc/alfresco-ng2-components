@@ -3,6 +3,275 @@
   "version": 1,
   "newProjectRoot": "lib",
   "projects": {
+    "cli": {
+      "root": "lib/cli",
+      "sourceRoot": "lib/cli",
+      "projectType": "library",
+      "prefix": "adf",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/workspace:run-commands",
+          "options": {
+            "commands": ["cd lib/cli && npm i && npm run dist"]
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "lib/cli/tsconfig.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["lib/cli/**/*.ts", "lib/cli/**/*.html"]
+          }
+        },
+        "copydist": {
+          "builder": "nx:run-commands",
+          "options": {
+            "commands": [
+              {
+                "command": "cp -R ./lib/cli/dist dist/libs/cli/ && rm -rf ./node_modules/@alfresco/adf-cli/ && mkdir -p ./node_modules/@alfresco/adf-cli/ && cp -R ./dist/libs/cli/* ./node_modules/@alfresco/adf-cli/"
+              }
+            ]
+          }
+        }
+      }
+    },
+    "content-services": {
+      "root": "lib/content-services",
+      "sourceRoot": "lib/content-services/src",
+      "projectType": "library",
+      "prefix": "adf",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "tsConfig": "lib/content-services/tsconfig.lib.json",
+            "project": "lib/content-services/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "project": "lib/content-services/ng-package.json",
+              "tsConfig": "lib/content-services/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "lib/content-services/src/test.ts",
+            "tsConfig": "lib/content-services/tsconfig.spec.json",
+            "karmaConfig": "lib/content-services/karma.conf.js",
+            "sourceMap": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "lib/content-services/**/*.ts",
+              "lib/content-services/**/*.html"
+            ]
+          }
+        },
+        "storybook": {
+          "builder": "@storybook/angular:start-storybook",
+          "options": {
+            "port": 4400,
+            "browserTarget": "content-services:storybook",
+            "configDir": "lib/content-services/.storybook",
+            "compodoc": false,
+            "styles": [
+              "demo-shell/src/assets/fonts/material-icons/material-icons.css",
+              "demo-shell/src/assets/fonts/muli/muli.css",
+              "demo-shell/src/styles.scss",
+              "demo-shell/src/custom-style-dev.scss",
+              "node_modules/cropperjs/dist/cropper.min.css"
+            ]
+          },
+          "configurations": {
+            "ci": {
+              "quiet": true
+            }
+          }
+        },
+        "build-storybook": {
+          "builder": "@storybook/angular:build-storybook",
+          "options": {
+            "browserTarget": "content-services:build-storybook",
+            "configDir": "lib/content-services/.storybook",
+            "outputDir": "dist/storybook/content-services",
+            "compodoc": false,
+            "styles": [
+              "demo-shell/src/assets/fonts/material-icons/material-icons.css",
+              "demo-shell/src/assets/fonts/muli/muli.css",
+              "demo-shell/src/styles.scss",
+              "demo-shell/src/custom-style-dev.scss",
+              "node_modules/cropperjs/dist/cropper.min.css"
+            ]
+          },
+          "configurations": {
+            "ci": {
+              "quiet": true
+            }
+          }
+        },
+        "spellcheck": {
+          "builder": "nx:run-commands",
+          "options": {
+            "commands": [
+              {
+                "command": "$(npm bin)/cspell 'lib/content-services/**/*.ts'"
+              }
+            ]
+          }
+        },
+        "stylelint": {
+          "builder": "nx:run-commands",
+          "options": {
+            "commands": [
+              {
+                "command": "$(npm bin)/stylelint lib/content-services/**/*.scss --config stylelint-config.json"
+              }
+            ]
+          }
+        }
+      }
+    },
+    "core": {
+      "projectType": "library",
+      "root": "lib/core",
+      "sourceRoot": "lib/core/src",
+      "prefix": "adf",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "tsConfig": "lib/core/tsconfig.lib.json",
+            "project": "lib/core/ng-package.json"
+          },
+          "dependsOn": ["^build", "license"],
+          "configurations": {
+            "production": {
+              "project": "lib/core/ng-package.json",
+              "tsConfig": "lib/core/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "lib/core/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "lib/core/src/test.ts",
+            "tsConfig": "lib/core/tsconfig.spec.json",
+            "karmaConfig": "lib/core/karma.conf.js",
+            "sourceMap": true,
+            "styles": [
+              "demo-shell/src/assets/fonts/material-icons/material-icons.css"
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "lib/core/**/*.ts",
+              "lib/core/**/*.html",
+              "lib/core/api/**/*.ts",
+              "lib/core/api/**/*.html",
+              "lib/core/auth/**/*.ts",
+              "lib/core/auth/**/*.html"
+            ]
+          }
+        },
+        "storybook": {
+          "builder": "@storybook/angular:start-storybook",
+          "options": {
+            "port": 4400,
+            "browserTarget": "core:storybook",
+            "configDir": "lib/core/.storybook",
+            "compodoc": false,
+            "styles": [
+              "demo-shell/src/assets/fonts/material-icons/material-icons.css",
+              "demo-shell/src/assets/fonts/muli/muli.css",
+              "demo-shell/src/styles.scss",
+              "demo-shell/src/custom-style-dev.scss",
+              "node_modules/cropperjs/dist/cropper.min.css"
+            ]
+          },
+          "configurations": {
+            "ci": {
+              "quiet": true
+            }
+          }
+        },
+        "build-storybook": {
+          "builder": "@storybook/angular:build-storybook",
+          "options": {
+            "browserTarget": "core:build-storybook",
+            "configDir": "lib/core/.storybook",
+            "outputDir": "dist/storybook/core",
+            "compodoc": false,
+            "styles": [
+              "demo-shell/src/assets/fonts/material-icons/material-icons.css",
+              "demo-shell/src/assets/fonts/muli/muli.css",
+              "demo-shell/src/styles.scss",
+              "demo-shell/src/custom-style-dev.scss",
+              "node_modules/cropperjs/dist/cropper.min.css"
+            ]
+          },
+          "configurations": {
+            "ci": {
+              "quiet": true
+            }
+          }
+        },
+        "spellcheck": {
+          "builder": "nx:run-commands",
+          "options": {
+            "commands": [
+              {
+                "command": "$(npm bin)/cspell 'lib/core/**/*.ts'"
+              }
+            ]
+          }
+        },
+        "stylelint": {
+          "builder": "nx:run-commands",
+          "options": {
+            "commands": [
+              {
+                "command": "$(npm bin)/stylelint lib/core/**/*.scss --config stylelint-config.json"
+              }
+            ]
+          }
+        },
+        "license": {
+          "builder": "nx:run-commands",
+          "options": {
+            "commands": [
+              {
+                "command": "$(npm bin)/license-checker --production  --failOn 'GPL;GPL-2.0' > licenses.txt"
+              }
+            ]
+          }
+        },
+        "pretheme": {
+          "builder": "nx:run-commands",
+          "options": {
+            "commands": [
+              {
+                "command": "$(npm bin)/webpack -- --config ./lib/config/webpack.style.js --progress --profile --bail && rm ./dist/libs/core/lib/prebuilt-themes/*.js"
+              }
+            ]
+          }
+        }
+      }
+    },
     "demoshell": {
       "root": "demo-shell",
       "sourceRoot": "demo-shell/src",
@@ -28,9 +297,7 @@
             "tsConfig": "tsconfig.dev.json",
             "polyfills": "demo-shell/src/polyfills.ts",
             "stylePreprocessorOptions": {
-              "includePaths": [
-                "lib"
-              ]
+              "includePaths": ["lib"]
             },
             "assets": [
               "demo-shell/src/assets",
@@ -249,20 +516,17 @@
         "lint": {
           "builder": "@nrwl/linter:eslint",
           "options": {
-            "lintFilePatterns": [
-              "demo-shell/**/*.ts",
-              "demo-shell/**/*.html"
-            ]
+            "lintFilePatterns": ["demo-shell/**/*.ts", "demo-shell/**/*.html"]
           }
         },
         "spellcheck": {
-          "executor": "nx:run-commands",
-              "options": {
-              "commands": [
-                  {
-                      "command": "$(npm bin)/cspell 'demo-shell/**/*.ts'"
-                  }
-              ]
+          "builder": "nx:run-commands",
+          "options": {
+            "commands": [
+              {
+                "command": "$(npm bin)/cspell 'demo-shell/**/*.ts'"
+              }
+            ]
           }
         }
       }
@@ -294,162 +558,30 @@
         }
       }
     },
-    "core": {
-      "projectType": "library",
-      "root": "lib/core",
-      "sourceRoot": "lib/core/src",
-      "prefix": "adf",
-      "architect": {
-        "build": {
-          "builder": "@angular-devkit/build-angular:ng-packagr",
-          "options": {
-            "tsConfig": "lib/core/tsconfig.lib.json",
-            "project": "lib/core/ng-package.json"
-          },
-          "dependsOn": ["^build", "license"],
-          "configurations": {
-            "production": {
-              "project": "lib/core/ng-package.json",
-              "tsConfig": "lib/core/tsconfig.lib.prod.json"
-            },
-            "development": {
-              "tsConfig": "lib/core/tsconfig.lib.json"
-            }
-          },
-          "defaultConfiguration": "production"
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "lib/core/src/test.ts",
-            "tsConfig": "lib/core/tsconfig.spec.json",
-            "karmaConfig": "lib/core/karma.conf.js",
-            "sourceMap": true,
-            "styles": [
-              "demo-shell/src/assets/fonts/material-icons/material-icons.css"
-            ]
-          }
-        },
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": [
-              "lib/core/**/*.ts",
-              "lib/core/**/*.html",
-              "lib/core/api/**/*.ts",
-              "lib/core/api/**/*.html"
-            ]
-          }
-        },
-        "storybook": {
-          "builder": "@storybook/angular:start-storybook",
-          "options": {
-            "port": 4400,
-            "browserTarget": "core:storybook",
-            "configDir": "lib/core/.storybook",
-            "compodoc": false,
-            "styles": [
-              "demo-shell/src/assets/fonts/material-icons/material-icons.css",
-              "demo-shell/src/assets/fonts/muli/muli.css",
-              "demo-shell/src/styles.scss",
-              "demo-shell/src/custom-style-dev.scss",
-              "node_modules/cropperjs/dist/cropper.min.css"
-            ]
-          },
-          "configurations": {
-            "ci": {
-              "quiet": true
-            }
-          }
-        },
-        "build-storybook": {
-          "builder": "@storybook/angular:build-storybook",
-          "options": {
-            "browserTarget": "core:build-storybook",
-            "configDir": "lib/core/.storybook",
-            "outputDir": "dist/storybook/core",
-            "compodoc": false,
-            "styles": [
-              "demo-shell/src/assets/fonts/material-icons/material-icons.css",
-              "demo-shell/src/assets/fonts/muli/muli.css",
-              "demo-shell/src/styles.scss",
-              "demo-shell/src/custom-style-dev.scss",
-              "node_modules/cropperjs/dist/cropper.min.css"
-            ]
-          },
-          "configurations": {
-            "ci": {
-              "quiet": true
-            }
-          }
-        },
-        "spellcheck": {
-          "executor": "nx:run-commands",
-              "options": {
-              "commands": [
-                  {
-                      "command": "$(npm bin)/cspell 'lib/core/**/*.ts'"
-                  }
-              ]
-          }
-        },
-        "stylelint": {
-          "executor": "nx:run-commands",
-              "options": {
-              "commands": [
-                  {
-                      "command": "$(npm bin)/stylelint lib/core/**/*.scss --config stylelint-config.json"
-                  }
-              ]
-          }
-        },
-        "license": {
-          "executor": "nx:run-commands",
-              "options": {
-              "commands": [
-                  {
-                      "command": "$(npm bin)/license-checker --production  --failOn 'GPL;GPL-2.0' > licenses.txt"
-                  }
-              ]
-          }
-        },
-        "pretheme": {
-          "executor": "nx:run-commands",
-              "options": {
-              "commands": [
-                  {
-                      "command": "$(npm bin)/webpack -- --config ./lib/config/webpack.style.js --progress --profile --bail && rm ./dist/libs/core/lib/prebuilt-themes/*.js"
-                  }
-              ]
-          }
-        }
-      }
-    },
-    "content-services": {
-      "root": "lib/content-services",
-      "sourceRoot": "lib/content-services/src",
+    "extensions": {
+      "root": "lib/extensions",
+      "sourceRoot": "lib/extensions/src",
       "projectType": "library",
       "prefix": "adf",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
-            "tsConfig": "lib/content-services/tsconfig.lib.json",
-            "project": "lib/content-services/ng-package.json"
+            "tsConfig": "lib/extensions/tsconfig.lib.json",
+            "project": "lib/extensions/ng-package.json"
           },
           "configurations": {
             "production": {
-              "project": "lib/content-services/ng-package.json",
-              "tsConfig": "lib/content-services/tsconfig.lib.prod.json"
+              "tsConfig": "lib/extensions/tsconfig.lib.prod.json"
             }
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "lib/content-services/src/test.ts",
-            "tsConfig": "lib/content-services/tsconfig.spec.json",
-            "karmaConfig": "lib/content-services/karma.conf.js",
+            "main": "lib/extensions/src/test.ts",
+            "tsConfig": "lib/extensions/tsconfig.spec.json",
+            "karmaConfig": "lib/extensions/karma.conf.js",
             "sourceMap": true
           }
         },
@@ -457,71 +589,79 @@
           "builder": "@nrwl/linter:eslint",
           "options": {
             "lintFilePatterns": [
-              "lib/content-services/**/*.ts",
-              "lib/content-services/**/*.html"
-            ]
-          }
-        },
-        "storybook": {
-          "builder": "@storybook/angular:start-storybook",
-          "options": {
-            "port": 4400,
-            "browserTarget": "content-services:storybook",
-            "configDir": "lib/content-services/.storybook",
-            "compodoc": false,
-            "styles": [
-              "demo-shell/src/assets/fonts/material-icons/material-icons.css",
-              "demo-shell/src/assets/fonts/muli/muli.css",
-              "demo-shell/src/styles.scss",
-              "demo-shell/src/custom-style-dev.scss",
-              "node_modules/cropperjs/dist/cropper.min.css"
+              "lib/extensions/**/*.ts",
+              "lib/extensions/**/*.html"
             ]
           },
+          "dependsOn": ["spellcheck"]
+        },
+        "spellcheck": {
+          "builder": "nx:run-commands",
+          "options": {
+            "commands": [
+              {
+                "command": "$(npm bin)/cspell 'lib/extensions/**/*.ts'"
+              }
+            ]
+          }
+        }
+      }
+    },
+    "insights": {
+      "root": "lib/insights",
+      "sourceRoot": "lib/insights/src",
+      "projectType": "library",
+      "prefix": "adf",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "tsConfig": "lib/insights/tsconfig.lib.json",
+            "project": "lib/insights/ng-package.json"
+          },
           "configurations": {
-            "ci": {
-              "quiet": true
+            "production": {
+              "project": "lib/insights/ng-package.json",
+              "tsConfig": "lib/insights/tsconfig.lib.prod.json"
             }
           }
         },
-        "build-storybook": {
-          "builder": "@storybook/angular:build-storybook",
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "browserTarget": "content-services:build-storybook",
-            "configDir": "lib/content-services/.storybook",
-            "outputDir": "dist/storybook/content-services",
-            "compodoc": false,
-            "styles": [
-              "demo-shell/src/assets/fonts/material-icons/material-icons.css",
-              "demo-shell/src/assets/fonts/muli/muli.css",
-              "demo-shell/src/styles.scss",
-              "demo-shell/src/custom-style-dev.scss",
-              "node_modules/cropperjs/dist/cropper.min.css"
+            "main": "lib/insights/src/test.ts",
+            "tsConfig": "lib/insights/tsconfig.spec.json",
+            "karmaConfig": "lib/insights/karma.conf.js",
+            "sourceMap": true
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": [
+              "lib/insights/**/*.ts",
+              "lib/insights/**/*.html"
             ]
-          },
-          "configurations": {
-            "ci": {
-              "quiet": true
-            }
           }
         },
         "spellcheck": {
-          "executor": "nx:run-commands",
-              "options": {
-              "commands": [
-                  {
-                      "command": "$(npm bin)/cspell 'lib/content-services/**/*.ts'"
-                  }
-              ]
+          "builder": "nx:run-commands",
+          "options": {
+            "commands": [
+              {
+                "command": "$(npm bin)/cspell 'lib/insights/**/*.ts'"
+              }
+            ]
           }
         },
         "stylelint": {
-          "executor": "nx:run-commands",
-              "options": {
-              "commands": [
-                  {
-                      "command": "$(npm bin)/stylelint lib/content-services/**/*.scss --config stylelint-config.json"
-                  }
-              ]
+          "builder": "nx:run-commands",
+          "options": {
+            "commands": [
+              {
+                "command": "$(npm bin)/stylelint lib/insights/**/*.scss --config stylelint-config.json"
+              }
+            ]
           }
         }
       }
@@ -564,33 +704,33 @@
           }
         },
         "spellcheck": {
-          "executor": "nx:run-commands",
-              "options": {
-              "commands": [
-                  {
-                      "command": "$(npm bin)/cspell 'lib/process-services/**/*.ts'"
-                  }
-              ]
+          "builder": "nx:run-commands",
+          "options": {
+            "commands": [
+              {
+                "command": "$(npm bin)/cspell 'lib/process-services/**/*.ts'"
+              }
+            ]
           },
           "stylelint": {
             "executor": "nx:run-commands",
-                "options": {
-                "commands": [
-                    {
-                        "command": "$(npm bin)/stylelint lib/process-services/**/*.scss --config stylelint-config.json"
-                    }
-                ]
+            "options": {
+              "commands": [
+                {
+                  "command": "$(npm bin)/stylelint lib/process-services/**/*.scss --config stylelint-config.json"
+                }
+              ]
             }
           }
         },
         "stylelint": {
-          "executor": "nx:run-commands",
-              "options": {
-              "commands": [
-                  {
-                      "command": "$(npm bin)/stylelint lib/process-services-cloud/**/*.scss --config stylelint-config.json"
-                  }
-              ]
+          "builder": "nx:run-commands",
+          "options": {
+            "commands": [
+              {
+                "command": "$(npm bin)/stylelint lib/process-services-cloud/**/*.scss --config stylelint-config.json"
+              }
+            ]
           }
         }
       }
@@ -675,223 +815,23 @@
           }
         },
         "spellcheck": {
-          "executor": "nx:run-commands",
-              "options": {
-              "commands": [
-                  {
-                      "command": "$(npm bin)/cspell 'lib/process-services-cloud/**/*.ts'"
-                  }
-              ]
-          }
-        },
-        "stylelint": {
-          "executor": "nx:run-commands",
-              "options": {
-              "commands": [
-                  {
-                      "command": "$(npm bin)/stylelint lib/process-services-cloud/**/*.scss --config stylelint-config.json"
-                  }
-              ]
-          }
-        }
-      }
-    },
-    "insights": {
-      "root": "lib/insights",
-      "sourceRoot": "lib/insights/src",
-      "projectType": "library",
-      "prefix": "adf",
-      "architect": {
-        "build": {
-          "builder": "@angular-devkit/build-angular:ng-packagr",
-          "options": {
-            "tsConfig": "lib/insights/tsconfig.lib.json",
-            "project": "lib/insights/ng-package.json"
-          },
-          "configurations": {
-            "production": {
-              "project": "lib/insights/ng-package.json",
-              "tsConfig": "lib/insights/tsconfig.lib.prod.json"
-            }
-          }
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "lib/insights/src/test.ts",
-            "tsConfig": "lib/insights/tsconfig.spec.json",
-            "karmaConfig": "lib/insights/karma.conf.js",
-            "sourceMap": true
-          }
-        },
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": [
-              "lib/insights/**/*.ts",
-              "lib/insights/**/*.html"
-            ]
-          }
-        },
-        "spellcheck": {
-          "executor": "nx:run-commands",
-              "options": {
-              "commands": [
-                  {
-                      "command": "$(npm bin)/cspell 'lib/insights/**/*.ts'"
-                  }
-              ]
-          }
-        },
-        "stylelint": {
-          "executor": "nx:run-commands",
-              "options": {
-              "commands": [
-                  {
-                      "command": "$(npm bin)/stylelint lib/insights/**/*.scss --config stylelint-config.json"
-                  }
-              ]
-          }
-        }
-      }
-    },
-    "extensions": {
-      "root": "lib/extensions",
-      "sourceRoot": "lib/extensions/src",
-      "projectType": "library",
-      "prefix": "adf",
-      "architect": {
-        "build": {
-          "builder": "@angular-devkit/build-angular:ng-packagr",
-          "options": {
-            "tsConfig": "lib/extensions/tsconfig.lib.json",
-            "project": "lib/extensions/ng-package.json"
-          },
-          "configurations": {
-            "production": {
-              "tsConfig": "lib/extensions/tsconfig.lib.prod.json"
-            }
-          }
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "lib/extensions/src/test.ts",
-            "tsConfig": "lib/extensions/tsconfig.spec.json",
-            "karmaConfig": "lib/extensions/karma.conf.js",
-            "sourceMap": true
-          }
-        },
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": [
-              "lib/extensions/**/*.ts",
-              "lib/extensions/**/*.html"
-            ]
-          },
-          "dependsOn": ["spellcheck"]
-        },
-        "spellcheck": {
-          "executor": "nx:run-commands",
-              "options": {
-              "commands": [
-                  {
-                      "command": "$(npm bin)/cspell 'lib/extensions/**/*.ts'"
-                  }
-              ]
-          }
-        }
-      }
-    },
-    "testing": {
-      "root": "lib/testing",
-      "sourceRoot": "lib/testing/src",
-      "projectType": "library",
-      "prefix": "adf",
-      "architect": {
-        "build": {
-          "builder": "@nrwl/node:webpack",
-          "options": {
-            "projectRoot": "lib/testing",
-            "outputPath": "dist/libs/testing",
-            "main": "lib/testing/index.ts",
-            "generatePackageJson" : true,
-            "tsConfig": "lib/testing/tsconfig.lib.prod.json",
-            "additionalEntryPoints": [
-              {
-                "entryName": "shared",
-                "entryPath": "/lib/testing/src/lib/shared/index.ts"
-              }
-            ]
-          },
-          "configurations": {
-            "production": {
-              "projectRoot": "lib/testing",
-              "outputPath": "dist/libs/testing",
-              "main": "lib/testing/index.ts",
-              "generatePackageJson" : true,
-              "tsConfig": "lib/testing/tsconfig.lib.prod.json"
-            }
-          }
-        },
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
-          "options": {
-            "lintFilePatterns": [
-              "lib/testing/**/*.ts",
-              "lib/testing/**/*.html"
-            ]
-          }
-        },
-        "copydist": {
-          "executor": "nx:run-commands",
-              "options": {
-              "commands": [
-                  {
-                      "command": "rm -rf ./node_modules/@alfresco/adf-testing/ && mkdir -p ./node_modules/@alfresco/adf-testing/ &&  cp -R ./dist/libs/testing/* ./node_modules/@alfresco/adf-testing/"
-                  }
-              ]
-          }
-        }
-      }
-    },
-    "cli": {
-      "root": "lib/cli",
-      "sourceRoot": "lib/cli",
-      "projectType": "library",
-      "prefix": "adf",
-      "architect": {
-        "build": {
-          "builder": "@nrwl/workspace:run-commands",
+          "builder": "nx:run-commands",
           "options": {
             "commands": [
-              "cd lib/cli && npm i && npm run dist"
+              {
+                "command": "$(npm bin)/cspell 'lib/process-services-cloud/**/*.ts'"
+              }
             ]
-          },
-          "configurations": {
-            "production": {
-              "tsConfig": "lib/cli/tsconfig.json"
-            }
           }
         },
-        "lint": {
-          "builder": "@nrwl/linter:eslint",
+        "stylelint": {
+          "builder": "nx:run-commands",
           "options": {
-            "lintFilePatterns": [
-              "lib/cli/**/*.ts",
-              "lib/cli/**/*.html"
+            "commands": [
+              {
+                "command": "$(npm bin)/stylelint lib/process-services-cloud/**/*.scss --config stylelint-config.json"
+              }
             ]
-          }
-        },
-        "copydist": {
-          "executor": "nx:run-commands",
-              "options": {
-              "commands": [
-                  {
-                      "command": "cp -R ./lib/cli/dist dist/libs/cli/ && rm -rf ./node_modules/@alfresco/adf-cli/ && mkdir -p ./node_modules/@alfresco/adf-cli/ && cp -R ./dist/libs/cli/* ./node_modules/@alfresco/adf-cli/"
-                  }
-              ]
           }
         }
       }
@@ -944,7 +884,55 @@
           }
         }
       }
+    },
+    "testing": {
+      "root": "lib/testing",
+      "sourceRoot": "lib/testing/src",
+      "projectType": "library",
+      "prefix": "adf",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/node:webpack",
+          "options": {
+            "projectRoot": "lib/testing",
+            "outputPath": "dist/libs/testing",
+            "main": "lib/testing/index.ts",
+            "generatePackageJson": true,
+            "tsConfig": "lib/testing/tsconfig.lib.prod.json",
+            "additionalEntryPoints": [
+              {
+                "entryName": "shared",
+                "entryPath": "/lib/testing/src/lib/shared/index.ts"
+              }
+            ]
+          },
+          "configurations": {
+            "production": {
+              "projectRoot": "lib/testing",
+              "outputPath": "dist/libs/testing",
+              "main": "lib/testing/index.ts",
+              "generatePackageJson": true,
+              "tsConfig": "lib/testing/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["lib/testing/**/*.ts", "lib/testing/**/*.html"]
+          }
+        },
+        "copydist": {
+          "builder": "nx:run-commands",
+          "options": {
+            "commands": [
+              {
+                "command": "rm -rf ./node_modules/@alfresco/adf-testing/ && mkdir -p ./node_modules/@alfresco/adf-testing/ &&  cp -R ./dist/libs/testing/* ./node_modules/@alfresco/adf-testing/"
+              }
+            ]
+          }
+        }
+      }
     }
-  },
-  "defaultProject": "demoshell"
+  }
 }
