@@ -22,7 +22,7 @@ import { AppConfigService } from '../app-config/app-config.service';
 import { AuthGuardBase } from './auth-guard-base';
 import { JwtHelperService } from './jwt-helper.service';
 import { MatDialog } from '@angular/material/dialog';
-import { StorageService } from './storage.service';
+import { StorageService } from '@alfresco/adf-core/storage';
 
 @Injectable({
     providedIn: 'root'

@@ -18,7 +18,7 @@
 import { Component, EventEmitter, Output, ViewEncapsulation, OnInit, Input } from '@angular/core';
 import { Validators, UntypedFormGroup, UntypedFormBuilder, UntypedFormControl } from '@angular/forms';
 import { AppConfigService, AppConfigValues } from '../app-config/app-config.service';
-import { StorageService } from '../services/storage.service';
+import { StorageService } from '@alfresco/adf-core/storage';
 import { AlfrescoApiService } from '../services/alfresco-api.service';
 import { OauthConfigModel } from '../models/oauth-config.model';
 import { ENTER } from '@angular/cdk/keycodes';

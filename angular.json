@@ -184,7 +184,9 @@
               "lib/core/api/**/*.ts",
               "lib/core/api/**/*.html",
               "lib/core/auth/**/*.ts",
-              "lib/core/auth/**/*.html"
+              "lib/core/auth/**/*.html",
+              "lib/core/storage/**/*.ts",
+              "lib/core/storage/**/*.html"
             ]
           }
         },

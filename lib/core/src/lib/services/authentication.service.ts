@@ -26,7 +26,7 @@ import { PeopleApi, UserProfileApi, UserRepresentation } from '@alfresco/js-api'
 import { map, catchError, tap } from 'rxjs/operators';
 import { HttpHeaders } from '@angular/common/http';
 import { JwtHelperService } from './jwt-helper.service';
-import { StorageService } from './storage.service';
+import { StorageService } from '@alfresco/adf-core/storage';
 
 const REMEMBER_ME_COOKIE_KEY = 'ALFRESCO_REMEMBER_ME';
 const REMEMBER_ME_UNTIL = 1000 * 60 * 60 * 24 * 30;

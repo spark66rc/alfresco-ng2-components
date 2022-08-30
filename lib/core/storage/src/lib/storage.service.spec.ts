@@ -16,13 +16,13 @@
  */
 
 import { TestBed } from '@angular/core/testing';
-import { AppConfigService } from '../app-config/app-config.service';
+import { AppConfigService } from '../../../src/lib/app-config/app-config.service';
 import { StorageService } from './storage.service';
-import { setupTestBed } from '../testing/setup-test-bed';
-import { CoreTestingModule } from '../testing/core.testing.module';
-import { AppConfigServiceMock } from '../mock/app-config.service.mock';
+import { setupTestBed } from '../../../src/lib/testing/setup-test-bed';
+import { CoreTestingModule } from '../../../src/lib/testing/core.testing.module';
+import { AppConfigServiceMock } from '../../../src/lib/mock/app-config.service.mock';
 import { TranslateModule } from '@ngx-translate/core';
-import { CoreModule } from '../core.module';
+import { CoreModule } from '../../../src/lib/core.module';
 
 describe('StorageService', () => {
 
@@ -61,7 +61,8 @@ describe('StorageService', () => {
             appConfig.load().then(() => {
                 storage.clear();
                 storage.setItem(key, value);
-                const storageKey = localStorage.key(0);
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                const storageKey = localStorage.key(0)!;
                 expect(storageKey).toBe('ADF_APP_' + key);
                 expect(localStorage.getItem(storageKey)).toBe(value);
                 done();
