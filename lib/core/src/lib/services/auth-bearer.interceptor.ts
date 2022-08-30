@@ -21,14 +21,14 @@ import {
   HttpHandler, HttpInterceptor, HttpRequest,
   HttpSentEvent, HttpHeaderResponse, HttpProgressEvent, HttpResponse, HttpUserEvent, HttpHeaders
 } from '@angular/common/http';
-import { AuthenticationService } from './authentication.service';
 import { catchError, mergeMap } from 'rxjs/operators';
+import { BaseAuthenticationService } from '@alfresco/adf-core/auth';
 
 @Injectable()
 export class AuthBearerInterceptor implements HttpInterceptor {
   private excludedUrlsRegex: RegExp[];
 
-  constructor(private injector: Injector, private authService: AuthenticationService) { }
+  constructor(private injector: Injector, private authService: BaseAuthenticationService) { }
 
   private loadExcludedUrlsRegex() {
     const excludedUrls: string[] = this.authService.getBearerExcludedUrls();
@@ -39,7 +39,7 @@ export class AuthBearerInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler):
     Observable<HttpSentEvent | HttpHeaderResponse | HttpProgressEvent | HttpResponse<any> | HttpUserEvent<any>> {
 
-    this.authService = this.injector.get(AuthenticationService);
+    this.authService = this.injector.get(BaseAuthenticationService);
 
     if (!this.authService || !this.authService.getBearerExcludedUrls()) {
       return next.handle(req);

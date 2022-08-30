@@ -21,7 +21,7 @@ import { ContentApi, MinimalNode, Node, NodeEntry, NodesApi } from '@alfresco/js
 import { Observable, Subject, from, throwError } from 'rxjs';
 import { FolderCreatedEvent } from '../events/folder-created.event';
 import { AlfrescoApiService } from './alfresco-api.service';
-import { AuthenticationService } from './authentication.service';
+import { BaseAuthenticationService } from '@alfresco/adf-core/auth';
 import { LogService } from './log.service';
 import { catchError } from 'rxjs/operators';
 import { PermissionsEnum } from '../models/permissions.enum';
@@ -50,7 +50,7 @@ export class ContentService {
         return this._nodesApi;
     }
 
-    constructor(public authService: AuthenticationService,
+    constructor(public authService: BaseAuthenticationService,
                 public apiService: AlfrescoApiService,
                 private logService: LogService,
                 private sanitizer: DomSanitizer,

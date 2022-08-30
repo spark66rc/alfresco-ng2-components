@@ -18,7 +18,7 @@
 import { Observable, of, throwError } from 'rxjs';
 import { RedirectionModel } from '../models/redirection.model';
 
-export class AuthenticationMock {
+export class AuthenticationMock  {
     private redirectUrl: RedirectionModel = null;
 
     setRedirectUrl(url: RedirectionModel) {
