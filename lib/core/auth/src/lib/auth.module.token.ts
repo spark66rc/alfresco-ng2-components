@@ -7,4 +7,3 @@ export interface AuthModuleConfig {
 
 export const AUTH_MODULE_CONFIG = new InjectionToken<AuthModuleConfig>('AUTH_MODULE_CONFIG');
 export const AUTH_CONFIG = new InjectionToken<AuthConfig | Promise<AuthConfig>>('AUTH_CONFIG');
-
