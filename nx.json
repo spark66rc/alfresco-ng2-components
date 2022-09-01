@@ -34,21 +34,23 @@
       "dependsOn": ["^build"]
     },
     "lint": {
-      "dependsOn": [
-            "spellcheck",
-            "stylelint"
-      ]
+      "dependsOn": ["spellcheck", "stylelint"]
     }
   },
   "tasksRunnerOptions": {
     "default": {
       "runner": "nx/tasks-runners/default",
       "options": {
-        "cacheableOperations": ["build", "lint", "test", "spellcheck", "stylelint"],
+        "cacheableOperations": [
+          "build",
+          "lint",
+          "test",
+          "spellcheck",
+          "stylelint"
+        ],
         "cacheDirectory": "nxcache",
         "runtimeCacheInputs": ["node -v"]
       }
     }
   }
 }
-
