@@ -15,13 +15,13 @@
  * limitations under the License.
  */
 
+import { StorageService } from '@alfresco/adf-core/storage';
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Router, UrlTree } from '@angular/router';
 import { AppConfigService } from '../app-config/app-config.service';
 import { AuthenticationService } from './authentication.service';
 import { AuthGuardBase } from './auth-guard-base';
 import { MatDialog } from '@angular/material/dialog';
-import { StorageService } from './storage.service';
 
 @Injectable({
     providedIn: 'root'

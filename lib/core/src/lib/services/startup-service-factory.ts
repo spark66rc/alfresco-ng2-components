@@ -15,9 +15,11 @@
  * limitations under the License.
  */
 
-import { AlfrescoApiService } from './alfresco-api.service';
+import { StorageService } from '@alfresco/adf-core/storage';
+import { AppConfigService, AppConfigValues } from './app-config.service';
 
-// eslint-disable-next-line prefer-arrow/prefer-arrow-functions
-export function startupServiceFactory(alfrescoApiService: AlfrescoApiService) {
-    return () => alfrescoApiService.load();
+export function loadAppConfig(appConfigService: AppConfigService, storageService: StorageService) {
+    return () => appConfigService.load().then(() => {
+        storageService.prefix = appConfigService.get<string>(AppConfigValues.STORAGE_PREFIX, '');
+    });
 }

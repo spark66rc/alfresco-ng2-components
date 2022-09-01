@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 
+import { StorageService } from '@alfresco/adf-core/storage';
 import { TestBed } from '@angular/core/testing';
 import { Router, RouterStateSnapshot } from '@angular/router';
 import { AppConfigService } from '../app-config/app-config.service';
@@ -23,7 +24,6 @@ import { AuthenticationService } from './authentication.service';
 import { setupTestBed } from '../testing/setup-test-bed';
 import { CoreTestingModule } from '../testing/core.testing.module';
 import { TranslateModule } from '@ngx-translate/core';
-import { StorageService } from './storage.service';
 
 describe('AuthGuardService', () => {
     let state;

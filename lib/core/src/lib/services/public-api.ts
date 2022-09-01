@@ -15,6 +15,8 @@
  * limitations under the License.
  */
 
+export * from '@alfresco/adf-core/storage'; // for backward compatibility
+
 export * from './auth-guard-base';
 export * from './authentication.service';
 export * from './alfresco-api.service';
@@ -25,7 +27,6 @@ export * from './auth-guard-bpm.service';
 export * from './auth-guard-sso-role.service';
 export * from './apps-process.service';
 export * from './page-title.service';
-export * from './storage.service';
 export * from './cookie.service';
 export * from './renditions.service';
 export * from './log.service';
@@ -62,7 +63,6 @@ export * from './identity-user.service';
 export * from './identity-group.service';
 export * from './identity-role.service';
 export * from './version-compatibility.service';
-export * from './auth-bearer.interceptor';
 export * from './oauth2.service';
 export * from './language.service';
 export * from './identity-user.service.interface';

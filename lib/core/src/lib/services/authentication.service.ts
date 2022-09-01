@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 
+import { StorageService } from '@alfresco/adf-core/storage';
 import { Injectable } from '@angular/core';
 import { Observable, from, throwError, Observer, ReplaySubject, forkJoin } from 'rxjs';
 import { AlfrescoApiService } from './alfresco-api.service';
@@ -26,7 +27,6 @@ import { PeopleApi, UserProfileApi, UserRepresentation } from '@alfresco/js-api'
 import { map, catchError, tap } from 'rxjs/operators';
 import { HttpHeaders } from '@angular/common/http';
 import { JwtHelperService } from './jwt-helper.service';
-import { StorageService } from './storage.service';
 
 const REMEMBER_ME_COOKIE_KEY = 'ALFRESCO_REMEMBER_ME';
 const REMEMBER_ME_UNTIL = 1000 * 60 * 60 * 24 * 30;
@@ -65,7 +65,8 @@ export class AuthenticationService {
         private storageService: StorageService,
         private alfrescoApi: AlfrescoApiService,
         private cookie: CookieService,
-        private logService: LogService) {
+        private logService: LogService
+    ) {
         this.alfrescoApi.alfrescoApiInitialized.subscribe(() => {
             this.alfrescoApi.getInstance().reply('logged-in', () => {
                 this.onLogin.next();

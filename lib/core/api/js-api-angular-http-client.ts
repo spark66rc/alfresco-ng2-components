@@ -17,30 +17,26 @@
 
 import {
     HttpClient as JsApiHttpClient,
-    HttpClientConfig, paramToString,
     RequestOptions
 } from '@alfresco/js-api';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 
-/** tslint:disable-next line */
-export class BaseJsApiAngularHttpClient implements JsApiHttpClient {
-    public basePath: string;
+@Injectable({
+    providedIn: 'root'
+})
+export class JsApiAngularHttpClient implements JsApiHttpClient {
 
-    constructor(
-        public config: HttpClientConfig,
-        private httpClient: HttpClient
-    ) {
-        this.basePath = `${this.config.host}/${this.config.contextRoot}${this.config.servicePath}`;
-    }
+    constructor(private httpClient: HttpClient) {}
 
-    request<T = any>(options: RequestOptions): Promise<T> {
+    request<T = any>(url: string, options: RequestOptions): Promise<T> {
 
         const responseType = this.getResponseType(options);
         const params = new HttpParams({ fromObject: this.removeUndefinedValues(options.queryParams) });
 
         return this.httpClient.request(
             options.httpMethod,
-            options.url,
+            url,
             {
             ...(options.bodyParam ? { body: options.bodyParam } : {}),
             ...(options.headerParams ? { headers: new HttpHeaders(options.headerParams) } : {}),
@@ -63,20 +59,21 @@ export class BaseJsApiAngularHttpClient implements JsApiHttpClient {
         return newObj;
     }
 
-    private getResponseType(options: RequestOptions): 'arraybuffer' | 'blob' | 'json' | 'text' {
-        let responseType = null;
+    private getResponseType(options: RequestOptions): 'arraybuffer' | 'blob' | 'json' | 'text' | null {
 
-        if (options.returnType?.toString().toLowerCase() === 'blob' || options.responseType?.toString().toLowerCase() === 'blob') {
-            responseType = 'blob';
+        const isBlobType = options.returnType?.toString().toLowerCase() === 'blob' || options.responseType?.toString().toLowerCase() === 'blob';
+
+        if (isBlobType) {
+            return 'blob';
         } else if (options.returnType === 'String') {
-            responseType = 'text';
+            return 'text';
         }
 
-        return responseType;
+        return null;
     }
 
-    post<T = any>(options: RequestOptions): Promise<T> {
-        return this.request<T>({
+    post<T = any>(url: string, options: RequestOptions): Promise<T> {
+        return this.request<T>(url, {
             ...options,
             httpMethod: 'POST',
             contentTypes: options.contentTypes || ['application/json'],
@@ -84,8 +81,8 @@ export class BaseJsApiAngularHttpClient implements JsApiHttpClient {
         });
     }
 
-    put<T = any>(options: RequestOptions): Promise<T> {
-        return this.request<T>({
+    put<T = any>(url: string, options: RequestOptions): Promise<T> {
+        return this.request<T>(url, {
             ...options,
             httpMethod: 'PUT',
             contentTypes: options.contentTypes || ['application/json'],
@@ -93,8 +90,8 @@ export class BaseJsApiAngularHttpClient implements JsApiHttpClient {
         });
     }
 
-    get<T = any>(options: RequestOptions): Promise<T> {
-        return this.request<T>({
+    get<T = any>(url: string, options: RequestOptions): Promise<T> {
+        return this.request<T>(url, {
             ...options,
             httpMethod: 'GET',
             contentTypes: options.contentTypes || ['application/json'],
@@ -102,8 +99,8 @@ export class BaseJsApiAngularHttpClient implements JsApiHttpClient {
         });
     }
 
-    delete<T = void>(options: RequestOptions): Promise<T> {
-        return this.request<T>({
+    delete<T = void>(url: string, options: RequestOptions): Promise<T> {
+        return this.request<T>(url, {
             ...options,
             httpMethod: 'DELETE',
             contentTypes: options.contentTypes || ['application/json'],
@@ -112,91 +109,13 @@ export class BaseJsApiAngularHttpClient implements JsApiHttpClient {
     }
 
     /** @deprecated */
-    callApi(
-        path: string,
-        httpMethod: string,
-        pathParams?: any,
-        queryParams?: any,
-        headerParams?: any,
-        formParams?: any,
-        bodyParam?: any,
-        contentTypes?: string[],
-        accepts?: string[],
-        returnType?: any,
-        contextRoot?: string,
-        responseType?: string,
-        url?: string
-    ): Promise<any> {
-
-        const basePath = contextRoot ? `${this.config.host}/${contextRoot}` : this.basePath;
-        url = url ?? this.buildUrl(basePath, path, pathParams);
-
-        return this.request({
-            path,
-            httpMethod,
-            pathParams,
-            queryParams,
-            headerParams,
-            formParams,
-            bodyParam,
-            contentTypes,
-            accepts,
-            returnType,
-            contextRoot,
-            responseType,
-            url
-        });
+    callApi(url: string, options: RequestOptions): Promise<any> {
+        return this.request(url, options);
     }
 
     /** @deprecated */
-    callCustomApi(
-        fullPath: string,
-        httpMethod: string,
-        pathParams?: any,
-        queryParams?: any,
-        headerParams?: any,
-        formParams?: any,
-        bodyParam?: any,
-        contentTypes?: string[],
-        accepts?: string[],
-        returnType?: any,
-        contextRoot?: string,
-        responseType?: string
-    ): Promise<any> {
-        const url = this.buildUrl(fullPath, '', pathParams);
-
-        return this.request({
-            path: fullPath,
-            httpMethod,
-            pathParams,
-            queryParams,
-            headerParams,
-            formParams,
-            bodyParam,
-            contentTypes,
-            accepts,
-            returnType,
-            contextRoot,
-            responseType,
-            url
-        });
+    callCustomApi(url: string, options: RequestOptions): Promise<any> {
+        return this.request(url, options);
     }
 
-    private buildUrl(basePath: string, path: string, pathParams: any): string {
-        if (path && path !== '' && !path.match(/^\//)) {
-            path = '/' + path;
-        }
-        let url = basePath + path;
-
-        url = url.replace(/\{([\w-]+)\}/g, function(fullMatch, key) {
-            let value;
-            if (pathParams.hasOwnProperty(key)) {
-                value = paramToString(pathParams[key]);
-            } else {
-                value = fullMatch;
-            }
-            return encodeURIComponent(value);
-        });
-        return url;
-    }
 }

@@ -15,17 +15,11 @@
  * limitations under the License.
  */
 
-import { HttpClientConfig, LegacyTicketApi } from '@alfresco/js-api';
-import { HttpClient } from '@angular/common/http';
-import { BaseJsApiAngularHttpClient } from './js-api-angular-http-client';
+import { StorageService } from '@alfresco/adf-core/storage';
+import { AppConfigService, AppConfigValues } from './app-config.service';
 
-export class JsApiAngularHttpClientLegacyTicketApi extends BaseJsApiAngularHttpClient implements LegacyTicketApi {
-
-    constructor(config: HttpClientConfig, httpClient: HttpClient) {
-        super(config, httpClient);
-    }
-
-    getAlfTicket(_ticket: string): string {
-        return '';
-    }
+export function loadAppConfig(appConfigService: AppConfigService, storageService: StorageService) {
+    return () => appConfigService.load().then(() => {
+        storageService.prefix = appConfigService.get<string>(AppConfigValues.STORAGE_PREFIX, '');
+    });
 }
