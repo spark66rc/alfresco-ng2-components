@@ -1,9 +1,8 @@
 import { Inject, Injectable } from '@angular/core';
-import { AuthConfig, OAuthErrorEvent, OAuthService, OAuthStorage } from 'angular-oauth2-oidc';
+import { AuthConfig, AUTH_CONFIG, OAuthErrorEvent, OAuthService, OAuthStorage } from 'angular-oauth2-oidc';
 import { JwksValidationHandler } from 'angular-oauth2-oidc-jwks';
 import { Observable } from 'rxjs';
 import { distinctUntilChanged, filter, map, shareReplay, startWith } from 'rxjs/operators';
-import { AUTH_CONFIG } from './auth.module.token';
 import { AuthService } from './auth.service';
 
 const isPromise = <T>(value: T | Promise<T>): value is Promise<T> => value && typeof (value as Promise<T>).then === 'function';
@@ -28,9 +27,7 @@ export class RedirectAuthService extends AuthService {
   constructor(
     private oauthService: OAuthService,
     private _oauthStorage: OAuthStorage,
-    // we use any, because currently for prod build we are disabling ivy and thus we can't use the @Inject decorator with correct type inside the constructor
-    // as its leading to error: Could not resolve type https://github.com/angular/angular/issues/20351#issuecomment-344009887
-    @Inject(AUTH_CONFIG) authConfig: any
+    @Inject(AUTH_CONFIG) authConfig: AuthConfig
   ) {
     super();
     this.authConfig = authConfig;
