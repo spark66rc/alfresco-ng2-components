@@ -55,3 +55,4 @@ export * from './lib/testing';
 
 export * from './lib/material.module';
 export * from './lib/core.module';
+export { AuthBridgeModule } from './lib/auth-bridge/auth-bridge.module';

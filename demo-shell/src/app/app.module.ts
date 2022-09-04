@@ -28,7 +28,9 @@ import {
     TRANSLATION_PROVIDER,
     DebugAppConfigService,
     CoreModule,
-    CoreAutomationService
+    CoreAutomationService,
+    AppConfigModule,
+    AuthBridgeModule
 } from '@alfresco/adf-core';
 import { ExtensionsModule } from '@alfresco/adf-extensions';
 import { AppComponent } from './app.component';
@@ -137,7 +139,8 @@ registerLocaleData(localeSv);
         BrowserModule,
         environment.e2e ? NoopAnimationsModule : BrowserAnimationsModule,
         ReactiveFormsModule,
-        RouterModule.forRoot(appRoutes, { useHash: true, relativeLinkResolution: 'legacy' }),
+        AuthBridgeModule.forRoot({ useHash: true }),
+        RouterModule.forRoot(appRoutes, { useHash: true, relativeLinkResolution: 'legacy'}),
         FormsModule,
         HttpClientModule,
         MaterialModule,
@@ -152,6 +155,7 @@ registerLocaleData(localeSv);
         ThemePickerModule,
         ChartsModule,
         AppCloudSharedModule,
+        AppConfigModule.forRoot(),
         MonacoEditorModule.forRoot()
     ],
     declarations: [
