@@ -84,8 +84,8 @@ describe('LibraryFavoriteDirective', () => {
         expect(component.directive.isFavorite()).toBe(false);
     });
 
-    it('should call addFavorite() on click event when selection is not a favorite', async () => {
-        spyOn(component.directive['favoritesApi'], 'getFavoriteSite').and.returnValue(Promise.reject());
+    fit('should call addFavorite() on click event when selection is not a favorite', async () => {
+        spyOn(component.directive['favoritesApi'], 'getFavoriteSite').and.returnValue(Promise.resolve(null));
         spyOn(component.directive['favoritesApi'], 'createFavorite').and.returnValue(Promise.resolve(null));
 
         fixture.detectChanges();
@@ -95,6 +95,7 @@ describe('LibraryFavoriteDirective', () => {
 
         fixture.nativeElement.querySelector('button').dispatchEvent(new MouseEvent('click'));
         fixture.detectChanges();
+
         expect(component.directive['favoritesApi'].createFavorite).toHaveBeenCalled();
     });
 

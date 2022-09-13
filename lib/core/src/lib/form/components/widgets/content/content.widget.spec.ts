@@ -40,12 +40,12 @@ describe('ContentWidgetComponent', () => {
     let serviceContent: ContentService;
 
     const createFakeImageBlob = () => {
-        const data = atob('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==');
+        const data = window.atob('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==');
         return new Blob([data], { type: 'image/png' });
     };
 
     const createFakePdfBlob = (): Blob => {
-        const pdfData = atob(
+        const pdfData = window.atob(
             'JVBERi0xLjcKCjEgMCBvYmogICUgZW50cnkgcG9pbnQKPDwKICAvVHlwZSAvQ2F0YWxvZwog' +
             'IC9QYWdlcyAyIDAgUgo+PgplbmRvYmoKCjIgMCBvYmoKPDwKICAvVHlwZSAvUGFnZXMKICAv' +
             'TWVkaWFCb3ggWyAwIDAgMjAwIDIwMCBdCiAgL0NvdW50IDEKICAvS2lkcyBbIDMgMCBSIF0K' +
@@ -260,7 +260,7 @@ describe('ContentWidgetComponent', () => {
             viewButton.click();
         });
 
-        it('should download the pdf when the download button is clicked', () => {
+        fit('should download the pdf when the download button is clicked', async () => {
             const blob = createFakePdfBlob();
             spyOn(processContentService, 'getFileRawContent').and.returnValue(of(blob));
             spyOn(serviceContent, 'downloadBlob').and.callThrough();
@@ -288,10 +288,9 @@ describe('ContentWidgetComponent', () => {
             const downloadButton: any = element.querySelector('#download');
             downloadButton.click();
 
-            fixture.whenStable()
-                .then(() => {
-                    expect(serviceContent.downloadBlob).toHaveBeenCalledWith(blob, 'FakeBlob.pdf');
-                });
+            await fixture.whenStable();
+
+            expect(serviceContent.downloadBlob).toHaveBeenCalledWith(blob, 'FakeBlob.pdf');
         });
     });
 });

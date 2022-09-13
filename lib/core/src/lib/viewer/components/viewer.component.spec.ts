@@ -1220,7 +1220,7 @@ describe('ViewerComponent', () => {
                         content: { mimeType: 'img/png' }
                     }
                 });
-                const data = atob('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==');
+                const data = window.atob('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==');
                 const fakeBlob = new Blob([data], { type: 'image/png' });
                 const newImageFile: File = new File([fakeBlob], component?.nodeEntry?.entry?.name, { type: component?.nodeEntry?.entry?.content?.mimeType });
                 const newFile = new FileModel(
@@ -1251,7 +1251,7 @@ describe('ViewerComponent', () => {
                         content: { mimeType: 'img/png' }
                     }
                 });
-                const data = atob('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==');
+                const data = window.atob('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==');
                 const fakeBlob = new Blob([data], { type: 'image/png' });
                 component.onSubmitFile(fakeBlob);
                 fixture.detectChanges();

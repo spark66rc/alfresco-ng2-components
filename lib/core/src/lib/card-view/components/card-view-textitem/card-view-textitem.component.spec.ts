@@ -646,7 +646,7 @@ describe('CardViewTextItemComponent', () => {
             });
         });
 
-        it('should update the value using the updateItem$ subject', (async () => {
+        fit('should update the value using the updateItem$ subject', (async () => {
             component.property.isValid = () => true;
             const cardViewUpdateService = TestBed.inject(CardViewUpdateService);
             const expectedText = 'changed text';
@@ -785,21 +785,19 @@ describe('CardViewTextItemComponent', () => {
             });
         }));
 
-        it('should not show validation error for below the number limit (2147483647)', fakeAsync((done) => {
+        fit('should not show validation error for below the number limit (2147483647)', async () => {
             fixture.detectChanges();
-            fixture.whenStable().then(() => {
+            await fixture.whenStable();
 
-                updateTextField(component.property.key, 2147483647);
-                fixture.detectChanges();
-                fixture.whenStable().then(() => {
-                    const error = fixture.debugElement.query(By.css(`[data-automation-id="card-textitem-error-${component.property.key}"] li`));
-                    expect(error).toBeFalsy();
+            updateTextField(component.property.key, 2147483647);
+            fixture.detectChanges();
 
-                    expect(component.property.value).toBe('2147483647');
-                    done();
-                });
-            });
-        }));
+            await fixture.whenStable();
+            const error = fixture.debugElement.query(By.css(`[data-automation-id="card-textitem-error-${component.property.key}"] li`));
+
+            expect(error).toBeFalsy();
+            expect(component.property.value).toBe('2147483647');
+        });
 
         it('should update input the value on input updated', (done) => {
             const expectedNumber = 2020;
@@ -863,7 +861,7 @@ describe('CardViewTextItemComponent', () => {
             });
         }));
 
-        it('should show validation error for empty string (float)', fakeAsync((done) => {
+        it('FAILS should show validation error for empty string (float)', fakeAsync((done) => {
             fixture.detectChanges();
             fixture.whenStable().then(() => {
 
