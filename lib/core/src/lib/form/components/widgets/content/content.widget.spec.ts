@@ -260,7 +260,7 @@ describe('ContentWidgetComponent', () => {
             viewButton.click();
         });
 
-        fit('should download the pdf when the download button is clicked', async () => {
+        it('should download the pdf when the download button is clicked', async () => {
             const blob = createFakePdfBlob();
             spyOn(processContentService, 'getFileRawContent').and.returnValue(of(blob));
             spyOn(serviceContent, 'downloadBlob').and.callThrough();

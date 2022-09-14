@@ -84,7 +84,7 @@ describe('LibraryFavoriteDirective', () => {
         expect(component.directive.isFavorite()).toBe(false);
     });
 
-    fit('should call addFavorite() on click event when selection is not a favorite', async () => {
+    it('should call addFavorite() on click event when selection is not a favorite', async () => {
         spyOn(component.directive['favoritesApi'], 'getFavoriteSite').and.returnValue(Promise.resolve(null));
         spyOn(component.directive['favoritesApi'], 'createFavorite').and.returnValue(Promise.resolve(null));
 

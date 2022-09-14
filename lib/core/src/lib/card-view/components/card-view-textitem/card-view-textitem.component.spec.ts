@@ -646,7 +646,7 @@ describe('CardViewTextItemComponent', () => {
             });
         });
 
-        fit('should update the value using the updateItem$ subject', (async () => {
+        it('should update the value using the updateItem$ subject', (async () => {
             component.property.isValid = () => true;
             const cardViewUpdateService = TestBed.inject(CardViewUpdateService);
             const expectedText = 'changed text';
@@ -785,7 +785,7 @@ describe('CardViewTextItemComponent', () => {
             });
         }));
 
-        fit('should not show validation error for below the number limit (2147483647)', async () => {
+        it('should not show validation error for below the number limit (2147483647)', async () => {
             fixture.detectChanges();
             await fixture.whenStable();
 
@@ -845,62 +845,58 @@ describe('CardViewTextItemComponent', () => {
             fixture.detectChanges();
         });
 
-        it('should show validation error when string passed', fakeAsync((done) => {
+        it('should show validation error when string passed', async () => {
             fixture.detectChanges();
-            fixture.whenStable().then(() => {
+            await fixture.whenStable();
 
-                updateTextField(component.property.key, 'hello there');
-                tick(600);
-                fixture.detectChanges();
-                fixture.whenStable().then(() => {
-                    const error = getTextFieldError(component.property.key);
-                    expect(error).toEqual('CORE.CARDVIEW.VALIDATORS.FLOAT_VALIDATION_ERROR');
-                    expect(component.property.value).toBe(floatValue);
-                    done();
-                });
-            });
-        }));
+            updateTextField(component.property.key, 'hello there');
+            await setTimeoutPromise(600);
 
-        it('FAILS should show validation error for empty string (float)', fakeAsync((done) => {
             fixture.detectChanges();
-            fixture.whenStable().then(() => {
+            await fixture.whenStable();
 
-                updateTextField(component.property.key, ' ');
-                tick(600);
-                fixture.detectChanges();
-                fixture.whenStable().then(() => {
-                    const error = getTextFieldError(component.property.key);
-                    expect(error).toEqual('CORE.CARDVIEW.VALIDATORS.FLOAT_VALIDATION_ERROR');
-                    expect(component.property.value).toBe(floatValue);
-                    done();
-                });
-            });
-        }));
+            const error = getTextFieldError(component.property.key);
+            expect(error).toEqual('CORE.CARDVIEW.VALIDATORS.FLOAT_VALIDATION_ERROR');
+            expect(component.property.value).toBe(floatValue);
+        });
 
-        it('should update input the value on input updated', (done) => {
+        it('should show validation error for empty string (float)', async () => {
+            fixture.detectChanges();
+            await fixture.whenStable();
+
+            updateTextField(component.property.key, ' ');
+            await setTimeoutPromise(600);
+
+            fixture.detectChanges();
+            await fixture.whenStable();
+
+            const error = getTextFieldError(component.property.key);
+            expect(error).toEqual('CORE.CARDVIEW.VALIDATORS.FLOAT_VALIDATION_ERROR');
+            expect(component.property.value).toBe(floatValue);
+        });
+
+        it('should update input the value on input updated', async () => {
             const expectedNumber = 88.44;
             spyOn(component, 'update').and.callThrough();
             fixture.detectChanges();
-            fixture.whenStable().then(() => {
+            await fixture.whenStable();
 
-                const disposableUpdate = cardViewUpdateService.itemUpdated$.subscribe((updateNotification) => {
-                    expect(updateNotification.target).toEqual({ ...component.property });
-                    expect(updateNotification.changed).toEqual({ textkey: expectedNumber.toString() });
-                    disposableUpdate.unsubscribe();
-                    done();
-                });
-
-                updateTextField(component.property.key, expectedNumber);
-                tick(600);
-                fixture.detectChanges();
-                fixture.whenStable().then(() => {
-                    const error = fixture.debugElement.query(By.css(`[data-automation-id="card-textitem-error-${component.property.key}"] li`));
-                    expect(error).toBeFalsy();
-
-                    expect(getTextFieldValue(component.property.key)).toEqual(expectedNumber.toString());
-                    expect(component.property.value).toBe(expectedNumber.toString());
-                });
+            const disposableUpdate = cardViewUpdateService.itemUpdated$.subscribe((updateNotification) => {
+                expect(updateNotification.target).toEqual({ ...component.property });
+                expect(updateNotification.changed).toEqual({ textkey: expectedNumber.toString() });
+                disposableUpdate.unsubscribe();
             });
+
+            updateTextField(component.property.key, expectedNumber);
+            await setTimeoutPromise(600);
+
+            fixture.detectChanges();
+            await fixture.whenStable();
+
+            const error = fixture.debugElement.query(By.css(`[data-automation-id="card-textitem-error-${component.property.key}"] li`));
+            expect(error).toBeFalsy();
+            expect(getTextFieldValue(component.property.key)).toEqual(expectedNumber.toString());
+            expect(component.property.value).toBe(expectedNumber.toString());
         });
     });
 
@@ -927,5 +923,9 @@ describe('CardViewTextItemComponent', () => {
         const textItemInputError = fixture.debugElement.query(By.css(`[data-automation-id="card-textitem-error-${key}"] li`));
         expect(textItemInputError).not.toBeNull();
         return textItemInputError.nativeElement.innerText;
+    };
+
+    const setTimeoutPromise = (timeout) => {
+        return new Promise((resolve) => setTimeout(resolve, timeout));
     };
 });
