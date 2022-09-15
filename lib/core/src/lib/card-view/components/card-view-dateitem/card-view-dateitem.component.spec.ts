@@ -209,7 +209,7 @@ describe('CardViewDateItemComponent', () => {
         component.onDateChanged({ value: expectedDate });
     });
 
-    it('should update the property value after a successful update attempt', fakeAsync(() => {
+    it('should update the property value after a successful update attempt', async () => {
         component.editable = true;
         component.property.editable = true;
         component.property.value = null;
@@ -218,12 +218,9 @@ describe('CardViewDateItemComponent', () => {
 
         component.onDateChanged({ value: expectedDate });
 
-        fixture.whenStable().then(
-            () => {
-                expect(component.property.value).toEqual(expectedDate.toDate());
-            }
-        );
-    }));
+        await fixture.whenStable();
+        expect(component.property.value).toEqual(expectedDate.toDate());
+    });
 
     it('should copy value to clipboard on double click', () => {
         const clipboardService = TestBed.inject(ClipboardService);
