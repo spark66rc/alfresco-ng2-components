@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-import { ComponentFixture, TestBed, tick, fakeAsync, discardPeriodicTasks } from '@angular/core/testing';
+import { ComponentFixture, TestBed, fakeAsync } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { CardViewTextItemModel } from '../../models/card-view-textitem.model';
 import { CardViewUpdateService } from '../../services/card-view-update.service';
@@ -391,7 +391,7 @@ describe('CardViewTextItemComponent', () => {
             expect(cardViewUpdateService.clicked).toHaveBeenCalled();
         });
 
-        it('should update input the value on input updated', fakeAsync((done) => {
+        it('should update input the value on input updated', async () => {
             const cardViewUpdateService = TestBed.inject(CardViewUpdateService);
 
             component.property.clickable = true;
@@ -401,25 +401,23 @@ describe('CardViewTextItemComponent', () => {
             const expectedText = 'changed text';
             component.ngOnChanges({});
             fixture.detectChanges();
-            fixture.whenStable().then(() => {
-                fixture.detectChanges();
 
-                const disposableUpdate = cardViewUpdateService.itemUpdated$.subscribe((updateNotification) => {
-                    expect(updateNotification.target).toEqual({ ...component.property });
-                    expect(updateNotification.changed).toEqual({ textkey: expectedText });
+            await fixture.whenStable();
+            fixture.detectChanges();
 
-                    expect(getTextFieldValue(component.property.key)).toEqual(expectedText);
-                    disposableUpdate.unsubscribe();
-                    done();
-                });
+            const disposableUpdate = cardViewUpdateService.itemUpdated$.subscribe(updateNotification => {
+                expect(updateNotification.target).toEqual({ ...component.property });
+                expect(updateNotification.changed).toEqual({ textkey: expectedText });
 
-                updateTextField(component.property.key, expectedText);
-                tick(1000);
-
-                fixture.detectChanges();
-                discardPeriodicTasks();
+                expect(getTextFieldValue(component.property.key)).toEqual(expectedText);
+                disposableUpdate.unsubscribe();
             });
-        }));
+
+            updateTextField(component.property.key, expectedText);
+            await setTimeoutPromise(1000);
+
+            fixture.detectChanges();
+        });
 
         it('should copy value to clipboard on double click', async () => {
             const clipboardService = TestBed.inject(ClipboardService);
@@ -489,7 +487,7 @@ describe('CardViewTextItemComponent', () => {
             expect(component.property.isValid).toHaveBeenCalledWith('updated-value');
         });
 
-        it('FAILS should trigger the update event if the editedValue is valid', async () => {
+        it('should trigger the update event if the editedValue is valid', async () => {
             component.property.isValid = () => true;
 
             fixture.detectChanges();
@@ -560,7 +558,7 @@ describe('CardViewTextItemComponent', () => {
             expect(errorMessage).toBe('Something went wrong');
         });
 
-        it('FAILS should reset erros when exiting editable mode', async () => {
+        it('should reset erros when exiting editable mode', async () => {
             const expectedErrorMessages = [{ message: 'Something went wrong' } as CardViewItemValidator];
             component.property.isValid = () => false;
             component.property.getValidationErrors = () => expectedErrorMessages;
@@ -635,7 +633,7 @@ describe('CardViewTextItemComponent', () => {
             });
         });
 
-        it('should update the value using the updateItem$ subject', (async () => {
+        it('should update the value using the updateItem$ subject', async () => {
             component.property.isValid = () => true;
             const cardViewUpdateService = TestBed.inject(CardViewUpdateService);
             const expectedText = 'changed text';
@@ -656,9 +654,9 @@ describe('CardViewTextItemComponent', () => {
             expect(value).toEqual(expectedText);
             expect(component.property.value).toBe(expectedText);
 
-        }));
+        });
 
-        it('should update multiline input the value on input updated', (done) => {
+        it('should update multiline input the value on input updated', async () => {
             component.property.isValid = () => true;
             component.property.multiline = true;
             const expectedText = 'changed text';
@@ -666,27 +664,25 @@ describe('CardViewTextItemComponent', () => {
             const cardViewUpdateService = TestBed.inject(CardViewUpdateService);
 
             fixture.detectChanges();
-            fixture.whenStable().then(() => {
+            await fixture.whenStable();
 
-                const disposableUpdate = cardViewUpdateService.itemUpdated$.subscribe((updateNotification) => {
-                    expect(updateNotification.target).toEqual({ ...component.property });
-                    expect(updateNotification.changed).toEqual({ textkey: expectedText });
-                    disposableUpdate.unsubscribe();
-                    done();
-                });
-
-                updateTextField(component.property.key, expectedText);
-                tick(600);
-                fixture.detectChanges();
-                fixture.whenStable().then(() => {
-
-                    expect(component.update).toHaveBeenCalled();
-                    fixture.detectChanges();
-
-                    expect(getTextFieldValue(component.property.key)).toEqual(expectedText);
-                    expect(component.property.value).toBe(expectedText);
-                });
+            const disposableUpdate = cardViewUpdateService.itemUpdated$.subscribe((updateNotification) => {
+                expect(updateNotification.target).toEqual({ ...component.property });
+                expect(updateNotification.changed).toEqual({ textkey: expectedText });
+                disposableUpdate.unsubscribe();
             });
+
+            updateTextField(component.property.key, expectedText);
+            await setTimeoutPromise(600);
+
+            fixture.detectChanges();
+            await fixture.whenStable();
+
+            expect(component.update).toHaveBeenCalled();
+            fixture.detectChanges();
+
+            expect(getTextFieldValue(component.property.key)).toEqual(expectedText);
+            expect(component.property.value).toBe(expectedText);
         });
     });
 
@@ -723,7 +719,7 @@ describe('CardViewTextItemComponent', () => {
             expect(component.property.value).toBe(10);
         });
 
-        it('FAILS should show validation error for empty string', async () => {
+        it('should show validation error for empty string', async () => {
             fixture.detectChanges();
             await fixture.whenStable();
 
@@ -783,30 +779,28 @@ describe('CardViewTextItemComponent', () => {
             expect(component.property.value).toBe('2147483647');
         });
 
-        it('should update input the value on input updated', (done) => {
+        it('should update input the value on input updated', async () => {
             const expectedNumber = 2020;
             spyOn(component, 'update').and.callThrough();
             fixture.detectChanges();
-            fixture.whenStable().then(() => {
+            await fixture.whenStable();
 
-                const disposableUpdate = cardViewUpdateService.itemUpdated$.subscribe((updateNotification) => {
-                    expect(updateNotification.target).toEqual({ ...component.property });
-                    expect(updateNotification.changed).toEqual({ textkey: expectedNumber.toString() });
-                    disposableUpdate.unsubscribe();
-                    done();
-                });
-
-                updateTextField(component.property.key, expectedNumber);
-                tick(600);
-                fixture.detectChanges();
-                fixture.whenStable().then(() => {
-                    const error = fixture.debugElement.query(By.css(`[data-automation-id="card-textitem-error-${component.property.key}"] li`));
-                    expect(error).toBeFalsy();
-
-                    expect(getTextFieldValue(component.property.key)).toEqual(expectedNumber.toString());
-                    expect(component.property.value).toBe(expectedNumber.toString());
-                });
+            const disposableUpdate = cardViewUpdateService.itemUpdated$.subscribe((updateNotification) => {
+                expect(updateNotification.target).toEqual({ ...component.property });
+                expect(updateNotification.changed).toEqual({ textkey: expectedNumber.toString() });
+                disposableUpdate.unsubscribe();
             });
+
+            updateTextField(component.property.key, expectedNumber);
+            await setTimeoutPromise(600);
+
+            fixture.detectChanges();
+            await fixture.whenStable();
+            const error = fixture.debugElement.query(By.css(`[data-automation-id="card-textitem-error-${component.property.key}"] li`));
+            expect(error).toBeFalsy();
+
+            expect(getTextFieldValue(component.property.key)).toEqual(expectedNumber.toString());
+            expect(component.property.value).toBe(expectedNumber.toString());
         });
     });
 
