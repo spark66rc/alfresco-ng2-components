@@ -729,7 +729,6 @@ describe('CardViewTextItemComponent', () => {
             fixture.detectChanges();
             await fixture.whenStable();
 
-            console.log(component.property);
             const error = getTextFieldError(component.property.key);
             expect(error).toEqual('CORE.CARDVIEW.VALIDATORS.INT_VALIDATION_ERROR');
             expect(component.property.value).toBe(10);
