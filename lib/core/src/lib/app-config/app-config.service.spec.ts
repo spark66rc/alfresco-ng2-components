@@ -165,7 +165,8 @@ describe('AppConfigService', () => {
     });
 
     it('should load external settings', async () => {
-        await appConfigService.load().then((config) => {
+        await appConfigService.load();
+        expect(config).toEqual(mockResponse);
 
             expect(config).toEqual(mockResponse);
         });
